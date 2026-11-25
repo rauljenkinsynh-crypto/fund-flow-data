@@ -119,8 +119,10 @@ ETF_COM_URL = None      # 待核查：ETF.com 每日流量的确切 URL 与格�
 # 自算公式：当日流量（美元）= 当日 NAV ×（当日份额 − 前一日份额）；快照文件
 # data/etf-selfcalc-snapshots.json 由 fetch_etf_flows 自己读写（上线首日无
 # 昨日快照，流量记 null，绝不写 0）。SMH 自算主路（VanEck NAV 历史 XLSX，
-# 第二阶段；持仓 XLSX 无基金级份额/净值，见 parse_vaneck_nav_history）；
-# VOO/QQQ 无逐日路（第三阶段探查），本阶段只记 seed。
+# 第二阶段；持仓 XLSX 无基金级份额/净值，见 parse_vaneck_nav_history）。
+# QQQ/VOO 自算主路（新浪 gb_ 行情份额，2026-11-25 接入）：Invesco 自家接口
+# 无份额字段（实测 2026-11-25：shareclasses 只有总资产+业绩 8 个字段），
+# 新浪第 19 字段为份额数（价格×份额=总市值字段，实测逐项一致）。
 TICKERINSIDE_SERIES_URL = "https://tickerinside.com/api/v1/etf-flows/series.json"
 TICKERINSIDE_TICKERS = ["SOXX", "SPY", "XLP", "XLV", "XLE", "XLU", "XLK"]
 TICKERINSIDE_ATTRIBUTION = {
@@ -209,9 +211,34 @@ VANECK_NAV_HISTORY_URL = (
 # 净值合理性区间（美元，按 2026-11-25 市价定的宽带；SMH 近期 NAV 约 $400–487）
 VANECK_NAV_RANGES = {"SMH": (100.0, 800.0)}
 
-# 自算分工：TLT、GLD、SMH 以自算为主路；7 只 TickerInside 标的以自算为备用
+# -- 新浪财经美股行情（QQQ、VOO 份额；2026-11-25 实测）--
+# 接口 http://hq.sinajs.cn/list=gb_qqq,gb_voo，须带 Referer
+# http://finance.sina.com.cn（不带回 Forbidden）；返回 GBK 编码，一行一个
+# 品种，逗号分隔；数字为 ASCII，可直接解析。
+# 字段（从 0 数，2026-11-25 12:39 EST 实测逐项核对）：1=最新价，12=总市值，
+# 19=份额数（总股本；注意：任务书初版写 20 是错的，实测价格×第 19 字段才
+# 等于总市值字段，第 20 字段恒为 0），25=美东时间（如 "Nov 25 12:39PM EST"，
+# 无年份），26=前收。实测值：QQQ 价 622.28、份额 694,250,000；
+# VOO 价 651.98、份额 1,548,595,410（VOO 前收 660.71 与 Vanguard 官方
+# 11-24 市价逐分一致；QQQ 份额与 Invesco 总资产反推隐含 NAV $639.03，
+# 溢价 0.15%，合理）。
+# 流量只能用收盘价算：只有美东收盘后（跑的当前美东时间 ≥16:00，且第 25
+# 字段时间 ≥16:00，即字段 1 为收盘价）才写快照；盘中跑跳过快照、源仍记 ok。
+# 快照日期取第 25 字段的美东日期，NAV 口径取收盘价（字段 1）。
+# 已知疑点（不阻塞上线）：SPY 新浪份额与 SSGA 快照反推差 1.6%，故 SPY 不
+# 走新浪（仍以 SSGA 为准）；新浪份额是否每日更新，待 2026-11-26 二取验证。
+SINA_GB_URL = "http://hq.sinajs.cn/list=gb_qqq,gb_voo"
+SINA_REFERER = "http://finance.sina.com.cn"
+SINA_TICKERS = ["QQQ", "VOO"]
+# 净值合理性区间（美元，按 2026-11-25 市价定的宽带；超出即该标的 failed）
+SINA_NAV_RANGES = {"QQQ": (300.0, 900.0), "VOO": (300.0, 900.0)}
+
+# 自算分工：TLT、GLD、SMH、QQQ、VOO 以自算为主路；7 只 TickerInside 标的以自算为备用
 # （滞后 >3 个交易日自动切换；快照每天都取，保持备用快照温热，切换当日即有昨日数可算）。
-SELFCALC_PRIMARY = {"TLT": "blackrock", "GLD": "ssga", "SMH": "vaneck"}
+SELFCALC_PRIMARY = {
+    "TLT": "blackrock", "GLD": "ssga", "SMH": "vaneck",
+    "QQQ": "sina", "VOO": "sina",
+}
 SELFCALC_BACKUP = {
     "SOXX": "blackrock",
     "SPY": "ssga", "XLP": "ssga", "XLV": "ssga",
@@ -1401,6 +1428,92 @@ def parse_vaneck_nav_history(xlsx_bytes):
     return {"date": date_iso, "nav": nav, "aum_usd": aum, "shares": aum / nav}
 
 
+_SINA_GB_LINE_RE = re.compile(r'^var hq_str_gb_([a-z0-9]+)="([^"]*)";?\s*$')
+_SINA_MONTHS = {
+    "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+}
+_SINA_US_TIME_RE = re.compile(
+    r"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})\s+"
+    r"(\d{1,2}):(\d{2})(AM|PM)\s+[A-Z]+$"
+)
+
+
+def parse_sina_gb_line(line):
+    """解析新浪 gb_ 行：var hq_str_gb_qqq="..."; 返回 dict。
+
+    字段（从 0 数）：1=最新价，12=总市值，19=份额数（总股本），25=美东时间，
+    26=前收。校验：价格>0、份额>0、总市值>0、|价格×份额 − 总市值| / 总市值
+    < 0.5%，否则 SchemaError。GBK 解码在调用方做（errors="replace"），
+    名字字段（GBK 中文）不解析，只取 ASCII 数字字段。
+    返回：{"ticker","price","shares","mktcap","us_time","prev_close"}。
+    """
+    match = _SINA_GB_LINE_RE.match(line.strip())
+    if not match:
+        raise SchemaError(f"新浪 gb_ 行格式不对：{line[:80]!r}")
+    symbol, body = match.group(1), match.group(2)
+    fields = body.split(",")
+    if len(fields) < 27:
+        raise SchemaError(
+            f"新浪 gb_{symbol} 字段不足（{len(fields)} 个，至少 27 个）。"
+        )
+    try:
+        price = float(fields[1])
+        mktcap = float(fields[12])
+        shares = float(fields[19])
+        prev_close = float(fields[26])
+    except ValueError:
+        raise SchemaError(f"新浪 gb_{symbol} 价格/市值/份额/前收不是数字。")
+    us_time = fields[25].strip()
+    if not us_time:
+        raise SchemaError(f"新浪 gb_{symbol} 第 25 字段（美东时间）为空。")
+    if not (price > 0 and shares > 0 and mktcap > 0):
+        raise SchemaError(
+            f"新浪 gb_{symbol} 价格/市值/份额须 >0（价 {price}、"
+            f"份额 {shares}、市值 {mktcap}）。"
+        )
+    deviation = abs(price * shares - mktcap) / mktcap
+    if deviation >= 0.005:
+        raise SchemaError(
+            f"新浪 gb_{symbol} 自洽校验失败：价格×份额与总市值偏差"
+            f" {deviation:.2%}（≥0.5%），疑似字段错位，不发布。"
+        )
+    return {
+        "ticker": symbol.upper(),
+        "price": price,
+        "shares": shares,
+        "mktcap": mktcap,
+        "us_time": us_time,
+        "prev_close": prev_close,
+    }
+
+
+def _sina_date_from_us_time(us_time, today):
+    """把新浪第 25 字段 "Nov 25 4:00PM EST" 转成 (ISO 日期, 是否收盘后)。
+
+    字段无年份：取与 today（UTC 日期字符串）最近且不晚于 today 的年份
+    （跨年边沿：today 为 1 月 1 日、字段为 Dec 31 时取上一年）。
+    是否收盘后：字段时间 ≥16:00 ET（此时字段 1 为收盘价，可算流量）。
+    格式不对 -> SchemaError。"""
+    match = _SINA_US_TIME_RE.match(us_time.strip())
+    if not match:
+        raise SchemaError(f"新浪美东时间格式不对：{us_time!r}")
+    month_name, day, hour, minute, ampm = match.groups()
+    hour = int(hour)
+    if ampm == "PM" and hour != 12:
+        hour += 12
+    if ampm == "AM" and hour == 12:
+        hour = 0
+    from datetime import date as _date
+
+    today_date = datetime.strptime(today, "%Y-%m-%d").date()
+    parsed = _date(today_date.year, _SINA_MONTHS[month_name], int(day))
+    if parsed > today_date:
+        parsed = _date(today_date.year - 1, _SINA_MONTHS[month_name], int(day))
+    is_close = (hour * 60 + int(minute)) >= 16 * 60
+    return parsed.isoformat(), is_close
+
+
 def _fetch_vaneck_xlsx_bytes(url):
     """取 VanEck 文件（cookie 门）：经 http_request(cookies=True) 持久化 cookie，
     跟随重定向。失败 -> FetchError（调用方记该标的 failed）。"""
@@ -1419,6 +1532,75 @@ def _fetch_vaneck_snapshot(ticker):
         "shares": parsed["shares"],
         "nav": parsed["nav"],
         "source": "selfcalc-vaneck",
+    }
+
+
+def _now_et():
+    """当前美东时间（naive datetime）。ZoneInfo 不可用时退回 UTC-5（EST 口径）；
+    三班 cron 距 16:00 边界均 ≥1 小时，1 小时误差不影响 gating 判定。
+    测试可 patch 本函数以固定时间。"""
+    try:
+        from zoneinfo import ZoneInfo
+
+        return datetime.now(timezone.utc).astimezone(
+            ZoneInfo("America/New_York")
+        ).replace(tzinfo=None)
+    except Exception:
+        from datetime import timedelta
+
+        return datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=5)
+
+
+def _fetch_sina_snapshot(ticker, today=None):
+    """取新浪 gb_ 行情，返回快照 {"date","shares","nav","source"}。
+
+    流量只能用收盘价算：只有跑的当前美东时间 ≥16:00 且第 25 字段时间
+    ≥16:00（即字段 1 为收盘价）时才写快照；否则返回 {"skipped": True,
+    "note": ...}（调用方不写快照、不算流量，但源仍记 ok）。
+    任一字段缺失 / 自洽校验失败 / 净值越界 -> SchemaError（调用方记 failed）。
+    """
+    today = today or datetime.now(timezone.utc).date().isoformat()
+    _, body = http_request(SINA_GB_URL, headers={"Referer": SINA_REFERER})
+    text = body.decode("gbk", "replace")
+    rows = {}
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            parsed = parse_sina_gb_line(line)
+        except SchemaError:
+            if f"gb_{ticker.lower()}" in line:
+                raise
+            continue
+        rows[parsed["ticker"]] = parsed
+    if ticker not in rows:
+        raise SchemaError(f"新浪行情缺 {ticker} 行（{SINA_GB_URL}）。")
+    parsed = rows[ticker]
+    date_et, is_close = _sina_date_from_us_time(parsed["us_time"], today)
+    now_et = _now_et()
+    if now_et.hour * 60 + now_et.minute < 16 * 60:
+        return {
+            "skipped": True,
+            "note": (
+                f"新浪盘中跳过快照（当前美东 {now_et.strftime('%H:%M')} 未收盘，"
+                "字段 1 不是收盘价，流量只能用收盘价算）。"
+            ),
+        }
+    if not is_close:
+        return {
+            "skipped": True,
+            "note": (
+                f"新浪盘中跳过快照（美东时间 {parsed['us_time']} 未收盘，"
+                "字段 1 不是收盘价，流量只能用收盘价算）。"
+            ),
+        }
+    check_nav_range(ticker, parsed["price"], SINA_NAV_RANGES)
+    return {
+        "date": date_et,
+        "shares": parsed["shares"],
+        "nav": parsed["price"],
+        "source": "selfcalc-sina",
     }
 
 
@@ -1827,19 +2009,20 @@ def _is_fresh(date_et, today):
 
 
 def fetch_etf_flows(out_dir=None, today=None):
-    """ETF 流量（第一阶段）：TickerInside 7 只 + 发行商文件自算 + Farside IBIT。
+    """ETF 流量：TickerInside 7 只 + 发行商文件自算 + 新浪 QQQ/VOO 份额 + Farside IBIT。
 
     合并规则（方案 §五 + 任务书 §3）：
     - 每只标的只有一个主路：7 只以 TickerInside 为准，滞后 >3 个交易日自动切
       自算备用并标注来源切换（本次 TickerInside 最新 11-11，已滞后约 10 个
-      交易日，切换立即生效）；TLT、GLD、SMH 以自算为准；IBIT 读同 run 的
-      data/farside-btc.json；VOO、QQQ 本阶段记 seed。
+      交易日，切换立即生效）；TLT、GLD、SMH、QQQ、VOO 以自算为准（QQQ/VOO
+      用新浪 gb_ 行情份额，收盘后才写快照，盘中跳过）；IBIT 读同 run 的
+      data/farside-btc.json。
     - 冲突：同一标的两路同日都有数且差值 >10% -> 两路都保留（alternate_flow），
       面板备注“两路不一致”，展示以主路为准；≤10% 只存主路。
     - 任一标的取不到/字段缺失 -> 该标的当日 failed，保留上一日好快照，绝不拿
       旧份额算假流量；≥1 只标的有新鲜 live 数 -> 整源 ok；全部可取数标的都
       失败 -> 抛 FetchError（run_fetch 会保留旧文件、status 标 failed）。
-    - 自算快照每天都取（10 只全取，保持备用快照温热，切换当日即有昨日数可算）；
+    - 自算快照每天都取（12 只全取，保持备用快照温热，切换当日即有昨日数可算）；
       快照文件 data/etf-selfcalc-snapshots.json 由本函数自己读写。
     out_dir 缺省时用模块级 ETF_FLOWS_OUT_DIR（run_fetch 传入）；today 缺省为
     当天 UTC 日期（测试可传入固定日期以消除日期敏感性）。
@@ -1883,7 +2066,7 @@ def fetch_etf_flows(out_dir=None, today=None):
                 "为种子数），面板须用种子数展示该日标红。"
             )
 
-    # --- 自算路：10 只全取快照（主路 TLT/GLD/SMH + 7 只备用），失败只影响该标的 ---
+    # --- 自算路：12 只全取快照（主路 TLT/GLD/SMH/QQQ/VOO + 7 只备用），失败只影响该标的 ---
     selfcalc = {}
     for ticker, kind in {**SELFCALC_PRIMARY, **SELFCALC_BACKUP}.items():
         try:
@@ -1891,12 +2074,24 @@ def fetch_etf_flows(out_dir=None, today=None):
                 snap = _fetch_blackrock_snapshot(ticker)
             elif kind == "ssga":
                 snap = _fetch_ssga_snapshot(ticker)
+            elif kind == "sina":
+                snap = _fetch_sina_snapshot(ticker, today=today)
             else:  # vaneck
                 snap = _fetch_vaneck_snapshot(ticker)
         except (FetchError, SchemaError) as exc:
             selfcalc[ticker] = {"error": str(exc)}
             continue
         prev_snap = snapshots.get(ticker)
+        if isinstance(snap, dict) and snap.get("skipped"):
+            # 新浪盘中跳过：不写快照、不算流量；有旧快照则沿用旧快照展示，
+            # 无旧快照则 entry 段保留 seed（不记 failed：这不是取数失败）。
+            selfcalc[ticker] = {
+                "snapshot": prev_snap,
+                "flow_usd": None,
+                "flow_note": snap["note"],
+                "skipped": True,
+            }
+            continue
         if prev_snap and snap["date"] < prev_snap.get("date", ""):
             # 发行商给了比快照更旧的文件：不回退快照，不算流量。
             selfcalc[ticker] = {
@@ -1952,7 +2147,7 @@ def fetch_etf_flows(out_dir=None, today=None):
         )
 
     entries = {}
-    failed_live_capable = 0  # 10 只可取数标的（7 只 TI + TLT + GLD + SMH）中当日 failed 的只数
+    failed_live_capable = 0  # 12 只可取数标的（7 只 TI + TLT + GLD + SMH + QQQ + VOO）中当日 failed 的只数
 
     # --- 7 只 TickerInside 主路标的 ---
     for ticker in TICKERINSIDE_TICKERS:
@@ -2184,23 +2379,52 @@ def fetch_etf_flows(out_dir=None, today=None):
             "Farside 文件不存在或无 IBIT，未编数。",
         )
 
-    # --- VOO、QQQ：本阶段无逐日路，记 seed ---
-    seed_notes = {
-        "VOO": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
-        "QQQ": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
-    }
-    for ticker in ("VOO", "QQQ"):
-        prev = prev_tracked.get(ticker) or {}
+    # --- QQQ、VOO：自算主路（新浪 gb_ 行情份额；收盘后才写快照）---
+    for ticker in ("QQQ", "VOO"):
+        prev_entry = prev_tracked.get(ticker) or {}
+        prev_daily = prev_entry.get("daily") or []
+        record = selfcalc.get(ticker) or {}
+        snap = record.get("snapshot")
+        sc_flow_100m = _usd_to_100m(record.get("flow_usd"))
+        daily = prev_daily
+        if snap and sc_flow_100m is not None:
+            daily = merge_daily_series(
+                daily,
+                [{"date": snap["date"], "flow_usd_100m": sc_flow_100m,
+                  "source": snap["source"]}],
+            )
+        if record.get("error"):
+            entries[ticker] = _retained_entry(
+                ticker, "failed", f"今日取数失败（自算：{record['error']}），显示上一日数据。"
+            )
+            failed_live_capable += 1
+            continue
+        if snap is None:
+            # 无快照：新浪盘中跳过且从未有过快照 -> 保留 seed entry（不记 failed）。
+            entries[ticker] = _retained_entry(
+                ticker, "seed",
+                record.get("flow_note") or "新浪盘中跳过快照，首个快照等收盘后（美东 16:00 后）的跑。",
+            )
+            continue
+        aum_100m, pct = _selfcalc_aum_pct(ticker)
+        if sc_flow_100m is None:
+            entries[ticker] = _etf_entry(
+                ticker, snap["date"], None, aum_100m, None, snap["source"],
+                snap["date"], "unmeasured", daily,
+                record.get("flow_note") or "自算无流量。",
+            )
+            continue
+        status = "live" if _is_fresh(snap["date"], today) else "stale"
+        note = record.get("flow_note") or ""
         entries[ticker] = _etf_entry(
-            ticker, prev.get("date_et"), None, None, None, "seed",
-            prev.get("as_of_date"), "seed", prev.get("daily") or [],
-            seed_notes[ticker],
+            ticker, snap["date"], sc_flow_100m, aum_100m, pct, snap["source"],
+            snap["date"], status, daily, note,
         )
 
     live_count = sum(1 for entry in entries.values() if entry["status"] == "live")
-    if failed_live_capable >= 10 and entries["IBIT"]["status"] == "seed":
+    if failed_live_capable >= 12 and entries["IBIT"]["status"] == "seed":
         raise FetchError(
-            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD + SMH），"
+            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD + SMH + QQQ + VOO），"
             "且 IBIT 无 Farside 数据；保留旧文件、status 标 failed。"
         )
     top_status = "live" if live_count >= 1 else "seed"
@@ -2209,7 +2433,7 @@ def fetch_etf_flows(out_dir=None, today=None):
     tracked = [entries[ticker] for ticker in ETF_TRACKED_ORDER]
     return {
         "schema_version": 1,
-        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件） / Farside（IBIT）",
+        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额） / Farside（IBIT）",
         "source_url": TICKERINSIDE_SERIES_URL,
         "fetched_at_utc": utcnow_iso(),
         "status": top_status,

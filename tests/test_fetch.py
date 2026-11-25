@@ -46,12 +46,14 @@ from fetch_all import (  # noqa: E402
     parse_ici_flow_table,
     parse_ici_mmf_table,
     parse_number,
+    parse_sina_gb_line,
     parse_sosovalue_json,
     parse_sosovalue_v1_json,
     parse_ssga_fund_page,
     parse_tickerinside_series,
     parse_vaneck_nav_history,
     trading_days_between,
+    _sina_date_from_us_time,
 )
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
@@ -570,6 +572,31 @@ def _make_vaneck_xlsx(data_rows, drop_aum=False):
     return buf.getvalue()
 
 
+def _make_sina_body(rows):
+    """测试用新浪 gb_ 响应生成器。
+
+    rows：每行 (symbol, price, shares, us_time, prev_close)，如
+    ("qqq", 620.00, 694250000, "Nov 25 4:00PM EST", 638.10)。
+    总市值字段按 价格×份额 精确算（与真实接口一致）；字段顺序与真实
+    行一致（共 38 个，份额在第 19 个 0-based 字段）。"""
+    lines = []
+    for symbol, price, shares, us_time, prev_close in rows:
+        mktcap = price * shares
+        fields = [
+            "TEST ETF", f"{price:.4f}", "-1.00", "2026-11-26 01:24:37",
+            "-1.0000", f"{price - 2:.4f}", f"{price + 3:.4f}", f"{price - 12:.4f}",
+            "762.8600", "554.0350", "45000000", "61783791",
+            f"{mktcap:.0f}", "0.00", "--", "0.00", "0.00", "0.00", "0.00",
+            f"{shares:.0f}", "0", "0.0000", "0.00", "0.00", "",
+            us_time, f"{prev_close:.4f}", "0", "1", "2026",
+            "27905842222.0000", "0.0000", "0.0000", "0.0000", "0.0000",
+            f"{prev_close:.4f}", "0", "0",
+        ]
+        assert len(fields) == 38, len(fields)
+        lines.append(f'var hq_str_gb_{symbol}="' + ",".join(fields) + '";')
+    return "\n".join(lines) + "\n"
+
+
 class TestVanEck(unittest.TestCase):
     def test_parse_real_values(self):
         # 真实值（2026-11-24 实测）：NAV 427.3930、AUM 57,053,492,930.04
@@ -614,6 +641,116 @@ class TestVanEck(unittest.TestCase):
         check_nav_range("SMH", 427.3930, fetch_all.VANECK_NAV_RANGES)
         with self.assertRaises(SchemaError):
             check_nav_range("SMH", 50.0, fetch_all.VANECK_NAV_RANGES)
+
+
+class TestSina(unittest.TestCase):
+    def test_qqq_real_values_parse(self):
+        # 真实值（2026-11-25 12:39 EST 实测）：QQQ 价 622.28、份额 694,250,000。
+        body = _make_sina_body([
+            ("qqq", 622.28, 694250000, "Nov 25 12:39PM EST", 638.10),
+        ])
+        parsed = parse_sina_gb_line(body.strip().splitlines()[0])
+        self.assertEqual(parsed["ticker"], "QQQ")
+        self.assertAlmostEqual(parsed["price"], 622.28, places=4)
+        self.assertEqual(parsed["shares"], 694250000.0)
+        self.assertAlmostEqual(parsed["mktcap"], 432017890000.0, delta=1.0)
+        self.assertEqual(parsed["us_time"], "Nov 25 12:39PM EST")
+        self.assertAlmostEqual(parsed["prev_close"], 638.10, places=4)
+
+    def test_voo_real_values_parse(self):
+        # 真实值（2026-11-25 12:39 EST 实测）：VOO 价 651.98、份额 1,548,595,410。
+        body = _make_sina_body([
+            ("voo", 651.98, 1548595410, "Nov 25 12:39PM EST", 660.71),
+        ])
+        parsed = parse_sina_gb_line(body.strip().splitlines()[0])
+        self.assertEqual(parsed["ticker"], "VOO")
+        self.assertEqual(parsed["shares"], 1548595410.0)
+        self.assertAlmostEqual(parsed["prev_close"], 660.71, places=4)
+
+    def test_shares_field_is_index_19_not_20(self):
+        # 字段错位防护：份额在第 19 个 0-based 字段（第 20 个恒为 0）。
+        # 若解析器误读第 20 字段，价格×份额=0，与总市值偏差 100% 必报 SchemaError。
+        body = _make_sina_body([
+            ("qqq", 622.28, 694250000, "Nov 25 12:39PM EST", 638.10),
+        ])
+        fields = body.split('"')[1].split(",")
+        self.assertEqual(fields[19], "694250000")
+        self.assertEqual(fields[20], "0")
+        self.assertEqual(fields[25], "Nov 25 12:39PM EST")
+        self.assertEqual(fields[26], "638.1000")
+
+    def test_mktcap_mismatch_raises(self):
+        # 总市值故意写错 1%（>0.5% 阈值）-> SchemaError，不发布。
+        fields = _make_sina_body([
+            ("qqq", 620.00, 694250000, "Nov 25 4:00PM EST", 638.10),
+        ]).split('"')
+        inner = fields[1].split(",")
+        inner[12] = str(int(float(inner[12]) * 1.01))
+        line = 'var hq_str_gb_qqq="' + ",".join(inner) + '";'
+        with self.assertRaises(SchemaError):
+            parse_sina_gb_line(line)
+
+    def test_zero_shares_raises(self):
+        body = _make_sina_body([
+            ("qqq", 620.00, 0, "Nov 25 4:00PM EST", 638.10),
+        ])
+        with self.assertRaises(SchemaError):
+            parse_sina_gb_line(body.strip().splitlines()[0])
+
+    def test_short_line_raises(self):
+        with self.assertRaises(SchemaError):
+            parse_sina_gb_line('var hq_str_gb_qqq="QQQ,620.00";')
+
+    def test_empty_row_raises(self):
+        with self.assertRaises(SchemaError):
+            parse_sina_gb_line('var hq_str_gb_qqq="";')
+
+    def test_gbk_bytes_decode(self):
+        # 真实响应是 GBK 编码（含中文名）：GBK 字节经 errors="replace" 解码后可解析。
+        body = _make_sina_body([
+            ("qqq", 622.28, 694250000, "Nov 25 12:39PM EST", 638.10),
+        ]).replace("TEST ETF", "纳百ETF")
+        raw = body.encode("gbk")
+        text = raw.decode("gbk", "replace")
+        parsed = parse_sina_gb_line(text.strip().splitlines()[0])
+        self.assertEqual(parsed["shares"], 694250000.0)
+
+    def test_date_close_vs_intraday(self):
+        self.assertEqual(
+            _sina_date_from_us_time("Nov 25 4:00PM EST", "2026-11-25"),
+            ("2026-11-25", True),
+        )
+        self.assertEqual(
+            _sina_date_from_us_time("Nov 25 12:25PM EST", "2026-11-25"),
+            ("2026-11-25", False),
+        )
+        self.assertEqual(
+            _sina_date_from_us_time("Nov 25 9:30AM EST", "2026-11-25"),
+            ("2026-11-25", False),
+        )
+        self.assertEqual(
+            _sina_date_from_us_time("Nov 25 12:00AM EST", "2026-11-25"),
+            ("2026-11-25", False),
+        )
+
+    def test_date_year_edge_new_year(self):
+        # today 为 1 月 1 日、字段为 Dec 31 时取上一年。
+        self.assertEqual(
+            _sina_date_from_us_time("Dec 31 4:00PM EST", "2027-01-01"),
+            ("2026-12-31", True),
+        )
+
+    def test_bad_time_raises(self):
+        with self.assertRaises(SchemaError):
+            _sina_date_from_us_time("2026-11-25 16:00", "2026-11-25")
+        with self.assertRaises(SchemaError):
+            _sina_date_from_us_time("", "2026-11-25")
+
+    def test_nav_range(self):
+        check_nav_range("QQQ", 622.28, fetch_all.SINA_NAV_RANGES)
+        check_nav_range("VOO", 651.98, fetch_all.SINA_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("QQQ", 100.0, fetch_all.SINA_NAV_RANGES)
 
 
 class TestEtfFlowsMerge(unittest.TestCase):
@@ -686,6 +823,8 @@ class TestEtfFlowsMerge(unittest.TestCase):
 
     def test_full_fetch_switched_to_selfcalc(self):
         # 今天 2026-11-25：TickerInside 最新 11-11，滞后 10 个交易日，7 只切自算备用。
+        import datetime as _datetime
+
         with tempfile.TemporaryDirectory() as out_dir:
             for name in ("etf-flows.json", "ici.json", "farside-btc.json",
                          "etf-selfcalc-snapshots.json"):
@@ -713,6 +852,10 @@ class TestEtfFlowsMerge(unittest.TestCase):
                 .replace("360.40 M", "1,071.28 M")
                 .replace("331.98279858", "718.51234567")
             )
+            sina_body = _make_sina_body([
+                ("qqq", 620.00, 694250000, "Nov 25 4:00PM EST", 638.10),
+                ("voo", 650.00, 1548595410, "Nov 25 4:00PM EST", 660.71),
+            ])
 
             def fake_http(url, headers=None, timeout=None, **kwargs):
                 if "portfolioId=239454" in url:
@@ -723,12 +866,19 @@ class TestEtfFlowsMerge(unittest.TestCase):
                     return 200, gld_html.encode("utf-8")
                 if url == fetch_all.SSGA_FUND_PAGES["SPY"]:
                     return 200, spy_html.encode("utf-8")
+                if "hq.sinajs.cn" in url:
+                    self.assertEqual(headers.get("Referer"), fetch_all.SINA_REFERER)
+                    return 200, sina_body.encode("gbk")
                 raise FetchError(f"HTTP 403 {url}")  # 其余 SSGA 页取不到
 
             with mock.patch.object(fetch_all, "get_json",
                                    return_value=load_json_fixture("tickerinside_series.json")):
                 with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
-                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+                    with mock.patch.object(
+                        fetch_all, "_now_et",
+                        return_value=_datetime.datetime(2026, 11, 25, 21, 0),
+                    ):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
             self.assertEqual(payload["schema_version"], 1)
             self.assertEqual(payload["status"], "live")  # ≥1 只新鲜 live 数
             self.assertEqual(payload["source_url"], fetch_all.TICKERINSIDE_SERIES_URL)
@@ -790,26 +940,36 @@ class TestEtfFlowsMerge(unittest.TestCase):
             self.assertAlmostEqual(ibit["daily_flow_usd_100m"], 2.0, places=4)
             self.assertIsNone(ibit["aum_usd_100m"])
             self.assertIn("单位假设未验证", ibit["note"])
-            # VOO、QQQ：本阶段记 seed，不编每日数
-            for ticker in ("VOO", "QQQ"):
+            # QQQ、VOO：新浪自算首日（收盘后快照已存），流量 null、status unmeasured
+            for ticker, price, shares in (
+                ("QQQ", 620.00, 694250000), ("VOO", 650.00, 1548595410),
+            ):
                 entry = by_ticker[ticker]
-                self.assertEqual(entry["source"], "seed", msg=ticker)
-                self.assertEqual(entry["status"], "seed", msg=ticker)
+                self.assertEqual(entry["source"], "selfcalc-sina", msg=ticker)
+                self.assertEqual(entry["status"], "unmeasured", msg=ticker)
                 self.assertIsNone(entry["daily_flow_usd_100m"], msg=ticker)
-                self.assertFalse(entry["flag_over_5pct"], msg=ticker)
+                self.assertAlmostEqual(
+                    entry["aum_usd_100m"], price * shares / 1e8, places=2, msg=ticker
+                )
+                self.assertIn("首日", entry["note"], msg=ticker)
             # SMH：本阶段已接 VanEck 自算路；本测试里发行商页未 mock，取数失败
             self.assertEqual(by_ticker["SMH"]["status"], "failed")
             self.assertIn("取数失败", by_ticker["SMH"]["note"])
             self.assertIn("回退种子数", by_ticker["SMH"]["note"])
-            # 快照文件已写回：TLT/GLD/SOXX/SPY 为 11-25，失败的 6 只（5 只行业 + SMH）未写入
+            # 快照文件已写回：TLT/GLD/SOXX/SPY/QQQ/VOO 为 11-25，失败的 6 只（5 只行业 + SMH）未写入
             with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
                 snaps = json.load(fh)
-            for ticker in ("TLT", "GLD", "SOXX", "SPY"):
+            for ticker in ("TLT", "GLD", "SOXX", "SPY", "QQQ", "VOO"):
                 self.assertEqual(snaps[ticker]["date"], "2026-11-25", msg=ticker)
+            self.assertEqual(snaps["QQQ"]["shares"], 694250000.0)
+            self.assertEqual(snaps["VOO"]["shares"], 1548595410.0)
+            self.assertEqual(snaps["QQQ"]["source"], "selfcalc-sina")
             self.assertNotIn("XLP", snaps)
 
     def test_first_day_snapshots_only_no_flow(self):
         # 上线第一天：无上日快照，自算流量记 null；快照文件已存下当天数。
+        import datetime as _datetime
+
         with tempfile.TemporaryDirectory() as out_dir:
             tlt_csv = load_fixture("blackrock_tlt.csv")
             soxx_csv = _make_blackrock_csv(
@@ -819,6 +979,10 @@ class TestEtfFlowsMerge(unittest.TestCase):
             spy_html = load_fixture("ssga_gld.html").replace(
                 "$331.98", "$718.51"
             ).replace("360.40 M", "1,071.28 M").replace("331.98279858", "718.51234567")
+            sina_body = _make_sina_body([
+                ("qqq", 619.94, 694250000, "Nov 24 4:00PM EST", 638.10),
+                ("voo", 650.33, 1548595410, "Nov 24 4:00PM EST", 660.71),
+            ])
 
             def fake_http(url, headers=None, timeout=None, **kwargs):
                 if "portfolioId=239454" in url:
@@ -829,12 +993,18 @@ class TestEtfFlowsMerge(unittest.TestCase):
                     return 200, gld_html.encode("utf-8")
                 if url == fetch_all.SSGA_FUND_PAGES["SPY"]:
                     return 200, spy_html.encode("utf-8")
+                if "hq.sinajs.cn" in url:
+                    return 200, sina_body.encode("gbk")
                 raise FetchError(f"HTTP 403 {url}")
 
             with mock.patch.object(fetch_all, "get_json",
                                    return_value=load_json_fixture("tickerinside_series.json")):
                 with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
-                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+                    with mock.patch.object(
+                        fetch_all, "_now_et",
+                        return_value=_datetime.datetime(2026, 11, 24, 21, 0),
+                    ):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
             by_ticker = {e["ticker"]: e for e in payload["tracked"]}
             # TLT/GLD：首日无流量，status unmeasured，但 AUM 已知（NAV×份额）
             self.assertEqual(by_ticker["TLT"]["status"], "unmeasured")
@@ -843,12 +1013,118 @@ class TestEtfFlowsMerge(unittest.TestCase):
             self.assertIn("首日", by_ticker["TLT"]["note"])
             self.assertEqual(by_ticker["GLD"]["status"], "unmeasured")
             self.assertIsNone(by_ticker["GLD"]["daily_flow_usd_100m"])
+            # QQQ/VOO：新浪首日同样无流量、status unmeasured，但 AUM 已知（收盘价×份额）
+            self.assertEqual(by_ticker["QQQ"]["status"], "unmeasured")
+            self.assertIsNone(by_ticker["QQQ"]["daily_flow_usd_100m"])
+            self.assertAlmostEqual(by_ticker["QQQ"]["aum_usd_100m"], 4303.93, places=2)
+            self.assertIn("首日", by_ticker["QQQ"]["note"])
+            self.assertEqual(by_ticker["VOO"]["status"], "unmeasured")
+            self.assertIsNone(by_ticker["VOO"]["daily_flow_usd_100m"])
+            self.assertAlmostEqual(by_ticker["VOO"]["aum_usd_100m"], 10070.98, places=2)
             # 整源无新鲜 live 数，status 记 seed（不是失败：快照已存，明日即有流量）
             self.assertEqual(payload["status"], "seed")
             with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
                 snaps = json.load(fh)
             self.assertEqual(snaps["TLT"]["date"], "2026-11-24")
             self.assertEqual(snaps["GLD"]["shares"], 360400000.0)
+            self.assertEqual(snaps["QQQ"]["date"], "2026-11-24")
+            self.assertEqual(snaps["QQQ"]["shares"], 694250000.0)
+            self.assertEqual(snaps["VOO"]["shares"], 1548595410.0)
+            self.assertEqual(snaps["VOO"]["source"], "selfcalc-sina")
+
+    def test_sina_intraday_skips_snapshot(self):
+        # 新浪盘中（美东 12:25 未收盘）：QQQ/VOO 跳过快照、不算流量，保留 seed，
+        # 不记 failed；整源仍 ok（TLT 首日快照已存）。
+        import datetime as _datetime
+
+        with tempfile.TemporaryDirectory() as out_dir:
+            tlt_csv = load_fixture("blackrock_tlt.csv")
+            sina_body = _make_sina_body([
+                ("qqq", 622.28, 694250000, "Nov 25 12:25PM EST", 638.10),
+                ("voo", 651.98, 1548595410, "Nov 25 12:25PM EST", 660.71),
+            ])
+
+            def fake_http(url, headers=None, timeout=None, **kwargs):
+                if "portfolioId=239454" in url:
+                    return 200, tlt_csv.encode("utf-8")
+                if "hq.sinajs.cn" in url:
+                    return 200, sina_body.encode("gbk")
+                raise FetchError(f"HTTP 403 {url}")
+
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                    with mock.patch.object(
+                        fetch_all, "_now_et",
+                        return_value=_datetime.datetime(2026, 11, 25, 12, 30),
+                    ):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            for ticker in ("QQQ", "VOO"):
+                entry = by_ticker[ticker]
+                self.assertEqual(entry["source"], "seed", msg=ticker)
+                self.assertEqual(entry["status"], "seed", msg=ticker)
+                self.assertIsNone(entry["daily_flow_usd_100m"], msg=ticker)
+                self.assertIn("盘中", entry["note"], msg=ticker)
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            self.assertNotIn("QQQ", snaps)
+            self.assertNotIn("VOO", snaps)
+            self.assertEqual(snaps["TLT"]["date"], "2026-11-24")
+
+    def test_sina_second_day_flow(self):
+        # 新浪第二日：昨日快照 11-24 在文件里，今日 11-25 收盘价×份额变化即流量。
+        import datetime as _datetime
+
+        with tempfile.TemporaryDirectory() as out_dir:
+            prev_snaps = {
+                "QQQ": {"date": "2026-11-24", "shares": 694250000.0,
+                        "nav": 620.0, "source": "selfcalc-sina"},
+                "VOO": {"date": "2026-11-24", "shares": 1548595410.0,
+                        "nav": 650.0, "source": "selfcalc-sina"},
+            }
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json"), "w") as fh:
+                json.dump(prev_snaps, fh)
+            sina_body = _make_sina_body([
+                ("qqq", 625.00, 695000000, "Nov 25 4:00PM EST", 620.00),
+                ("voo", 655.00, 1549000000, "Nov 25 4:00PM EST", 650.00),
+            ])
+
+            def fake_http(url, headers=None, timeout=None, **kwargs):
+                if "hq.sinajs.cn" in url:
+                    return 200, sina_body.encode("gbk")
+                raise FetchError(f"HTTP 403 {url}")
+
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                    with mock.patch.object(
+                        fetch_all, "_now_et",
+                        return_value=_datetime.datetime(2026, 11, 25, 21, 0),
+                    ):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            # QQQ：流量 = 625 × (695,000,000 − 694,250,000) = $4.6875 亿
+            qqq = by_ticker["QQQ"]
+            self.assertEqual(qqq["source"], "selfcalc-sina")
+            self.assertEqual(qqq["status"], "live")
+            self.assertAlmostEqual(qqq["daily_flow_usd_100m"], 4.6875, places=4)
+            self.assertAlmostEqual(qqq["aum_usd_100m"], 4343.75, places=2)
+            self.assertAlmostEqual(qqq["pct_of_aum"], 0.1079, places=4)
+            daily_1125 = [r for r in qqq["daily"] if r["date"] == "2026-11-25"][0]
+            self.assertAlmostEqual(daily_1125["flow_usd_100m"], 4.6875, places=4)
+            self.assertEqual(daily_1125["source"], "selfcalc-sina")
+            # VOO：流量 = 655 × (1,549,000,000 − 1,548,595,410) ≈ $2.6501 亿
+            voo = by_ticker["VOO"]
+            self.assertEqual(voo["source"], "selfcalc-sina")
+            self.assertEqual(voo["status"], "live")
+            self.assertAlmostEqual(voo["daily_flow_usd_100m"], 2.6501, places=4)
+            self.assertEqual(payload["status"], "live")
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            self.assertEqual(snaps["QQQ"]["date"], "2026-11-25")
+            self.assertEqual(snaps["QQQ"]["shares"], 695000000.0)
+            self.assertEqual(snaps["VOO"]["date"], "2026-11-25")
 
     def test_all_failed_raises(self):
         with tempfile.TemporaryDirectory() as out_dir:
