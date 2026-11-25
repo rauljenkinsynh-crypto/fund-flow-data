@@ -57,6 +57,8 @@ from __future__ import annotations
 import argparse
 import gzip
 import html
+import http.cookiejar
+import io
 import json
 import os
 import re
@@ -64,6 +66,8 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import xml.etree.ElementTree as ET
+import zipfile
 import zlib
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -114,8 +118,9 @@ ETF_COM_URL = None      # 待核查：ETF.com 每日流量的确切 URL 与格�
 # “未测得”，绝不填 0、不插值；滚动保留最近 60 个收盘日（历史靠逐日累积）。
 # 自算公式：当日流量（美元）= 当日 NAV ×（当日份额 − 前一日份额）；快照文件
 # data/etf-selfcalc-snapshots.json 由 fetch_etf_flows 自己读写（上线首日无
-# 昨日快照，流量记 null，绝不写 0）。SMH 不在本阶段（需 Playwright 取 VanEck
-# XLSX，第二阶段）；VOO/QQQ 无逐日路（第三阶段探查），本阶段只记 seed。
+# 昨日快照，流量记 null，绝不写 0）。SMH 自算主路（VanEck NAV 历史 XLSX，
+# 第二阶段；持仓 XLSX 无基金级份额/净值，见 parse_vaneck_nav_history）；
+# VOO/QQQ 无逐日路（第三阶段探查），本阶段只记 seed。
 TICKERINSIDE_SERIES_URL = "https://tickerinside.com/api/v1/etf-flows/series.json"
 TICKERINSIDE_TICKERS = ["SOXX", "SPY", "XLP", "XLV", "XLE", "XLU", "XLK"]
 TICKERINSIDE_ATTRIBUTION = {
@@ -183,9 +188,30 @@ SSGA_NAV_RANGES = {
     "XLP": (50.0, 300.0), "XLV": (50.0, 300.0), "XLE": (50.0, 300.0),
     "XLU": (30.0, 300.0), "XLK": (100.0, 400.0),
 }
-# 自算分工：TLT、GLD 以自算为主路；7 只 TickerInside 标的以自算为备用
+# -- VanEck / SMH：NAV 历史 XLSX（第二阶段，2026-11-25 实测）--
+# 持仓 XLSX（.../holdings/download/xlsx/，方案 §4.3 的原定文件）只有持仓明细，
+# 没有基金级份额/净值，算不了流量——实测 2026-11-25：单表 31 行，
+# 只有 Number/Ticker/持仓名/FIGI/持仓股数/市值/% of Net Assets。
+# 改取 NAV 历史文件 .../downloads/fundhistoprices/：逐日 NAV（4 位小数）+
+# 总资产 AUM（精确到分），份额 = 总资产 / NAV（NAV 定义即总资产 / 份额，
+# 定义上精确；2026-11-24 实测 NAV 427.3930、AUM 57,053,492,930.04、
+# 份额 133,491,875.00，与基金页 NAV $427.39、总资产 $57.05B 交叉一致）。
+# 该文件同样有 cookie 门（无 cookie 的请求 302 到 /corp/en/disabled-cookies/），
+# 但服务端只要求回传它在 301 响应里设置的会话/地区 cookie，
+# urllib + CookieJar 持久化 cookie 即可取到（2026-11-25 本机实测 200，
+# 文件 322,492 字节）；不需要 Playwright（本机沙箱 Chromium 反而过不了
+# egress 代理隧道；Actions 直连时 Playwright 可作备用，但本脚本不依赖它）。
+# 许可：同 BlackRock，只存衍生数（日期、份额、净值、流量），绝不存文件原文。
+VANECK_NAV_HISTORY_URL = (
+    "https://www.vaneck.com/us/en/investments/semiconductor-etf-smh"
+    "/downloads/fundhistoprices/"
+)
+# 净值合理性区间（美元，按 2026-11-25 市价定的宽带；SMH 近期 NAV 约 $400–487）
+VANECK_NAV_RANGES = {"SMH": (100.0, 800.0)}
+
+# 自算分工：TLT、GLD、SMH 以自算为主路；7 只 TickerInside 标的以自算为备用
 # （滞后 >3 个交易日自动切换；快照每天都取，保持备用快照温热，切换当日即有昨日数可算）。
-SELFCALC_PRIMARY = {"TLT": "blackrock", "GLD": "ssga"}
+SELFCALC_PRIMARY = {"TLT": "blackrock", "GLD": "ssga", "SMH": "vaneck"}
 SELFCALC_BACKUP = {
     "SOXX": "blackrock",
     "SPY": "ssga", "XLP": "ssga", "XLV": "ssga",
@@ -338,12 +364,16 @@ def _decode_body(body, content_encoding):
     return body
 
 
-def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOUT):
+def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOUT,
+                 cookies=False):
     """带重试的 HTTP 请求。返回 (status, body_bytes)。
 
     重试：网络异常 / 5xx / 429 时指数退避，最多 3 次。
     不重试：4xx（除 429 外）直接抛 FetchError；403 会如实记录状态码，
     绝不把“被反爬挡住”写成成功。
+    cookies=True 时用 CookieJar 持久化 cookie（VanEck 的 cookie 门需要：
+    服务端在重定向响应里下发会话/地区 cookie，回传即 200；无 cookie 的
+    请求会被 302 到 /corp/en/disabled-cookies/）。默认 False，其他源行为不变。
     """
     merged = dict(DEFAULT_HEADERS)
     if headers:
@@ -353,13 +383,22 @@ def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOU
     for attempt in range(1, MAX_RETRIES + 1):
         request = urllib.request.Request(url, data=body, headers=merged, method=method)
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                raw = response.read()
+            if cookies:
+                jar = http.cookiejar.CookieJar()
+                opener = urllib.request.build_opener(
+                    urllib.request.ProxyHandler(),
+                    urllib.request.HTTPCookieProcessor(jar),
+                )
+                response = opener.open(request, timeout=timeout)
+            else:
+                response = urllib.request.urlopen(request, timeout=timeout)
+            with response as resp:
+                raw = resp.read()
                 try:
-                    decoded = _decode_body(raw, response.headers.get("Content-Encoding"))
+                    decoded = _decode_body(raw, resp.headers.get("Content-Encoding"))
                 except Exception as exc:
                     raise FetchError(f"响应解压失败 {url} :: {exc}")
-                return response.status, decoded
+                return resp.status, decoded
         except urllib.error.HTTPError as exc:
             detail = exc.read()[:500].decode("utf-8", "replace") if exc.fp else ""
             last_error = FetchError(
@@ -1229,6 +1268,160 @@ def parse_ssga_fund_page(html_text):
     raise SchemaError("SSGA 基金页未找到可用净值（" + "；".join(errors) + "）")
 
 
+_XLSX_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+_XLSX_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+_XLSX_RELS_PKG_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+
+
+def _xlsx_sheet_xml(xlsx_bytes):
+    """取 XLSX 第一个工作表的 XML 与共享字符串表（只用标准库 zipfile + ElementTree）。
+
+    返回 (sheet_root, shared_strings)。不是合法 zip/xlsx -> SchemaError。"""
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(xlsx_bytes))
+    except zipfile.BadZipFile as exc:
+        raise SchemaError(f"VanEck 返回不是合法 XLSX（zip 打不开）: {exc}")
+    try:
+        names = zf.namelist()
+        shared = []
+        if "xl/sharedStrings.xml" in names:
+            sst = ET.fromstring(zf.read("xl/sharedStrings.xml"))
+            for si in sst.findall(f"{{{_XLSX_NS}}}si"):
+                shared.append(
+                    "".join(t.text or "" for t in si.iter(f"{{{_XLSX_NS}}}t"))
+                )
+        sheet_path = None
+        if "xl/workbook.xml" in names and "xl/_rels/workbook.xml.rels" in names:
+            wb = ET.fromstring(zf.read("xl/workbook.xml"))
+            rels = ET.fromstring(zf.read("xl/_rels/workbook.xml.rels"))
+            rel_map = {
+                rel.get("Id"): rel.get("Target")
+                for rel in rels.findall(f"{{{_XLSX_RELS_PKG_NS}}}Relationship")
+            }
+            for sheet in wb.iter(f"{{{_XLSX_NS}}}sheet"):
+                target = rel_map.get(sheet.get(f"{{{_XLSX_REL_NS}}}id"))
+                if target:
+                    sheet_path = target if target.startswith("xl/") else "xl/" + target.lstrip("/")
+                    break
+        if sheet_path is None or sheet_path not in names:
+            candidates = sorted(n for n in names if n.startswith("xl/worksheets/sheet"))
+            if not candidates:
+                raise SchemaError("VanEck XLSX 里没有工作表（xl/worksheets/ 为空）。")
+            sheet_path = candidates[0]
+        return ET.fromstring(zf.read(sheet_path)), shared
+    except SchemaError:
+        raise
+    except Exception as exc:
+        raise SchemaError(f"VanEck XLSX 结构解析失败: {exc}")
+
+
+def _xlsx_cell_value(cell, shared):
+    """读一个 <c> 单元格的值（字符串形式）；空单元格返回 None。"""
+    ctype = cell.get("t")
+    if ctype == "s":
+        v = cell.find(f"{{{_XLSX_NS}}}v")
+        if v is None or v.text is None:
+            return None
+        try:
+            return shared[int(v.text)]
+        except (ValueError, IndexError):
+            return None
+    if ctype == "inlineStr":
+        is_el = cell.find(f"{{{_XLSX_NS}}}is")
+        if is_el is None:
+            return None
+        return "".join(x.text or "" for x in is_el.iter(f"{{{_XLSX_NS}}}t"))
+    v = cell.find(f"{{{_XLSX_NS}}}v")
+    if v is None or v.text is None:
+        return None
+    return v.text
+
+
+def _parse_vaneck_date(raw):
+    """解析 VanEck 日期（"11/24/2026" 或 ISO）；失败返回 None。"""
+    if not raw:
+        return None
+    text = str(raw).strip()
+    for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(text, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
+
+
+def parse_vaneck_nav_history(xlsx_bytes):
+    """解析 VanEck NAV 历史 XLSX，返回最新交易日的 {"date","nav","aum_usd","shares"}。
+
+    列：Date / NAV / AUM（表头行按名字找，不按固定行号；数值在文件里是
+    带逗号的字符串，如 '57,053,492,930.04'，按美国格式解析）。
+    份额 = 总资产 / NAV（NAV 定义即总资产 / 份额，定义上精确）。
+    周末行（与周五同一组数）在文件里存在：只取周一至周五的行，
+    避免周日快照算出 0 流量行；无工作日行时回退到最新行。
+    任一字段缺失 / 无可用数据行 -> SchemaError（该标的 failed，不编数）。"""
+    sheet_root, shared = _xlsx_sheet_xml(xlsx_bytes)
+    rows = []
+    for row_el in sheet_root.iter(f"{{{_XLSX_NS}}}row"):
+        cells = {}
+        for cell in row_el.findall(f"{{{_XLSX_NS}}}c"):
+            ref = cell.get("r") or ""
+            col = re.match(r"([A-Z]+)", ref)
+            if not col:
+                continue
+            val = _xlsx_cell_value(cell, shared)
+            if val is not None:
+                cells[col.group(1)] = val
+        if cells:
+            rows.append(cells)
+    header_idx = None
+    colmap = None
+    for i, cells in enumerate(rows):
+        inv = {str(v).strip().lower(): k for k, v in cells.items()}
+        if "date" in inv and "nav" in inv and "aum" in inv:
+            header_idx = i
+            colmap = {"date": inv["date"], "nav": inv["nav"], "aum": inv["aum"]}
+            break
+    if header_idx is None:
+        raise SchemaError("VanEck NAV 历史 XLSX 找不到 Date/NAV/AUM 表头（文件格式变了）。")
+    valid = []
+    for cells in rows[header_idx + 1:]:
+        date_iso = _parse_vaneck_date(cells.get(colmap["date"]))
+        nav = _parse_us_number(cells.get(colmap["nav"]))
+        aum = _parse_us_number(cells.get(colmap["aum"]))
+        if date_iso is None or nav is None or aum is None:
+            continue
+        if nav <= 0 or aum <= 0:
+            continue
+        valid.append((date_iso, nav, aum))
+    if not valid:
+        raise SchemaError("VanEck NAV 历史 XLSX 无可用数据行（Date/NAV/AUM 均缺失）。")
+    weekday = [r for r in valid if datetime.strptime(r[0], "%Y-%m-%d").weekday() < 5]
+    pool = weekday or valid
+    date_iso, nav, aum = max(pool, key=lambda r: r[0])
+    return {"date": date_iso, "nav": nav, "aum_usd": aum, "shares": aum / nav}
+
+
+def _fetch_vaneck_xlsx_bytes(url):
+    """取 VanEck 文件（cookie 门）：经 http_request(cookies=True) 持久化 cookie，
+    跟随重定向。失败 -> FetchError（调用方记该标的 failed）。"""
+    _, body = http_request(url, cookies=True)
+    return body
+
+
+def _fetch_vaneck_snapshot(ticker):
+    """取 VanEck NAV 历史 XLSX，返回快照 {"date","shares","nav","source"}。
+    任一字段缺失 / 净值越界 -> SchemaError（调用方记该标的 failed）。"""
+    body = _fetch_vaneck_xlsx_bytes(VANECK_NAV_HISTORY_URL)
+    parsed = parse_vaneck_nav_history(body)
+    check_nav_range(ticker, parsed["nav"], VANECK_NAV_RANGES)
+    return {
+        "date": parsed["date"],
+        "shares": parsed["shares"],
+        "nav": parsed["nav"],
+        "source": "selfcalc-vaneck",
+    }
+
+
 def check_nav_range(ticker, nav, ranges):
     """净值合理性检查：超出区间 -> SchemaError（该标的当日 failed，不发布离谱数）。"""
     lo, hi = ranges[ticker]
@@ -1639,14 +1832,14 @@ def fetch_etf_flows(out_dir=None, today=None):
     合并规则（方案 §五 + 任务书 §3）：
     - 每只标的只有一个主路：7 只以 TickerInside 为准，滞后 >3 个交易日自动切
       自算备用并标注来源切换（本次 TickerInside 最新 11-11，已滞后约 10 个
-      交易日，切换立即生效）；TLT、GLD 以自算为准；IBIT 读同 run 的
-      data/farside-btc.json；VOO、QQQ、SMH 本阶段记 seed。
+      交易日，切换立即生效）；TLT、GLD、SMH 以自算为准；IBIT 读同 run 的
+      data/farside-btc.json；VOO、QQQ 本阶段记 seed。
     - 冲突：同一标的两路同日都有数且差值 >10% -> 两路都保留（alternate_flow），
       面板备注“两路不一致”，展示以主路为准；≤10% 只存主路。
     - 任一标的取不到/字段缺失 -> 该标的当日 failed，保留上一日好快照，绝不拿
       旧份额算假流量；≥1 只标的有新鲜 live 数 -> 整源 ok；全部可取数标的都
       失败 -> 抛 FetchError（run_fetch 会保留旧文件、status 标 failed）。
-    - 自算快照每天都取（9 只全取，保持备用快照温热，切换当日即有昨日数可算）；
+    - 自算快照每天都取（10 只全取，保持备用快照温热，切换当日即有昨日数可算）；
       快照文件 data/etf-selfcalc-snapshots.json 由本函数自己读写。
     out_dir 缺省时用模块级 ETF_FLOWS_OUT_DIR（run_fetch 传入）；today 缺省为
     当天 UTC 日期（测试可传入固定日期以消除日期敏感性）。
@@ -1690,15 +1883,16 @@ def fetch_etf_flows(out_dir=None, today=None):
                 "为种子数），面板须用种子数展示该日标红。"
             )
 
-    # --- 自算路：9 只全取快照（主路 TLT/GLD + 7 只备用），失败只影响该标的 ---
+    # --- 自算路：10 只全取快照（主路 TLT/GLD/SMH + 7 只备用），失败只影响该标的 ---
     selfcalc = {}
     for ticker, kind in {**SELFCALC_PRIMARY, **SELFCALC_BACKUP}.items():
         try:
-            snap = (
-                _fetch_blackrock_snapshot(ticker)
-                if kind == "blackrock"
-                else _fetch_ssga_snapshot(ticker)
-            )
+            if kind == "blackrock":
+                snap = _fetch_blackrock_snapshot(ticker)
+            elif kind == "ssga":
+                snap = _fetch_ssga_snapshot(ticker)
+            else:  # vaneck
+                snap = _fetch_vaneck_snapshot(ticker)
         except (FetchError, SchemaError) as exc:
             selfcalc[ticker] = {"error": str(exc)}
             continue
@@ -1758,7 +1952,7 @@ def fetch_etf_flows(out_dir=None, today=None):
         )
 
     entries = {}
-    failed_live_capable = 0  # 9 只可取数标的（7 只 TI + TLT + GLD）中当日 failed 的只数
+    failed_live_capable = 0  # 10 只可取数标的（7 只 TI + TLT + GLD + SMH）中当日 failed 的只数
 
     # --- 7 只 TickerInside 主路标的 ---
     for ticker in TICKERINSIDE_TICKERS:
@@ -1915,6 +2109,46 @@ def fetch_etf_flows(out_dir=None, today=None):
             snap["date"], status, daily, note,
         )
 
+    # --- SMH：自算主路（VanEck NAV 历史 XLSX；持仓 XLSX 无基金级份额/净值）---
+    ticker = "SMH"
+    prev_entry = prev_tracked.get(ticker) or {}
+    prev_daily = prev_entry.get("daily") or []
+    record = selfcalc.get(ticker) or {}
+    snap = record.get("snapshot")
+    sc_flow_100m = _usd_to_100m(record.get("flow_usd"))
+    daily = prev_daily
+    if snap and sc_flow_100m is not None:
+        daily = merge_daily_series(
+            daily,
+            [{"date": snap["date"], "flow_usd_100m": sc_flow_100m,
+              "source": snap["source"]}],
+        )
+    if record.get("error"):
+        entries[ticker] = _retained_entry(
+            ticker, "failed", f"今日取数失败（自算：{record['error']}），显示上一日数据。"
+        )
+        failed_live_capable += 1
+    elif snap is None:
+        entries[ticker] = _retained_entry(
+            ticker, "failed", "今日取数失败（自算无快照），显示上一日数据。"
+        )
+        failed_live_capable += 1
+    else:
+        aum_100m, pct = _selfcalc_aum_pct(ticker)
+        if sc_flow_100m is None:
+            entries[ticker] = _etf_entry(
+                ticker, snap["date"], None, aum_100m, None, snap["source"],
+                snap["date"], "unmeasured", daily,
+                record.get("flow_note") or "自算无流量。",
+            )
+        else:
+            status = "live" if _is_fresh(snap["date"], today) else "stale"
+            note = record.get("flow_note") or ""
+            entries[ticker] = _etf_entry(
+                ticker, snap["date"], sc_flow_100m, aum_100m, pct, snap["source"],
+                snap["date"], status, daily, note,
+            )
+
     # --- IBIT：读同 run 的 data/farside-btc.json ---
     farside = (
         _load_json_file(os.path.join(out_dir, "farside-btc.json")) if out_dir else {}
@@ -1950,13 +2184,12 @@ def fetch_etf_flows(out_dir=None, today=None):
             "Farside 文件不存在或无 IBIT，未编数。",
         )
 
-    # --- VOO、QQQ、SMH：本阶段无逐日路，记 seed ---
+    # --- VOO、QQQ：本阶段无逐日路，记 seed ---
     seed_notes = {
         "VOO": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
         "QQQ": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
-        "SMH": "自算需 Playwright 取 VanEck 每日 XLSX（第二阶段），本阶段暂无逐日路；暂看 ICI 周度。",
     }
-    for ticker in ("VOO", "QQQ", "SMH"):
+    for ticker in ("VOO", "QQQ"):
         prev = prev_tracked.get(ticker) or {}
         entries[ticker] = _etf_entry(
             ticker, prev.get("date_et"), None, None, None, "seed",
@@ -1965,9 +2198,9 @@ def fetch_etf_flows(out_dir=None, today=None):
         )
 
     live_count = sum(1 for entry in entries.values() if entry["status"] == "live")
-    if failed_live_capable >= 9 and entries["IBIT"]["status"] == "seed":
+    if failed_live_capable >= 10 and entries["IBIT"]["status"] == "seed":
         raise FetchError(
-            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD），"
+            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD + SMH），"
             "且 IBIT 无 Farside 数据；保留旧文件、status 标 failed。"
         )
     top_status = "live" if live_count >= 1 else "seed"
@@ -1976,7 +2209,7 @@ def fetch_etf_flows(out_dir=None, today=None):
     tracked = [entries[ticker] for ticker in ETF_TRACKED_ORDER]
     return {
         "schema_version": 1,
-        "source": "TickerInside / 自算（BlackRock、SSGA 发行商文件） / Farside（IBIT）",
+        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件） / Farside（IBIT）",
         "source_url": TICKERINSIDE_SERIES_URL,
         "fetched_at_utc": utcnow_iso(),
         "status": top_status,

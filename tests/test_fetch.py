@@ -50,6 +50,7 @@ from fetch_all import (  # noqa: E402
     parse_sosovalue_v1_json,
     parse_ssga_fund_page,
     parse_tickerinside_series,
+    parse_vaneck_nav_history,
     trading_days_between,
 )
 
@@ -475,11 +476,144 @@ def _make_blackrock_csv(shares, date_str, market_values):
     return "\n".join(lines) + "\n"
 
 
-def _fake_http_tlt_only(url, headers=None, timeout=None):
+def _fake_http_tlt_only(url, headers=None, timeout=None, **kwargs):
     """测试替身：只有 TLT 的 BlackRock CSV 能取，其余发行商页一律 403。"""
     if "portfolioId=239454" in url:
         return 200, load_fixture("blackrock_tlt.csv").encode("utf-8")
     raise FetchError(f"HTTP 403 {url}")
+
+
+def _make_vaneck_xlsx(data_rows, drop_aum=False):
+    """测试用 VanEck NAV 历史 XLSX 生成器（标准库 zipfile 拼最小合法文件）。
+
+    data_rows：数据行，每行 (date, nav, aum) 字符串，如
+    ("11/24/2026", "427.3930", "57,053,492,930.04")。
+    表结构与真实文件一致：标题行 + Date/NAV/AUM 表头 + 数据行（共享字符串）。
+    drop_aum=True 时表头无 AUM 列（字段缺失测试用）。"""
+    import io as _io
+    import zipfile as _zipfile
+    from xml.sax.saxutils import escape as _escape
+
+    strings = []
+
+    def _idx(text):
+        if text not in strings:
+            strings.append(text)
+        return strings.index(text)
+
+    header = ["Date", "NAV", "Change", "% Change", "Last Trade", "Volume",
+              "Premium/Discount", "% Premium/Discount",
+              "Total" if drop_aum else "AUM", "Index Level"]
+    grid = [["VanEck Semiconductor ETF - SMH"] + [""] * (len(header) - 1), header]
+    for date_str, nav_str, aum_str in data_rows:
+        grid.append([date_str, nav_str, "", "", "", "", "", "",
+                     "" if drop_aum else aum_str, ""])
+
+    def _row_xml(r, values):
+        cells = []
+        for c, val in enumerate(values):
+            col = chr(65 + c)  # A..J
+            cells.append(
+                f'<x:c r="{col}{r}" t="s"><x:v>{_idx(val)}</x:v></x:c>'
+            )
+        return f'<x:row r="{r}">' + "".join(cells) + "</x:row>"
+
+    sheet = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<x:worksheet xmlns:x="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+        "<x:sheetData>"
+        + "".join(_row_xml(i + 1, row) for i, row in enumerate(grid))
+        + "</x:sheetData></x:worksheet>"
+    )
+    sst = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<x:sst xmlns:x="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+        + "".join(f"<x:si><x:t>{_escape(s)}</x:t></x:si>" for s in strings)
+        + "</x:sst>"
+    )
+    workbook = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<x:workbook xmlns:x="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+        '<x:sheets><x:sheet name="SMH_asof_11_24_26" sheetId="1" r:id="rId1" /></x:sheets>'
+        "</x:workbook>"
+    )
+    rels = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        '<Relationship Id="rId1" '
+        'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
+        'Target="worksheets/sheet1.xml" />'
+        "</Relationships>"
+    )
+    content_types = (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        '<Default Extension="rels" '
+        'ContentType="application/vnd.openxmlformats-package.relationships+xml" />'
+        '<Default Extension="xml" ContentType="application/xml" />'
+        '<Override PartName="/xl/workbook.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml" />'
+        '<Override PartName="/xl/worksheets/sheet1.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />'
+        '<Override PartName="/xl/sharedStrings.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml" />'
+        "</Types>"
+    )
+    buf = _io.BytesIO()
+    with _zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr("[Content_Types].xml", content_types)
+        zf.writestr("xl/workbook.xml", workbook)
+        zf.writestr("xl/_rels/workbook.xml.rels", rels)
+        zf.writestr("xl/worksheets/sheet1.xml", sheet)
+        zf.writestr("xl/sharedStrings.xml", sst)
+    return buf.getvalue()
+
+
+class TestVanEck(unittest.TestCase):
+    def test_parse_real_values(self):
+        # 真实值（2026-11-24 实测）：NAV 427.3930、AUM 57,053,492,930.04
+        xlsx = _make_vaneck_xlsx([
+            ("11/22/2026", "399.5039", "52,831,139,381.77"),  # 周六：与周五同数
+            ("11/23/2026", "460.2552", "59,990,529,746.26"),
+            ("11/24/2026", "427.3930", "57,053,492,930.04"),
+        ])
+        parsed = parse_vaneck_nav_history(xlsx)
+        self.assertEqual(parsed["date"], "2026-11-24")
+        self.assertAlmostEqual(parsed["nav"], 427.3930, places=4)
+        self.assertAlmostEqual(parsed["aum_usd"], 57053492930.04, places=2)
+        self.assertAlmostEqual(parsed["shares"], 133491875.0, delta=1.0)
+
+    def test_parse_skips_weekend_rows(self):
+        # 最新行是周日（与周五同数）时取周五，不算出 0 流量行
+        xlsx = _make_vaneck_xlsx([
+            ("11/20/2026", "399.5039", "52,831,139,381.77"),  # 周五
+            ("11/22/2026", "399.5039", "52,831,139,381.77"),  # 周日重复行
+        ])
+        parsed = parse_vaneck_nav_history(xlsx)
+        self.assertEqual(parsed["date"], "2026-11-20")
+
+    def test_parse_missing_aum_column_raises(self):
+        # 只有 Date/NAV 两列（无 AUM）-> SchemaError，不猜数
+        xlsx = _make_vaneck_xlsx(
+            [("11/24/2026", "427.3930", "57,053,492,930.04")], drop_aum=True
+        )
+        with self.assertRaises(SchemaError):
+            parse_vaneck_nav_history(xlsx)
+
+    def test_parse_empty_data_raises(self):
+        with self.assertRaises(SchemaError):
+            parse_vaneck_nav_history(_make_vaneck_xlsx([]))
+
+    def test_parse_not_a_zip_raises(self):
+        # cookie 门没过时拿到的是 HTML/重定向页，不是 XLSX
+        with self.assertRaises(SchemaError):
+            parse_vaneck_nav_history(b"<html>not a zip</html>")
+
+    def test_nav_range(self):
+        check_nav_range("SMH", 427.3930, fetch_all.VANECK_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("SMH", 50.0, fetch_all.VANECK_NAV_RANGES)
 
 
 class TestEtfFlowsMerge(unittest.TestCase):
@@ -529,7 +663,7 @@ class TestEtfFlowsMerge(unittest.TestCase):
                 190000000, "Nov 11, 2026", [20000000000, 16000000000]
             )  # NAV 36000M/190M = 189.47；流量 = 189.47 × 15M ≈ $28.42 亿
 
-            def fake_http(url, headers=None, timeout=None):
+            def fake_http(url, headers=None, timeout=None, **kwargs):
                 if "portfolioId=239705" in url:
                     return 200, soxx_csv.encode("utf-8")
                 raise FetchError(f"HTTP 403 {url}")
@@ -580,7 +714,7 @@ class TestEtfFlowsMerge(unittest.TestCase):
                 .replace("331.98279858", "718.51234567")
             )
 
-            def fake_http(url, headers=None, timeout=None):
+            def fake_http(url, headers=None, timeout=None, **kwargs):
                 if "portfolioId=239454" in url:
                     return 200, tlt_csv.encode("utf-8")
                 if "portfolioId=239705" in url:
@@ -656,14 +790,18 @@ class TestEtfFlowsMerge(unittest.TestCase):
             self.assertAlmostEqual(ibit["daily_flow_usd_100m"], 2.0, places=4)
             self.assertIsNone(ibit["aum_usd_100m"])
             self.assertIn("单位假设未验证", ibit["note"])
-            # VOO、QQQ、SMH：本阶段记 seed，不编每日数
-            for ticker in ("VOO", "QQQ", "SMH"):
+            # VOO、QQQ：本阶段记 seed，不编每日数
+            for ticker in ("VOO", "QQQ"):
                 entry = by_ticker[ticker]
                 self.assertEqual(entry["source"], "seed", msg=ticker)
                 self.assertEqual(entry["status"], "seed", msg=ticker)
                 self.assertIsNone(entry["daily_flow_usd_100m"], msg=ticker)
                 self.assertFalse(entry["flag_over_5pct"], msg=ticker)
-            # 快照文件已写回：TLT/GLD/SOXX/SPY 为 11-25，失败的 5 只未写入
+            # SMH：本阶段已接 VanEck 自算路；本测试里发行商页未 mock，取数失败
+            self.assertEqual(by_ticker["SMH"]["status"], "failed")
+            self.assertIn("取数失败", by_ticker["SMH"]["note"])
+            self.assertIn("回退种子数", by_ticker["SMH"]["note"])
+            # 快照文件已写回：TLT/GLD/SOXX/SPY 为 11-25，失败的 6 只（5 只行业 + SMH）未写入
             with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
                 snaps = json.load(fh)
             for ticker in ("TLT", "GLD", "SOXX", "SPY"):
@@ -682,7 +820,7 @@ class TestEtfFlowsMerge(unittest.TestCase):
                 "$331.98", "$718.51"
             ).replace("360.40 M", "1,071.28 M").replace("331.98279858", "718.51234567")
 
-            def fake_http(url, headers=None, timeout=None):
+            def fake_http(url, headers=None, timeout=None, **kwargs):
                 if "portfolioId=239454" in url:
                     return 200, tlt_csv.encode("utf-8")
                 if "portfolioId=239705" in url:
@@ -748,6 +886,66 @@ class TestEtfFlowsMerge(unittest.TestCase):
         self.assertEqual(payload["weekly"]["equity_etf_usd_100m"], 4571.0)
         self.assertEqual(payload["weekly"]["coverage_week_end_et"], "2026-11-18")
         self.assertEqual(payload["weekly"]["source"], "seed")
+
+    def test_smh_first_day_snapshot_only(self):
+        # SMH 首日：快照存入、流量 null、status unmeasured（向前累积，不补历史）
+        with tempfile.TemporaryDirectory() as out_dir:
+            xlsx = _make_vaneck_xlsx([
+                ("11/23/2026", "460.2552", "59,990,529,746.26"),
+                ("11/24/2026", "427.3930", "57,053,492,930.04"),
+            ])
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request",
+                                       side_effect=FetchError("HTTP 403 issuer")):
+                    with mock.patch.object(fetch_all, "_fetch_vaneck_xlsx_bytes",
+                                           return_value=xlsx):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            # 快照文件读数必须在 TemporaryDirectory 块内（退出即删目录）
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            self.assertAlmostEqual(snaps["SMH"]["shares"], 133491875.0, delta=1.0)
+            self.assertEqual(snaps["SMH"]["date"], "2026-11-24")
+        smh = [e for e in payload["tracked"] if e["ticker"] == "SMH"][0]
+        self.assertEqual(smh["status"], "unmeasured")
+        self.assertEqual(smh["date_et"], "2026-11-24")
+        self.assertIsNone(smh["daily_flow_usd_100m"])
+        self.assertAlmostEqual(smh["aum_usd_100m"], 570.5349, places=4)
+        self.assertEqual(smh["source"], "selfcalc-vaneck")
+        self.assertIn("首日", smh["note"])
+
+    def test_smh_second_day_flow(self):
+        # SMH 第二日：昨日快照 11-23 在文件里，今日 11-24 流量 = NAV × 份额变化
+        with tempfile.TemporaryDirectory() as out_dir:
+            prev_snaps = {
+                "SMH": {"date": "2026-11-23", "shares": 130341883.69,
+                        "nav": 460.2552, "source": "selfcalc-vaneck"},
+            }
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json"), "w") as fh:
+                json.dump(prev_snaps, fh)
+            xlsx = _make_vaneck_xlsx([
+                ("11/23/2026", "460.2552", "59,990,529,746.26"),
+                ("11/24/2026", "427.3930", "57,053,492,930.04"),
+            ])
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request",
+                                       side_effect=FetchError("HTTP 403 issuer")):
+                    with mock.patch.object(fetch_all, "_fetch_vaneck_xlsx_bytes",
+                                           return_value=xlsx):
+                        payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            # 快照文件读数必须在 TemporaryDirectory 块内（退出即删目录）
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            self.assertEqual(snaps["SMH"]["date"], "2026-11-24")
+        smh = [e for e in payload["tracked"] if e["ticker"] == "SMH"][0]
+        self.assertEqual(smh["status"], "live")  # 11-24 距 11-25 仅 1 个交易日
+        self.assertAlmostEqual(smh["daily_flow_usd_100m"], 13.4628, places=4)
+        self.assertAlmostEqual(smh["pct_of_aum"], 2.3597, places=4)
+        self.assertEqual(smh["source"], "selfcalc-vaneck")
+        daily_1124 = [r for r in smh["daily"] if r["date"] == "2026-11-24"][0]
+        self.assertAlmostEqual(daily_1124["flow_usd_100m"], 13.4628, places=4)
+        self.assertEqual(daily_1124["source"], "selfcalc-vaneck")
 
 
 class TestSourceConfig(unittest.TestCase):
@@ -820,7 +1018,7 @@ class TestICI(unittest.TestCase):
             "mmf": load_fixture("ici_mmf.html"),
         }
 
-        def fake_http(url, headers=None, timeout=None):
+        def fake_http(url, headers=None, timeout=None, **kwargs):
             for report, page_url in fetch_all.ICI_URLS.items():
                 if url == page_url:
                     return 200, fixtures[report].encode("utf-8")
@@ -844,7 +1042,7 @@ class TestICI(unittest.TestCase):
 
     def test_fetch_ici_one_page_fails_whole_source(self):
         # 任一页失败，整源失败（不写半份数据）。
-        def fake_http(url, headers=None, timeout=None):
+        def fake_http(url, headers=None, timeout=None, **kwargs):
             if url == fetch_all.ICI_URLS["mmf"]:
                 raise FetchError("HTTP 403 https://www.ici.org/research/stats/mmf")
             return 200, load_fixture("ici_flows.html").encode("utf-8")
@@ -996,11 +1194,14 @@ class TestEdgarCik(unittest.TestCase):
 
 
 class _FakeResponse:
-    """urllib 响应的最小替身（with 语句 + status + read）。"""
+    """urllib 响应的最小替身（with 语句 + status + read + headers）。"""
 
-    def __init__(self, status=200, body=b"<html>ok</html>"):
+    def __init__(self, status=200, body=b"<html>ok</html>", headers=None):
         self.status = status
         self._body = body
+        # 真实 urllib 响应总有 .headers；probe_urllib 会读
+        # Content-Encoding，替身缺了它会走 AttributeError 分支。
+        self.headers = headers if headers is not None else {}
 
     def __enter__(self):
         return self
