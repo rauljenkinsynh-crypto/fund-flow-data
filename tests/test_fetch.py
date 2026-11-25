@@ -349,6 +349,27 @@ class TestBlackRock(unittest.TestCase):
         parsed = parse_blackrock_holdings_csv(text)
         self.assertAlmostEqual(parsed["nav"], 81.49, places=2)
 
+    def test_iso_asof_parses(self):
+        # 同一 URL 有时返回 ISO 截至日（实测原文）：Fund Holdings as of,"2026-11-24"
+        text = load_fixture("blackrock_tlt.csv").replace(
+            'Fund Holdings as of, "Nov 24, 2026"',
+            'Fund Holdings as of,"2026-11-24"',
+        )
+        parsed = parse_blackrock_holdings_csv(text)
+        self.assertEqual(parsed["date"], "2026-11-24")
+        self.assertEqual(parsed["shares"], 600000000.0)
+        self.assertAlmostEqual(parsed["nav"], 81.49, places=2)
+
+    def test_both_asof_formats_invalid_raises(self):
+        text = _make_blackrock_csv(
+            600000000, "24 Nov 2026", [20000000000, 15000000000]
+        )
+        with self.assertRaises(SchemaError) as ctx:
+            parse_blackrock_holdings_csv(text)
+        msg = str(ctx.exception)
+        self.assertIn("%b %d, %Y", msg)
+        self.assertIn("%Y-%m-%d", msg)
+
 
 class TestSSGA(unittest.TestCase):
     def test_gld_parses_precise_nav(self):

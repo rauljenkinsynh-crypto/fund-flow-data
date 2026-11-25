@@ -1078,6 +1078,8 @@ def parse_blackrock_holdings_csv(text):
 
     前 8 行元数据取 Shares Outstanding 与截至日（"Fund Holdings as of,
     Nov 24, 2026" 格式）；持仓表 Market Value 列求和，净值 = Σ市值 / 份额。
+    截至日逐请求摇摆：同一 URL 有时返回 ISO 格式 "2026-11-24"，故先试
+    "%b %d, %Y"，失败再试 "%Y-%m-%d"，两种都失败才报错。
     债券版列名无 Ticker 列，不依赖持仓行结构，只依赖前 8 行 + Market Value 列。
     字段缺失 / 无持仓行 -> SchemaError。
     返回 {"date","shares","nav","total_market_value_usd"}。
@@ -1107,10 +1109,18 @@ def parse_blackrock_holdings_csv(text):
         raise SchemaError("BlackRock CSV 缺少 Shares Outstanding（或份额 ≤0）")
     if not asof_raw:
         raise SchemaError("BlackRock CSV 缺少 Fund Holdings as of 截至日")
-    try:
-        asof = datetime.strptime(asof_raw, "%b %d, %Y").strftime("%Y-%m-%d")
-    except ValueError:
-        raise SchemaError(f"BlackRock CSV 截至日无法解析：{asof_raw!r}")
+    asof = None
+    for fmt in ("%b %d, %Y", "%Y-%m-%d"):
+        try:
+            asof = datetime.strptime(asof_raw, fmt).strftime("%Y-%m-%d")
+            break
+        except ValueError:
+            continue
+    if asof is None:
+        raise SchemaError(
+            "BlackRock CSV 截至日无法解析："
+            f"{asof_raw!r}（已试 %b %d, %Y 与 %Y-%m-%d 两种格式）"
+        )
     if mv_idx is None:
         raise SchemaError("BlackRock CSV 未找到 Market Value 列")
     total_mv = 0.0
