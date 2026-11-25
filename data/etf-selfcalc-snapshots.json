@@ -10,5 +10,47 @@
     "shares": 267500000.0,
     "nav": 125.51125506971962,
     "source": "selfcalc-blackrock"
+  },
+  "GLD": {
+    "date": "2026-11-24",
+    "shares": 360400000.0030664,
+    "nav": 331.98279858,
+    "source": "selfcalc-ssga"
+  },
+  "SPY": {
+    "date": "2026-11-24",
+    "shares": 1071282116.1740111,
+    "nav": 718.51354,
+    "source": "selfcalc-ssga"
+  },
+  "XLP": {
+    "date": "2026-11-24",
+    "shares": 170121808.16332194,
+    "nav": 91.863632,
+    "source": "selfcalc-ssga"
+  },
+  "XLV": {
+    "date": "2026-11-24",
+    "shares": 262815324.4637393,
+    "nav": 184.628443,
+    "source": "selfcalc-ssga"
+  },
+  "XLE": {
+    "date": "2026-11-24",
+    "shares": 627748398.0344466,
+    "nav": 60.391542,
+    "source": "selfcalc-ssga"
+  },
+  "XLU": {
+    "date": "2026-11-24",
+    "shares": 533498321.8476807,
+    "nav": 43.401394,
+    "source": "selfcalc-ssga"
+  },
+  "XLK": {
+    "date": "2026-11-24",
+    "shares": 676061794.2589653,
+    "nav": 157.033224,
+    "source": "selfcalc-ssga"
   }
 }

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source": "TickerInside / 自算（BlackRock、SSGA 发行商文件） / Farside（IBIT）",
   "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
-  "fetched_at_utc": "2026-11-25T15:51:15Z",
+  "fetched_at_utc": "2026-11-25T16:09:22Z",
   "status": "live",
   "attribution": {
     "credit": "TickerInside",
@@ -22,8 +22,8 @@
       "ticker": "SOXX",
       "date_et": "2026-11-11",
       "daily_flow_usd_100m": 10.6556,
-      "aum_usd_100m": null,
-      "pct_of_aum": 2.382,
+      "aum_usd_100m": 335.7426,
+      "pct_of_aum": 3.1737,
       "flag_over_5pct": false,
       "source": "tickerinside",
       "as_of_date": "2026-11-11",
@@ -125,7 +125,7 @@
           "source": "tickerinside"
         }
       ],
-      "note": "自算首日无流量，暂显示 TickerInside 旧数。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "SMH",
@@ -155,16 +155,107 @@
     },
     {
       "ticker": "SPY",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 42.2937,
+      "aum_usd_100m": 7697.3071,
+      "pct_of_aum": 0.5495,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 75.8017,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -44.217,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 34.5754,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -4.9838,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -24.2779,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -2.706,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 16.0029,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -35.8603,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": -23.537,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 82.7708,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 10.6182,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": -54.4385,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -23.1491,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -42.126,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 43.0205,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 20.5674,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 42.2937,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "QQQ",
@@ -495,68 +586,523 @@
     },
     {
       "ticker": "XLP",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 0.1829,
+      "aum_usd_100m": 156.2801,
+      "pct_of_aum": 0.117,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.9414,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 1.1198,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -0.3519,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 1.9394,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -2.6821,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -0.3936,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 5.4263,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -5.4922,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": -0.5963,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 1.2115,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -1.4061,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -3.9854,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -1.4575,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 4.0678,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -0.3196,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.1829,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLV",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 3.9419,
+      "aum_usd_100m": 485.2318,
+      "pct_of_aum": 0.8124,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 3.0237,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 3.0813,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 1.5867,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 3.9225,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 1.2562,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -4.1558,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -1.7307,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -2.5266,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 3.3856,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 1.3418,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 6.7225,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 3.2855,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 2.8316,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -2.1371,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -1.1119,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -3.2261,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 1.3201,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 3.9419,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLE",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": -0.807,
+      "aum_usd_100m": 379.1069,
+      "pct_of_aum": -0.2129,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -0.0338,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 1.6586,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.5782,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 2.2281,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 2.0306,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -0.6488,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -2.8778,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 2.0374,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 1.0777,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": -2.852,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 1.6754,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.1336,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": -3.1524,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.9551,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.2158,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.186,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -1.1867,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.807,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLU",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": -0.0878,
+      "aum_usd_100m": 231.5457,
+      "pct_of_aum": -0.0379,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 2.7863,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -2.0169,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -1.8521,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.3309,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -0.1048,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -7.2554,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.1287,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -0.6837,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.149,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.8975,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": -3.5701,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.8289,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.8051,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -3.9122,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.2587,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 5.6288,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -6.93,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.0878,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLK",
-      "date_et": null,
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
-      "pct_of_aum": null,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 7.3439,
+      "aum_usd_100m": 1061.6416,
+      "pct_of_aum": 0.6917,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
-      "daily": [],
-      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -0.4762,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -2.75,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -1.3778,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 4.7232,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -1.8575,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.5655,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 1.9113,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -1.1925,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.5588,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.5684,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 5.2052,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 1.4593,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 6.2303,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -1.3689,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.8443,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 7.3439,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "TLT",
@@ -569,27 +1115,26 @@
       "as_of_date": "2026-11-24",
       "status": "unmeasured",
       "daily": [],
-      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "GLD",
-      "date_et": null,
+      "date_et": "2026-11-24",
       "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
+      "aum_usd_100m": 1196.466,
       "pct_of_aum": null,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "failed",
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-24",
+      "status": "unmeasured",
       "daily": [],
-      "note": "今日取数失败（自算：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
     }
   ],
   "notes": [
     "TickerInside 最新收盘日 2026-11-11，滞后约 10 个交易日（截至 2026-11-25）。",
     "滞后超 3 个交易日，7 只主路标的自动切自算备用并标注来源切换。",
     "SOXX 2026-11-10 在 TickerInside 为 null（未测得；该日单日 −$41.3 亿为种子数），面板须用种子数展示该日标红。",
-    "SOXX TickerInside 反推 AUM 447.3（亿美元）与种子值 350.0 偏差超 20%，aum 记 null，不强行凑数。",
     "monthly_bond_etf_usd_100m 7100.0 为种子值（10 月债券 ETF，暂无 live 路）。",
     "ytd_etf_net_usd_100m 17900.0 为种子值（年初至今 ETF，暂无 live 路）。"
   ]

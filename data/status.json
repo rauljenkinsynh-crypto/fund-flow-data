@@ -1,29 +1,29 @@
 {
-  "fetched_at": "2026-11-25T15:51:15Z",
+  "fetched_at": "2026-11-25T16:09:22Z",
   "sources": {
     "ici": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:03Z",
-      "last_ok": "2026-11-25T15:51:05Z"
+      "fetched_at": "2026-11-25T16:09:09Z",
+      "last_ok": "2026-11-25T16:09:10Z"
     },
     "farside-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:05Z",
-      "last_ok": "2026-11-25T15:51:07Z"
+      "fetched_at": "2026-11-25T16:09:10Z",
+      "last_ok": "2026-11-25T16:09:11Z"
     },
     "farside-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:07Z",
-      "last_ok": "2026-11-25T15:51:08Z"
+      "fetched_at": "2026-11-25T16:09:11Z",
+      "last_ok": "2026-11-25T16:09:12Z"
     },
     "sosovalue-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:08Z",
-      "last_ok": "2026-11-25T15:51:08Z",
+      "fetched_at": "2026-11-25T16:09:12Z",
+      "last_ok": "2026-11-25T16:09:12Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -34,8 +34,8 @@
     "sosovalue-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:08Z",
-      "last_ok": "2026-11-25T15:51:08Z",
+      "fetched_at": "2026-11-25T16:09:12Z",
+      "last_ok": "2026-11-25T16:09:12Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -46,20 +46,20 @@
     "fred-dgs10": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:08Z",
-      "last_ok": "2026-11-25T15:51:09Z"
+      "fetched_at": "2026-11-25T16:09:12Z",
+      "last_ok": "2026-11-25T16:09:13Z"
     },
     "ai-chain": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:09Z",
-      "last_ok": "2026-11-25T15:51:13Z"
+      "fetched_at": "2026-11-25T16:09:13Z",
+      "last_ok": "2026-11-25T16:09:20Z"
     },
     "etf-flows": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T15:51:13Z",
-      "last_ok": "2026-11-25T15:51:15Z"
+      "fetched_at": "2026-11-25T16:09:20Z",
+      "last_ok": "2026-11-25T16:09:22Z"
     }
   },
   "notes": [
