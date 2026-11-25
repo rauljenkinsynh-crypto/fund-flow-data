@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T14:39:55Z",
+  "fetched_at": "2026-11-25T15:51:13Z",
   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
   "rows": [
     {
@@ -285,7 +285,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-05-28",
+          "filing_date": "2026-04-09",
           "company": [
             "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
@@ -294,7 +294,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-04-09",
+          "filing_date": "2025-05-28",
           "company": [
             "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
@@ -3225,7 +3225,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-11-06",
+          "filing_date": "2026-02-13",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -3234,7 +3234,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-02-13",
+          "filing_date": "2025-11-06",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],

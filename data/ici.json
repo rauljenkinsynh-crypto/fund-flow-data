@@ -1,24 +1,7 @@
 {
-  "fetched_at": "2026-11-25T14:39:41Z",
+  "fetched_at": "2026-11-25T15:51:05Z",
   "source_url": "https://www.ici.org/topics/weekly-estimated-flow-reports",
   "rows": [
-    {
-      "date": "2026-10-14",
-      "report": "combined",
-      "total": -471693.0,
-      "unit": "USD millions",
-      "categories": {
-        "Equity": -476423.0,
-        "Domestic": -479395.0,
-        "World": 2972.0,
-        "Hybrid": -2339.0,
-        "Bond": 7919.0,
-        "Taxable": 6798.0,
-        "Municipal": 1121.0,
-        "Commodity": -850.0,
-        "Total": -471693.0
-      }
-    },
     {
       "date": "2026-10-21",
       "report": "combined",
@@ -76,7 +59,7 @@
       "unit": "USD millions",
       "categories": {
         "Equity": 11081.0,
-        "Domestic": 7096.0,
+        "Domestic": 7097.0,
         "World": 3985.0,
         "Hybrid": -2993.0,
         "Bond": 3164.0,
@@ -122,18 +105,18 @@
     {
       "date": "2026-11-04",
       "report": "combined",
-      "total": 17156.0,
+      "total": 17153.0,
       "unit": "USD millions",
       "categories": {
-        "Equity": 17434.0,
-        "Domestic": 11913.0,
-        "World": 5521.0,
-        "Hybrid": -2761.0,
+        "Equity": 17432.0,
+        "Domestic": 11914.0,
+        "World": 5518.0,
+        "Hybrid": -2762.0,
         "Bond": 2353.0,
         "Taxable": 2456.0,
         "Municipal": -104.0,
         "Commodity": 130.0,
-        "Total": 17156.0
+        "Total": 17153.0
       }
     },
     {
@@ -186,18 +169,18 @@
     {
       "date": "2026-11-11",
       "report": "combined",
-      "total": 34315.0,
+      "total": 34355.0,
       "unit": "USD millions",
       "categories": {
-        "Equity": 37020.0,
-        "Domestic": 31505.0,
+        "Equity": 37022.0,
+        "Domestic": 31506.0,
         "World": 5515.0,
         "Hybrid": -4147.0,
-        "Bond": 1671.0,
-        "Taxable": 1183.0,
+        "Bond": 1708.0,
+        "Taxable": 1219.0,
         "Municipal": 488.0,
         "Commodity": -228.0,
-        "Total": 34315.0
+        "Total": 34355.0
       }
     },
     {
@@ -245,6 +228,23 @@
         "Prime": 1230.49,
         "Tax-exempt": 159.9,
         "Total": 7980.02
+      }
+    },
+    {
+      "date": "2026-11-18",
+      "report": "combined",
+      "total": 47725.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 55844.0,
+        "Domestic": 38230.0,
+        "World": 17614.0,
+        "Hybrid": -3294.0,
+        "Bond": -5115.0,
+        "Taxable": -4676.0,
+        "Municipal": -439.0,
+        "Commodity": 289.0,
+        "Total": 47725.0
       }
     },
     {

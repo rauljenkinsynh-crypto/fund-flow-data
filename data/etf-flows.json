@@ -1,0 +1,596 @@
+{
+  "schema_version": 1,
+  "source": "TickerInside / 自算（BlackRock、SSGA 发行商文件） / Farside（IBIT）",
+  "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
+  "fetched_at_utc": "2026-11-25T15:51:15Z",
+  "status": "live",
+  "attribution": {
+    "credit": "TickerInside",
+    "url": "https://tickerinside.com/api/v1/etf-flows/series.json",
+    "note": "须署名 TickerInside + 链接；每次只取最新文件，不攒整档历史。"
+  },
+  "weekly": {
+    "coverage_week_end_et": "2026-11-18",
+    "equity_etf_usd_100m": 7673.2,
+    "source": "ici",
+    "note": "ICI etf 报告最新周 Total（百万美元→亿美元）。"
+  },
+  "monthly_bond_etf_usd_100m": 7100.0,
+  "ytd_etf_net_usd_100m": 17900.0,
+  "tracked": [
+    {
+      "ticker": "SOXX",
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 10.6556,
+      "aum_usd_100m": null,
+      "pct_of_aum": 2.382,
+      "flag_over_5pct": false,
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
+      "daily": [
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 3.6181,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -14.9355,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 6.6027,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 13.8189,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 24.7785,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 12.8315,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -5.722,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 18.6836,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 1.9645,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 2.5815,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 1.9946,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -3.5885,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 4.9494,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -1.0258,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 36.2205,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": null,
+          "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 10.6556,
+          "source": "tickerinside"
+        }
+      ],
+      "note": "自算首日无流量，暂显示 TickerInside 旧数。"
+    },
+    {
+      "ticker": "SMH",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "seed",
+      "daily": [],
+      "note": "自算需 Playwright 取 VanEck 每日 XLSX（第二阶段），本阶段暂无逐日路；暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "VOO",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "seed",
+      "daily": [],
+      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "SPY",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "QQQ",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "seed",
+      "daily": [],
+      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "IBIT",
+      "date_et": "2026-11-24",
+      "daily_flow_usd_100m": -1.753,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-24",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-01",
+          "flow_usd_100m": -2.012,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-02",
+          "flow_usd_100m": 1.154,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 4.54,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 1.174,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.107,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": -0.195,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.245,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": -0.192,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 1.343,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -1.617,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -1.441,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 1.837,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 1.084,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 3.814,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 3.503,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 1.663,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 1.626,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.97,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.548,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.511,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -0.095,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 1.956,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 1.582,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.699,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 1.22,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -2.077,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.055,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.224,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": -0.654,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.659,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -1.109,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.168,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -0.718,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 6.652,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.299,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 2.35,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -2.541,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -1.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 1.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 1.515,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 1.36,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.128,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -2.337,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": -4.053,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.95,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": -2.012,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -1.05,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -4.03,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -2.132,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -0.782,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -2.697,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -2.038,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": -1.435,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.765,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -2.095,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -1.487,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -5.411,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -5.447,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": -5.093,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -1.753,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLP",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLV",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLE",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLU",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLK",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算备用：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "TLT",
+      "date_et": "2026-11-24",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 490.8036,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-24",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "GLD",
+      "date_et": null,
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "seed",
+      "as_of_date": null,
+      "status": "failed",
+      "daily": [],
+      "note": "今日取数失败（自算：SSGA 基金页未找到 Fund Net Asset Value as of 截至日），显示上一日数据。；pct 为 null，flag_over_5pct 记 false。"
+    }
+  ],
+  "notes": [
+    "TickerInside 最新收盘日 2026-11-11，滞后约 10 个交易日（截至 2026-11-25）。",
+    "滞后超 3 个交易日，7 只主路标的自动切自算备用并标注来源切换。",
+    "SOXX 2026-11-10 在 TickerInside 为 null（未测得；该日单日 −$41.3 亿为种子数），面板须用种子数展示该日标红。",
+    "SOXX TickerInside 反推 AUM 447.3（亿美元）与种子值 350.0 偏差超 20%，aum 记 null，不强行凑数。",
+    "monthly_bond_etf_usd_100m 7100.0 为种子值（10 月债券 ETF，暂无 live 路）。",
+    "ytd_etf_net_usd_100m 17900.0 为种子值（年初至今 ETF，暂无 live 路）。"
+  ]
+}

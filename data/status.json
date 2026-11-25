@@ -1,29 +1,29 @@
 {
-  "fetched_at": "2026-11-25T14:39:55Z",
+  "fetched_at": "2026-11-25T15:51:15Z",
   "sources": {
     "ici": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:38Z",
-      "last_ok": "2026-11-25T14:39:41Z"
+      "fetched_at": "2026-11-25T15:51:03Z",
+      "last_ok": "2026-11-25T15:51:05Z"
     },
     "farside-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:41Z",
-      "last_ok": "2026-11-25T14:39:43Z"
+      "fetched_at": "2026-11-25T15:51:05Z",
+      "last_ok": "2026-11-25T15:51:07Z"
     },
     "farside-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:43Z",
-      "last_ok": "2026-11-25T14:39:44Z"
+      "fetched_at": "2026-11-25T15:51:07Z",
+      "last_ok": "2026-11-25T15:51:08Z"
     },
     "sosovalue-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:44Z",
-      "last_ok": "2026-11-25T14:39:44Z",
+      "fetched_at": "2026-11-25T15:51:08Z",
+      "last_ok": "2026-11-25T15:51:08Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -34,8 +34,8 @@
     "sosovalue-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:44Z",
-      "last_ok": "2026-11-25T14:39:44Z",
+      "fetched_at": "2026-11-25T15:51:08Z",
+      "last_ok": "2026-11-25T15:51:08Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -46,25 +46,25 @@
     "fred-dgs10": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:44Z",
-      "last_ok": "2026-11-25T14:39:45Z"
+      "fetched_at": "2026-11-25T15:51:08Z",
+      "last_ok": "2026-11-25T15:51:09Z"
     },
     "ai-chain": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:39:45Z",
-      "last_ok": "2026-11-25T14:39:55Z"
+      "fetched_at": "2026-11-25T15:51:09Z",
+      "last_ok": "2026-11-25T15:51:13Z"
     },
     "etf-flows": {
-      "status": "blocked",
-      "error": "ETF.com 源未配置：无公开 API（v1 核查结论），确切取数方式待核查员报告；报告前本源保持 blocked，不编数。",
-      "fetched_at": "2026-11-25T14:39:55Z",
-      "last_ok": null
+      "status": "ok",
+      "error": null,
+      "fetched_at": "2026-11-25T15:51:13Z",
+      "last_ok": "2026-11-25T15:51:15Z"
     }
   },
   "notes": [
     "status ok/failed/blocked 按源分别记录；failed/blocked 时保留上一次的好文件并标 stale。",
-    "blocked 含两种：未配置（ETF.com 待核查，跳过不计退出码）与 HTTP 403 反爬拦截（计入失败）。",
+    "blocked 含两种：未配置（跳过不计退出码）与 HTTP 403 反爬拦截（计入失败）。etf-flows 已接入（TickerInside + 发行商文件自算 + Farside IBIT）；ETF.com 本身仍未配置（无公开 API），不作为取数源。",
     "SoSoValue 各 symbol 的 route 字段记录本次实际走通的主机 + 版本（v1 优先、v2 备选）。",
     "Actions 出口能否绕过反爬墙未验证，首次实测结果以本文件为准。"
   ]
