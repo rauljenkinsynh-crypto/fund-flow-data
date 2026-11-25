@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T14:27:43Z",
+  "fetched_at": "2026-11-25T14:39:55Z",
   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
   "rows": [
     {
@@ -4210,7 +4210,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2022-12-01",
+          "filing_date": "2026-09-14",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
@@ -4219,7 +4219,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-09-14",
+          "filing_date": "2022-12-01",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
@@ -4588,7 +4588,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2011-04-26",
+          "filing_date": "2022-04-13",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
@@ -4597,7 +4597,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2022-04-13",
+          "filing_date": "2011-04-26",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
