@@ -26,6 +26,7 @@ import probe  # noqa: E402
 from fetch_all import (  # noqa: E402
     FetchError,
     SchemaError,
+    _decode_body,
     _resolve_ciks,
     decide_exit_code,
     fetch_sosovalue,
@@ -50,6 +51,19 @@ def load_fixture(name):
 
 def load_json_fixture(name):
     return json.loads(load_fixture(name))
+
+
+class TestDecodeBody(unittest.TestCase):
+    def test_gzip_and_deflate_roundtrip(self):
+        # 回归：请求头声明 gzip/deflate 后，服务器返回的压缩体必须解开再解析。
+        import gzip as _gzip
+        import zlib as _zlib
+
+        raw = b"<html>hello</html>"
+        self.assertEqual(_decode_body(_gzip.compress(raw), "gzip"), raw)
+        self.assertEqual(_decode_body(_zlib.compress(raw), "deflate"), raw)
+        self.assertEqual(_decode_body(raw, None), raw)
+        self.assertEqual(_decode_body(raw, "br"), raw)  # 未知编码原样返回
 
 
 class TestParseNumber(unittest.TestCase):

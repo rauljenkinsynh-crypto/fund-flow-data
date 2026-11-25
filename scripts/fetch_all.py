@@ -55,6 +55,7 @@ hidden_files/github-actions-reconciliation-20261125.md 校正清单 1/2/4）：
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 import re
@@ -62,6 +63,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import zlib
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 
@@ -143,15 +145,24 @@ KNOWN_CAVEATS = {
 HTTP_TIMEOUT = 30        # 秒，单次请求超时
 MAX_RETRIES = 3          # 含首次，共最多 3 次
 BACKOFF_BASE_SECONDS = 2  # 指数退避：2s、4s（第 3 次失败后不再等）
-# 通用请求头：浏览器 UA（2026-11-25 改：脚本 UA 会被 Farside 的 Cloudflare
-# 按 UA 拦；出口探测已证明完整浏览器头在 ICI 与 Farside 上都返回 200）。
-# 与 scripts/probe.py 的 BROWSER_HEADERS 保持同一 UA。
+# 通用请求头：与 scripts/probe.py 的 BROWSER_HEADERS 逐字一致的浏览器头
+# （2026-11-25 改：只换 UA、不补齐整组头会被 Akamai 当“冒充浏览器”拦；
+# Accept-Encoding 只写 gzip, deflate、不写 br，因为标准库没有 brotli 解压）。
 DEFAULT_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
     ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
+    "image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
 }
 
 # 数据文件清单（输出文件名 -> 源说明）
@@ -225,6 +236,22 @@ def decide_exit_code(ok_count, attempted_count):
     return 2
 
 
+def _decode_body(body, content_encoding):
+    """按 Content-Encoding 解压响应体：gzip / deflate；无编码或未知编码原样返回。
+
+    请求头已声明 Accept-Encoding: gzip, deflate，服务器可能返回压缩体；
+    不解压就直接解析会失败。未知编码不猜、原样返回（调用方解析失败即报失败）。
+    """
+    if not content_encoding:
+        return body
+    encoding = content_encoding.strip().lower()
+    if encoding == "gzip":
+        return gzip.decompress(body)
+    if encoding == "deflate":
+        return zlib.decompress(body)
+    return body
+
+
 def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOUT):
     """带重试的 HTTP 请求。返回 (status, body_bytes)。
 
@@ -241,7 +268,12 @@ def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOU
         request = urllib.request.Request(url, data=body, headers=merged, method=method)
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
-                return response.status, response.read()
+                raw = response.read()
+                try:
+                    decoded = _decode_body(raw, response.headers.get("Content-Encoding"))
+                except Exception as exc:
+                    raise FetchError(f"响应解压失败 {url} :: {exc}")
+                return response.status, decoded
         except urllib.error.HTTPError as exc:
             detail = exc.read()[:500].decode("utf-8", "replace") if exc.fp else ""
             last_error = FetchError(
@@ -914,7 +946,7 @@ def fetch_fred_dgs10():
 def fetch_farside(kind):
     """Farside BTC/ETH ETF 流量表。kind 为 'btc' 或 'eth'。"""
     url = FARSIDE_URLS[kind]
-    _, body = http_request(url, headers={"Accept": "text/html"})
+    _, body = http_request(url)
     rows = parse_farside_html(body.decode("utf-8", "replace"))
     return _payload(
         url,
@@ -948,7 +980,7 @@ def fetch_ici():
     errors = []
     for report, url, parser in pages:
         try:
-            _, body = http_request(url, headers={"Accept": "text/html"})
+            _, body = http_request(url)
             parsed = parser(body.decode("utf-8", "replace"), report)
         except (FetchError, SchemaError) as exc:
             errors.append(f"{report}（{url}）：{exc}")
