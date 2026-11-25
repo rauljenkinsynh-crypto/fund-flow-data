@@ -1,0 +1,70 @@
+{
+  "_fixture": "fixture，非真实数据：上一日的 etf-flows.json（仅用于离线测试滚动合并与 weekly 回退）。",
+  "fetched_at_utc": "2026-11-24T15:00:00Z",
+  "monthly_bond_etf_usd_100m": 7100.0,
+  "notes": [],
+  "schema_version": 1,
+  "source": "TickerInside / 自算（BlackRock、SSGA 发行商文件） / Farside（IBIT）",
+  "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
+  "status": "seed",
+  "tracked": [
+    {
+      "as_of_date": "2026-11-09",
+      "aum_usd_100m": 349.7,
+      "daily": [
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 5.0,
+          "source": "tickerinside"
+        }
+      ],
+      "daily_flow_usd_100m": 5.0,
+      "date_et": "2026-11-09",
+      "flag_over_5pct": false,
+      "note": "",
+      "pct_of_aum": 1.43,
+      "source": "tickerinside",
+      "status": "stale",
+      "ticker": "SOXX"
+    },
+    {
+      "as_of_date": null,
+      "aum_usd_100m": null,
+      "daily": [],
+      "daily_flow_usd_100m": null,
+      "date_et": null,
+      "flag_over_5pct": false,
+      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
+      "pct_of_aum": null,
+      "source": "seed",
+      "status": "seed",
+      "ticker": "VOO"
+    },
+    {
+      "as_of_date": "2026-11-11",
+      "aum_usd_100m": 156.25,
+      "daily": [
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 1.0,
+          "source": "tickerinside"
+        }
+      ],
+      "daily_flow_usd_100m": 1.0,
+      "date_et": "2026-11-11",
+      "flag_over_5pct": false,
+      "note": "",
+      "pct_of_aum": 0.64,
+      "source": "tickerinside",
+      "status": "stale",
+      "ticker": "XLP"
+    }
+  ],
+  "weekly": {
+    "coverage_week_end_et": "2026-11-11",
+    "equity_etf_usd_100m": 4200.0,
+    "note": "旧值",
+    "source": "ici"
+  },
+  "ytd_etf_net_usd_100m": 17900.0
+}

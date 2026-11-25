@@ -106,6 +106,91 @@ ICI_URLS = {
 ICI_INDEX_URL = "https://www.ici.org/topics/weekly-estimated-flow-reports"
 ETF_COM_URL = None      # 待核查：ETF.com 每日流量的确切 URL 与格式（v1 结论：无公开 API，可能长期保持未配置）
 
+# -- ETF 流量（etf-flows.json）：TickerInside + 发行商文件自算（2026-11-25 第一阶段）--
+# 方案依据：hidden_files/etf-flows-combined-plan-20261125.md（全文）。
+# TickerInside series.json：461 只 × 最近 20 个收盘日；本仪表盘只取 7 只
+# （SOXX、SPY、XLP、XLV、XLE、XLU、XLK）；flow_usd 为 null 的日原样保留
+# “未测得”，绝不填 0、不插值；滚动保留最近 60 个收盘日（历史靠逐日累积）。
+# 自算公式：当日流量（美元）= 当日 NAV ×（当日份额 − 前一日份额）；快照文件
+# data/etf-selfcalc-snapshots.json 由 fetch_etf_flows 自己读写（上线首日无
+# 昨日快照，流量记 null，绝不写 0）。SMH 不在本阶段（需 Playwright 取 VanEck
+# XLSX，第二阶段）；VOO/QQQ 无逐日路（第三阶段探查），本阶段只记 seed。
+TICKERINSIDE_SERIES_URL = "https://tickerinside.com/api/v1/etf-flows/series.json"
+TICKERINSIDE_TICKERS = ["SOXX", "SPY", "XLP", "XLV", "XLE", "XLU", "XLK"]
+TICKERINSIDE_ATTRIBUTION = {
+    "credit": "TickerInside",
+    "url": "https://tickerinside.com/api/v1/etf-flows/series.json",
+    "note": "须署名 TickerInside + 链接；每次只取最新文件，不攒整档历史。",
+}
+# 锚点（2026-11-25 实测值）：SOXX 2026-11-11 行 flow_usd 约 +1,065,556,947 美元。
+# 注意：方案 §7 另写该日“占总资产 2.38%”，与种子 AUM 约 $350 亿不自洽
+# （$10.66 亿 / $350 亿 = 3.05%，2.38% 对应 AUM 约 $448 亿）；锚点只核对
+# flow_usd 本身，pct/AUM 一律以文件实值为准，偏差进 notes，不强行凑数。
+TICKERINSIDE_ANCHOR = {
+    "ticker": "SOXX",
+    "date": "2026-11-11",
+    "flow_usd": 1065556947.0,
+    "tolerance": 0.20,  # 偏差 >20% 只记警告，不阻塞整源
+}
+# 种子 AUM（亿美元单位 usd_100m；SOXX 约 $350 亿，见 space-changes §1.3 种子对照）：
+# TickerInside 反推 AUM（= flow / flow_pct）与种子偏差 >20% 时 aum 记 null。
+SEED_AUM_100M = {"SOXX": 350.0}
+ETF_TRACKED_ORDER = [
+    "SOXX", "SMH", "VOO", "SPY", "QQQ", "IBIT",
+    "XLP", "XLV", "XLE", "XLU", "XLK", "TLT", "GLD",
+]
+ETF_LAG_SWITCH_TRADING_DAYS = 3  # TickerInside 滞后超 3 个交易日自动切自算备用
+ETF_DAILY_KEEP_DAYS = 60         # daily 序列滚动保留最近 60 个收盘日
+ETF_SELFCALC_SNAPSHOTS_FILENAME = "etf-selfcalc-snapshots.json"
+# fetch_etf_flows 的 out_dir：run_fetch 在调用前经模块级变量传入
+# （run_fetch 只写 fetcher 自己的目标文件，快照读写须在 fetch_etf_flows 内做）；
+# 直接调用 fetch_etf_flows(out_dir) 时以参数为准。
+ETF_FLOWS_OUT_DIR = None
+
+# -- BlackRock / iShares v1 holdings CSV（TLT、SOXX 已验证）--
+BLACKROCK_HOLDINGS_URL_TEMPLATE = (
+    "https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document"
+    "?appType=PRODUCT_PAGE&appSubType=ISHARES&targetSite=us-ishares&locale=en_US"
+    "&portfolioId={portfolio_id}&userType=individual&component=holdings"
+)
+# portfolioId 已验证（2026-11-25 实测）：TLT 239454、SOXX 239705。
+# XLK 是 SPDR（State Street）产品，没有 iShares portfolioId，不走 BlackRock 路；
+# 方案 §九“BlackRock 覆盖 SOXX/XLK”一说有误，XLK 自算只走 SSGA。
+BLACKROCK_PORTFOLIO_IDS = {"TLT": 239454, "SOXX": 239705}
+# 净值合理性区间（美元，按 2026-11-25 市价定的宽带；超出即该标的 failed，不发布离谱数）
+BLACKROCK_NAV_RANGES = {"TLT": (40.0, 200.0), "SOXX": (100.0, 400.0)}
+
+# -- State Street / SPDR 基金页（美国版 URL，2026-11-25 逐只验证）--
+# 页内“Fund Net Asset Value”表含 NAV 与 Shares Outstanding；欧洲版 URL 会出现
+# 361,80 M 这类逗号小数格式，绝不用（解析时做美国格式校验，见 parse_ssga_fund_page）。
+# 2026-11-24 实测值：GLD NAV $331.98 / 360.40M；SPY $718.51 / 1,071.28M；
+# XLP $91.86 / 170.12M；XLV $184.63 / 262.82M；XLE $60.39 / 627.75M；
+# XLU $43.40 / 533.50M；XLK $157.03 / 676.06M。
+SSGA_FUND_PAGES = {
+    "GLD": "https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-shares-gld",
+    "SPY": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy",
+    "XLP": "https://www.ssga.com/us/en/individual/etfs/state-street-consumer-staples-select-sector-spdr-etf-xlp",
+    "XLV": "https://www.ssga.com/us/en/individual/etfs/state-street-health-care-select-sector-spdr-etf-xlv",
+    "XLE": "https://www.ssga.com/us/en/intermediary/etfs/state-street-energy-select-sector-spdr-etf-xle",
+    "XLU": "https://www.ssga.com/us/en/institutional/etfs/state-street-utilities-select-sector-spdr-etf-xlu",
+    "XLK": "https://www.ssga.com/us/en/individual/etfs/state-street-technology-select-sector-spdr-etf-xlk",
+}
+# 净值合理性区间（美元）：XLU 下限 30 而非方案写的 50——2026-11-25 实测 XLU NAV
+# 为 $43.40，已低于 50，按方案区间会天天误判 failed；其余按方案。
+SSGA_NAV_RANGES = {
+    "GLD": (200.0, 500.0), "SPY": (400.0, 800.0),
+    "XLP": (50.0, 300.0), "XLV": (50.0, 300.0), "XLE": (50.0, 300.0),
+    "XLU": (30.0, 300.0), "XLK": (100.0, 400.0),
+}
+# 自算分工：TLT、GLD 以自算为主路；7 只 TickerInside 标的以自算为备用
+# （滞后 >3 个交易日自动切换；快照每天都取，保持备用快照温热，切换当日即有昨日数可算）。
+SELFCALC_PRIMARY = {"TLT": "blackrock", "GLD": "ssga"}
+SELFCALC_BACKUP = {
+    "SOXX": "blackrock",
+    "SPY": "ssga", "XLP": "ssga", "XLV": "ssga",
+    "XLE": "ssga", "XLU": "ssga", "XLK": "ssga",
+}
+
 # -- SEC EDGAR（免 key，必须带 User-Agent）--
 EDGAR_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 EDGAR_COMPANYFACTS_TEMPLATE = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik10}.json"
@@ -824,6 +909,369 @@ def parse_edgar_search_json(obj):
     return events
 
 
+# ------------------------------------------------- ETF 流量：离线解析与自算 ---
+# 以下函数均为纯函数（不联网），tests/test_fetch.py 用 fixture 离线测试。
+# 任何一处结构对不上就抛 SchemaError，调用方按标的记 failed，绝不猜数。
+
+
+def parse_tickerinside_series(obj):
+    """解析 TickerInside series.json。
+
+    结构：{date, dates[20], columns: ["close","flow_usd","growth_pct",
+    "flow_pct_of_assets","previous_close"], series: {TICKER: [[date, flow_usd,
+    growth_pct, flow_pct_of_assets, previous_close], ...]}}。
+    只取 TICKERINSIDE_TICKERS 的 7 只；flow_usd 为 null 的日原样保留
+    （None = 未测得），绝不填 0、不插值。
+    某只标的在 series 里完全缺失 -> SchemaError（整路失败，调用方切自算备用）。
+    SOXX 2026-11-11 锚点行：在 20 日窗口内时必须存在（缺失 -> SchemaError）；
+    锚点值与文档值偏差 >20% 只记警告；窗口已滑过 11-11 时跳过核对并记注。
+    返回 {"tickers": {T: [row...]（按日期升序）}, "latest_date": ...,
+    "warnings": [...]}；row = {"date","flow_usd","flow_pct_of_assets"}。
+    """
+    if not isinstance(obj, dict) or not isinstance(obj.get("series"), dict):
+        raise SchemaError("TickerInside series.json 缺少 series 字段")
+    columns = obj.get("columns")
+    if not isinstance(columns, list) or "flow_usd" not in columns:
+        raise SchemaError("TickerInside series.json 缺少 columns/flow_usd 列")
+    flow_idx = columns.index("flow_usd")
+    pct_idx = columns.index("flow_pct_of_assets") if "flow_pct_of_assets" in columns else None
+    tickers = {}
+    for ticker in TICKERINSIDE_TICKERS:
+        raw_rows = obj["series"].get(ticker)
+        if raw_rows is None:
+            raise SchemaError(
+                f"TickerInside series.json 缺少 {ticker}（该标的完全缺失，整路失败）"
+            )
+        if not isinstance(raw_rows, list) or not raw_rows:
+            raise SchemaError(f"TickerInside series.json 的 {ticker} 行为空")
+        rows = []
+        for raw in raw_rows:
+            if not isinstance(raw, (list, tuple)) or len(raw) <= flow_idx:
+                raise SchemaError(f"TickerInside {ticker} 行结构不符：{str(raw)[:200]}")
+            date = str(raw[0])[:10]
+            if not _DATE_RE.match(date):
+                raise SchemaError(f"TickerInside {ticker} 行日期不合法：{str(raw[0])[:50]}")
+            flow = raw[flow_idx]
+            if flow is not None:
+                flow = parse_number(flow)
+                if flow is None:
+                    raise SchemaError(f"TickerInside {ticker} {date} 行 flow_usd 无法解析：{raw[flow_idx]!r}")
+            pct = None
+            if pct_idx is not None and len(raw) > pct_idx and raw[pct_idx] is not None:
+                pct = parse_number(raw[pct_idx])
+            rows.append({"date": date, "flow_usd": flow, "flow_pct_of_assets": pct})
+        rows.sort(key=lambda r: r["date"])
+        tickers[ticker] = rows
+    all_dates = [r["date"] for rows in tickers.values() for r in rows]
+    warnings = []
+    anchor = TICKERINSIDE_ANCHOR
+    soxx_rows = {r["date"]: r for r in tickers[anchor["ticker"]]}
+    if anchor["date"] in soxx_rows:
+        anchor_flow = soxx_rows[anchor["date"]]["flow_usd"]
+        if anchor_flow is None:
+            warnings.append(
+                f"锚点 {anchor['ticker']} {anchor['date']} 行 flow_usd 为 null（未测得），"
+                "无法核对锚点值。"
+            )
+        elif abs(anchor_flow - anchor["flow_usd"]) / anchor["flow_usd"] > anchor["tolerance"]:
+            warnings.append(
+                f"锚点 {anchor['ticker']} {anchor['date']} flow_usd 为 "
+                f"{anchor_flow:,.0f} 美元，与文档值 {anchor['flow_usd']:,.0f} 美元"
+                f"偏差超 {anchor['tolerance']:.0%}，只记警告（不阻塞整源）。"
+            )
+    elif all_dates and min(all_dates) <= anchor["date"] <= max(all_dates):
+        raise SchemaError(
+            f"锚点 {anchor['ticker']} {anchor['date']} 行缺失（该日在窗口内却无行）"
+        )
+    else:
+        warnings.append(
+            f"锚点 {anchor['date']} 已滑出 20 日窗口（窗口 {min(all_dates)}–{max(all_dates)}），"
+            "跳过锚点核对。"
+        )
+    return {"tickers": tickers, "latest_date": max(all_dates), "warnings": warnings}
+
+
+def parse_blackrock_holdings_csv(text):
+    """解析 BlackRock v1 holdings CSV（text/csv）。
+
+    前 8 行元数据取 Shares Outstanding 与截至日（"Fund Holdings as of,
+    Nov 24, 2026" 格式）；持仓表 Market Value 列求和，净值 = Σ市值 / 份额。
+    债券版列名无 Ticker 列，不依赖持仓行结构，只依赖前 8 行 + Market Value 列。
+    字段缺失 / 无持仓行 -> SchemaError。
+    返回 {"date","shares","nav","total_market_value_usd"}。
+    """
+    import csv
+    import io
+
+    rows = [row for row in csv.reader(io.StringIO(text), skipinitialspace=True)]
+    shares = None
+    asof_raw = None
+    mv_idx = None
+    header_idx = None
+    for idx, row in enumerate(rows):
+        if not row:
+            continue
+        first = row[0].strip()
+        if first == "Shares Outstanding" and len(row) > 1:
+            shares = parse_number(row[1])
+        elif first == "Fund Holdings as of" and len(row) > 1:
+            asof_raw = row[1].strip().strip('"')
+        if mv_idx is None:
+            cells = [c.strip() for c in row]
+            if "Market Value" in cells:
+                mv_idx = cells.index("Market Value")
+                header_idx = idx
+    if shares is None or shares <= 0:
+        raise SchemaError("BlackRock CSV 缺少 Shares Outstanding（或份额 ≤0）")
+    if not asof_raw:
+        raise SchemaError("BlackRock CSV 缺少 Fund Holdings as of 截至日")
+    try:
+        asof = datetime.strptime(asof_raw, "%b %d, %Y").strftime("%Y-%m-%d")
+    except ValueError:
+        raise SchemaError(f"BlackRock CSV 截至日无法解析：{asof_raw!r}")
+    if mv_idx is None:
+        raise SchemaError("BlackRock CSV 未找到 Market Value 列")
+    total_mv = 0.0
+    holdings_seen = 0
+    for row in rows[header_idx + 1:]:
+        if not row or len(row) <= mv_idx:
+            continue
+        if row[0].strip().lower().startswith("total"):
+            continue  # 合计行不重复计入
+        value = parse_number(row[mv_idx])
+        if value is None:
+            continue
+        total_mv += value
+        holdings_seen += 1
+    if holdings_seen == 0 or total_mv <= 0:
+        raise SchemaError("BlackRock CSV 持仓表无有效 Market Value 行")
+    return {
+        "date": asof,
+        "shares": shares,
+        "nav": total_mv / shares,
+        "total_market_value_usd": total_mv,
+    }
+
+
+_US_NUMBER_RE = re.compile(r"^-?\d{1,3}(,\d{3})*(\.\d+)?$|^-?\d+(\.\d+)?$")
+
+
+def _parse_us_number(raw):
+    """按美国格式解析数字：千分位逗号 + 点小数；欧洲格式（如 361,80、
+    逗号作小数点）直接返回 None，不猜。"""
+    if raw is None:
+        return None
+    text = str(raw).strip().replace("$", "").replace("\u00a0", "").strip()
+    if not _US_NUMBER_RE.match(text):
+        return None
+    return parse_number(text)
+
+
+def parse_ssga_fund_page(html_text):
+    """解析 SSGA 美国版基金页 HTML。
+
+    取“Fund Net Asset Value as of <Mon D YYYY>”截至日；表内 NAV 行与
+    Shares Outstanding 行（“360.40 M”为百万股，美国格式；出现欧洲格式
+    361,80 M 即 SchemaError）。NAV 优先取页内 JSON 形式的精确值
+    （如 "nav": 331.98279858），与表内 NAV 偏差 ≤1% 时采用，否则用表内值。
+    任一字段缺失 -> SchemaError。
+    返回 {"date","shares","nav","nav_precise"}。
+    精确值形态未在原始 HTML 里直接核实（只在渲染文本里见到 $331.98）：
+    找不到 JSON 精确值时安全回退到表内 NAV，不阻塞。
+    """
+    date_match = re.search(
+        r"Fund Net Asset Value as of\s+([A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{4})",
+        html_text,
+    )
+    if not date_match:
+        raise SchemaError("SSGA 基金页未找到 Fund Net Asset Value as of 截至日")
+    raw_date = date_match.group(1).replace(",", "")
+    try:
+        asof = datetime.strptime(raw_date, "%b %d %Y").strftime("%Y-%m-%d")
+    except ValueError:
+        raise SchemaError(f"SSGA 基金页截至日无法解析：{raw_date!r}")
+    parser = _TableParser()
+    parser.feed(html_text)
+    nav_value = None
+    shares_value = None
+    for table in parser.tables:
+        for row in table:
+            if len(row) < 2:
+                continue
+            label = row[0].strip()
+            value = row[1].strip()
+            # 表头 NAV 格含说明文字（"NAV The market value of a mutual fund's…"），
+            # 但 NAV Per Basket 是另一行，须排除。
+            if nav_value is None and (
+                label == "NAV"
+                or (label.startswith("NAV") and "market value" in label.lower()
+                    and not label.startswith("NAV Per"))
+            ):
+                nav_value = _parse_us_number(value)
+                if nav_value is None:
+                    raise SchemaError(f"SSGA 基金页 NAV 格式不符（疑似欧洲格式）：{value!r}")
+            if shares_value is None and label.startswith("Shares Outstanding"):
+                amount = value[:-1].strip() if value.endswith("M") else value
+                number = _parse_us_number(amount)
+                if number is None:
+                    raise SchemaError(
+                        f"SSGA 基金页 Shares Outstanding 格式不符（疑似欧洲格式）：{value!r}"
+                    )
+                if not value.endswith("M"):
+                    raise SchemaError(
+                        f"SSGA 基金页 Shares Outstanding 缺少 M（百万股）单位：{value!r}"
+                    )
+                shares_value = number * 1_000_000
+    if nav_value is None:
+        raise SchemaError("SSGA 基金页未找到 NAV 行")
+    if shares_value is None or shares_value <= 0:
+        raise SchemaError("SSGA 基金页未找到 Shares Outstanding 行")
+    nav = nav_value
+    nav_precise = False
+    for match in re.finditer(r'"nav"\s*:\s*"?(\d+\.\d+)"?', html_text, re.IGNORECASE):
+        candidate = parse_number(match.group(1))
+        if candidate is None:
+            continue
+        if abs(candidate - nav_value) / nav_value <= 0.01 and len(match.group(1).split(".")[1]) > len(
+            str(nav_value).split(".")[1] if "." in str(nav_value) else ""
+        ):
+            nav = candidate
+            nav_precise = True
+    return {"date": asof, "shares": shares_value, "nav": nav, "nav_precise": nav_precise}
+
+
+def check_nav_range(ticker, nav, ranges):
+    """净值合理性检查：超出区间 -> SchemaError（该标的当日 failed，不发布离谱数）。"""
+    lo, hi = ranges[ticker]
+    if nav is None or not (lo <= nav <= hi):
+        raise SchemaError(
+            f"{ticker} 净值 ${nav} 超出合理区间 ${lo:g}–${hi:g}"
+            "（按 2026-11-25 市价定的宽带），该标的当日 failed。"
+        )
+
+
+_SPLIT_MULTIPLES = (2.0, 3.0, 4.0, 0.5, 1.0 / 3.0, 0.25)
+
+
+def detect_split(prev_shares, shares, prev_nav, nav):
+    """拆股判定：份额按干净倍数跳变（2/3/4 倍或 1/2、1/3、1/4，误差 ≤1%）
+    且净值按反比跳变（误差 ≤5%）。返回倍数 m（今日份额 ≈ m × 昨日份额），否则 None。"""
+    if not prev_shares or not shares or not prev_nav or not nav:
+        return None
+    ratio = shares / prev_shares
+    for multiple in _SPLIT_MULTIPLES:
+        if abs(ratio - multiple) / multiple <= 0.01:
+            inverse = 1.0 / multiple
+            if abs(nav / prev_nav - inverse) / inverse <= 0.05:
+                return multiple
+    return None
+
+
+def compute_selfcalc_flow(today, prev):
+    """自算流量：当日流量（美元）= 当日 NAV ×（当日份额 − 前一日份额）。
+
+    today/prev: {"date","shares","nav"}。返回 (flow_usd_or_None, note)。
+    首日（无昨日快照）或快照日期未前进 -> 流量 None，绝不写 0。
+    大额申赎（单日份额变化 >5% 但不符合干净倍数）照常算流量，不当异常丢掉。
+    """
+    if prev is None:
+        return None, "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。"
+    if today["date"] <= prev["date"]:
+        return None, (
+            f"快照日期未前进（今日 {today['date']} ≤ 上日 {prev['date']}），"
+            "沿用上一日流量，不重复算。"
+        )
+    multiple = detect_split(prev["shares"], today["shares"], prev["nav"], today["nav"])
+    if multiple is not None:
+        adjusted_prev = prev["shares"] * multiple
+        flow = today["nav"] * (today["shares"] - adjusted_prev)
+        return flow, (
+            f"拆股：份额按 {multiple:g} 倍跳变且净值按反比跳变，"
+            "拆股前份额已按倍数折算后再算流量。"
+        )
+    return today["nav"] * (today["shares"] - prev["shares"]), ""
+
+
+def trading_days_between(date1, date2):
+    """date1 < date2 时两者之间（不含 date1、含 date2）的周一至周五天数。
+    节假日未扣除，是近似口径（只用于滞后 >3 个交易日的切换判断）。"""
+    from datetime import date as _date
+    from datetime import timedelta as _timedelta
+
+    start = _date.fromisoformat(date1)
+    end = _date.fromisoformat(date2)
+    if end <= start:
+        return 0
+    count = 0
+    current = start + _timedelta(days=1)
+    while current <= end:
+        if current.weekday() < 5:
+            count += 1
+        current += _timedelta(days=1)
+    return count
+
+
+def merge_daily_series(prev_daily, new_rows, limit=ETF_DAILY_KEEP_DAYS):
+    """daily 序列滚动合并去重：按日期合并（新行覆盖旧行），按日期排序，
+    只保留最近 limit 个收盘日。行格式 {"date","flow_usd_100m","source"}；
+    flow 为 None 的行原样保留（未测得），不填 0。"""
+    merged = {}
+    for row in list(prev_daily or []) + list(new_rows or []):
+        if not isinstance(row, dict):
+            continue
+        date = str(row.get("date") or "")
+        if not _DATE_RE.match(date):
+            continue
+        merged[date] = {
+            "date": date,
+            "flow_usd_100m": row.get("flow_usd_100m"),
+            "source": row.get("source"),
+        }
+    ordered = [merged[date] for date in sorted(merged)]
+    return ordered[-limit:] if limit else ordered
+
+
+def _usd_to_100m(usd):
+    """美元 -> 亿美元（1 单位 = 1 亿美元）；None 保持 None，不编 0。"""
+    return None if usd is None else round(usd / 1e8, 4)
+
+
+def _ti_pct_to_percent(value):
+    """TickerInside flow_pct_of_assets 可能是小数（0.0305）或百分数（3.05），
+    按量级换算成百分数（pct_of_aum 口径）。未验证：以首次 live 运行的锚点核对
+    （SOXX 11-11 流量反推 AUM 应约 $350 亿）为准；若换算错，AUM 偏差检查会报警。"""
+    if value is None:
+        return None
+    return value * 100.0 if abs(value) < 1 else value
+
+
+def _etf_entry(ticker, date_et, flow_100m, aum_100m, pct_of_aum, source,
+              as_of_date, status, daily, note, alternate_flow=None):
+    """组装一只标的的 tracked entry（schema_version 1 口径）。
+    flag_over_5pct 由本函数按 |pct_of_aum| > 5 算出；pct 为 null 时 flag 为
+    false 并在 note 里注明。"""
+    entry = {
+        "ticker": ticker,
+        "date_et": date_et,
+        "daily_flow_usd_100m": flow_100m,
+        "aum_usd_100m": aum_100m,
+        "pct_of_aum": pct_of_aum,
+        "flag_over_5pct": bool(pct_of_aum is not None and abs(pct_of_aum) > 5),
+        "source": source,
+        "as_of_date": as_of_date,
+        "status": status,
+        "daily": daily or [],
+        "note": note or "",
+    }
+    if alternate_flow is not None:
+        entry["alternate_flow"] = alternate_flow
+    if pct_of_aum is None:
+        entry["note"] = (entry["note"] + "；" if entry["note"] else "") + (
+            "pct 为 null，flag_over_5pct 记 false。"
+        )
+    return entry
+
+
 # ------------------------------------------------------------- 联网取数 ---
 # 每个 fetch_* 返回可直接写入 data/<源>.json 的 payload（不含 status 字段，
 # status 由主流程统一写进 data/status.json）。
@@ -1019,17 +1467,468 @@ def fetch_ici():
     )
 
 
-def fetch_etf_flows():
-    """ETF.com 每日流量。
+def _fetch_blackrock_snapshot(ticker):
+    """取 BlackRock v1 holdings CSV，返回快照 {"date","shares","nav","source"}。
+    任一字段缺失 / 净值越界 -> SchemaError（调用方记该标的 failed）。"""
+    portfolio_id = BLACKROCK_PORTFOLIO_IDS[ticker]
+    url = BLACKROCK_HOLDINGS_URL_TEMPLATE.replace("{portfolio_id}", str(portfolio_id))
+    _, body = http_request(url)
+    parsed = parse_blackrock_holdings_csv(body.decode("utf-8", "replace"))
+    check_nav_range(ticker, parsed["nav"], BLACKROCK_NAV_RANGES)
+    return {
+        "date": parsed["date"],
+        "shares": parsed["shares"],
+        "nav": parsed["nav"],
+        "source": "selfcalc-blackrock",
+    }
 
-    未配置：ETF_COM_URL 为 None。v1 结论为无公开 API，本源可能长期保持
-    未配置（走种子数 + 人工更新），此处只作占位，不编 URL、不编数。
+
+def _fetch_ssga_snapshot(ticker):
+    """取 SSGA 美国版基金页，返回快照 {"date","shares","nav","source"}。
+    任一字段缺失 / 净值越界 -> SchemaError（调用方记该标的 failed）。"""
+    url = SSGA_FUND_PAGES[ticker]
+    _, body = http_request(url)
+    parsed = parse_ssga_fund_page(body.decode("utf-8", "replace"))
+    check_nav_range(ticker, parsed["nav"], SSGA_NAV_RANGES)
+    return {
+        "date": parsed["date"],
+        "shares": parsed["shares"],
+        "nav": parsed["nav"],
+        "source": "selfcalc-ssga",
+    }
+
+
+def _load_selfcalc_snapshots(out_dir):
+    """读快照文件 data/etf-selfcalc-snapshots.json；不存在/损坏返回 {}。"""
+    if not out_dir:
+        return {}
+    return _load_json_file(os.path.join(out_dir, ETF_SELFCALC_SNAPSHOTS_FILENAME))
+
+
+def _save_selfcalc_snapshots(out_dir, snapshots):
+    """写快照文件（只存衍生数：日期、份额、净值、来源；绝不存发行商持仓文件原文）。"""
+    if not out_dir:
+        return
+    _write_json_file(
+        os.path.join(out_dir, ETF_SELFCALC_SNAPSHOTS_FILENAME), snapshots
+    )
+
+
+def _weekly_from_ici(out_dir, prev_payload):
+    """weekly 口径：从同 run 的 ici.json 取最新 etf 报告 Total（无 etf 则用
+    combined），百万美元→亿美元（/10）；ici.json 不存在时沿用上一次
+    etf-flows.json 的 weekly；再没有时用种子值 4571.0 / 2026-11-18 并标 source "seed"。"""
+    ici = _load_json_file(os.path.join(out_dir, "ici.json")) if out_dir else {}
+    for report in ("etf", "combined"):
+        rows = [
+            row for row in ici.get("rows") or []
+            if isinstance(row, dict) and row.get("report") == report
+            and row.get("total") is not None
+        ]
+        if rows:
+            latest = max(rows, key=lambda r: r["date"])
+            return {
+                "coverage_week_end_et": latest["date"],
+                "equity_etf_usd_100m": round(latest["total"] / 10.0, 1),
+                "source": "ici",
+                "note": f"ICI {report} 报告最新周 Total（百万美元→亿美元）。",
+            }
+    prev_weekly = (prev_payload or {}).get("weekly")
+    if isinstance(prev_weekly, dict) and prev_weekly.get("equity_etf_usd_100m") is not None:
+        copied = dict(prev_weekly)
+        copied["source"] = "previous"
+        return copied
+    return {
+        "coverage_week_end_et": "2026-11-18",
+        "equity_etf_usd_100m": 4571.0,
+        "source": "seed",
+        "note": "11 月 18 日当周美股基金 +$457.1 亿，为 9 月 23 日以来最大（种子值，暂无 live 路）。",
+    }
+
+
+def _is_fresh(date_et, today):
+    """ headline 日期距今天 ≤2 个交易日即新鲜（live）；否则 stale。"""
+    if not date_et:
+        return False
+    return trading_days_between(date_et, today) <= 2
+
+
+def fetch_etf_flows(out_dir=None, today=None):
+    """ETF 流量（第一阶段）：TickerInside 7 只 + 发行商文件自算 + Farside IBIT。
+
+    合并规则（方案 §五 + 任务书 §3）：
+    - 每只标的只有一个主路：7 只以 TickerInside 为准，滞后 >3 个交易日自动切
+      自算备用并标注来源切换（本次 TickerInside 最新 11-11，已滞后约 10 个
+      交易日，切换立即生效）；TLT、GLD 以自算为准；IBIT 读同 run 的
+      data/farside-btc.json；VOO、QQQ、SMH 本阶段记 seed。
+    - 冲突：同一标的两路同日都有数且差值 >10% -> 两路都保留（alternate_flow），
+      面板备注“两路不一致”，展示以主路为准；≤10% 只存主路。
+    - 任一标的取不到/字段缺失 -> 该标的当日 failed，保留上一日好快照，绝不拿
+      旧份额算假流量；≥1 只标的有新鲜 live 数 -> 整源 ok；全部可取数标的都
+      失败 -> 抛 FetchError（run_fetch 会保留旧文件、status 标 failed）。
+    - 自算快照每天都取（9 只全取，保持备用快照温热，切换当日即有昨日数可算）；
+      快照文件 data/etf-selfcalc-snapshots.json 由本函数自己读写。
+    out_dir 缺省时用模块级 ETF_FLOWS_OUT_DIR（run_fetch 传入）；today 缺省为
+    当天 UTC 日期（测试可传入固定日期以消除日期敏感性）。
     """
-    if ETF_COM_URL is None:
-        raise NotConfigured(
-            "ETF.com 源未配置：无公开 API（v1 核查结论），确切取数方式待核查员报告；报告前本源保持 blocked，不编数。"
+    out_dir = out_dir or ETF_FLOWS_OUT_DIR
+    today = today or datetime.now(timezone.utc).date().isoformat()
+    notes = []
+    prev_payload = (
+        _load_json_file(os.path.join(out_dir, "etf-flows.json")) if out_dir else {}
+    )
+    prev_tracked = {
+        entry.get("ticker"): entry
+        for entry in prev_payload.get("tracked") or []
+        if isinstance(entry, dict) and entry.get("ticker")
+    }
+    snapshots = _load_selfcalc_snapshots(out_dir)
+    new_snapshots = dict(snapshots)
+
+    # --- TickerInside 路 ---
+    ti = None
+    try:
+        ti = parse_tickerinside_series(get_json(TICKERINSIDE_SERIES_URL))
+        notes.extend(f"TickerInside：{warning}" for warning in ti["warnings"])
+    except (FetchError, SchemaError) as exc:
+        notes.append(f"TickerInside 取数失败（{exc}），7 只主路标的改走自算备用。")
+    ti_latest = ti["latest_date"] if ti else None
+    ti_lag = trading_days_between(ti_latest, today) if ti_latest else None
+    if ti_lag is not None:
+        notes.append(
+            f"TickerInside 最新收盘日 {ti_latest}，滞后约 {ti_lag} 个交易日（截至 {today}）。"
         )
-    raise NotConfigured("ETF_COM_URL 已填但解析函数尚未实现（总协调校正时补上）。")
+        if ti_lag > ETF_LAG_SWITCH_TRADING_DAYS:
+            notes.append(
+                "滞后超 3 个交易日，7 只主路标的自动切自算备用并标注来源切换。"
+            )
+    if ti:
+        soxx_rows = {row["date"]: row for row in ti["tickers"]["SOXX"]}
+        if soxx_rows.get("2026-11-10", {}).get("flow_usd") is None and "2026-11-10" in soxx_rows:
+            notes.append(
+                "SOXX 2026-11-10 在 TickerInside 为 null（未测得；该日单日 −$41.3 亿"
+                "为种子数），面板须用种子数展示该日标红。"
+            )
+
+    # --- 自算路：9 只全取快照（主路 TLT/GLD + 7 只备用），失败只影响该标的 ---
+    selfcalc = {}
+    for ticker, kind in {**SELFCALC_PRIMARY, **SELFCALC_BACKUP}.items():
+        try:
+            snap = (
+                _fetch_blackrock_snapshot(ticker)
+                if kind == "blackrock"
+                else _fetch_ssga_snapshot(ticker)
+            )
+        except (FetchError, SchemaError) as exc:
+            selfcalc[ticker] = {"error": str(exc)}
+            continue
+        prev_snap = snapshots.get(ticker)
+        if prev_snap and snap["date"] < prev_snap.get("date", ""):
+            # 发行商给了比快照更旧的文件：不回退快照，不算流量。
+            selfcalc[ticker] = {
+                "snapshot": prev_snap,
+                "flow_usd": None,
+                "flow_note": (
+                    f"发行商文件截至日 {snap['date']} 早于已存快照 "
+                    f"{prev_snap.get('date')}，不回退快照、不算流量。"
+                ),
+            }
+            continue
+        flow, flow_note = compute_selfcalc_flow(snap, prev_snap)
+        selfcalc[ticker] = {"snapshot": snap, "flow_usd": flow, "flow_note": flow_note}
+        new_snapshots[ticker] = snap
+    _save_selfcalc_snapshots(out_dir, new_snapshots)
+
+    def _selfcalc_aum_pct(ticker):
+        """自算标的的 AUM（NAV×份额）与 pct（流量/AUM）；无流量时 pct 为 None。"""
+        record = selfcalc.get(ticker) or {}
+        snap = record.get("snapshot")
+        if not snap:
+            return None, None
+        aum_100m = round(snap["nav"] * snap["shares"] / 1e8, 4)
+        flow = record.get("flow_usd")
+        pct = None
+        if flow is not None and aum_100m:
+            pct = round(flow / (aum_100m * 1e8) * 100, 4)
+        return aum_100m, pct
+
+    def _retained_entry(ticker, status, extra_note):
+        """失败时保留上一日 entry 的数值，只改 status 与 note（不编新数）。"""
+        prev = prev_tracked.get(ticker) or {}
+        note = (prev.get("note") or "") + ("；" if prev.get("note") else "") + extra_note
+        return _etf_entry(
+            ticker,
+            prev.get("date_et"),
+            prev.get("daily_flow_usd_100m"),
+            prev.get("aum_usd_100m"),
+            prev.get("pct_of_aum"),
+            prev.get("source") or "seed",
+            prev.get("as_of_date"),
+            status,
+            prev.get("daily") or [],
+            note,
+        )
+
+    entries = {}
+    failed_live_capable = 0  # 9 只可取数标的（7 只 TI + TLT + GLD）中当日 failed 的只数
+
+    # --- 7 只 TickerInside 主路标的 ---
+    for ticker in TICKERINSIDE_TICKERS:
+        prev_entry = prev_tracked.get(ticker) or {}
+        prev_daily = prev_entry.get("daily") or []
+        ti_rows = []
+        if ti:
+            ti_rows = [
+                {
+                    "date": row["date"],
+                    "flow_usd_100m": _usd_to_100m(row["flow_usd"]),
+                    "source": "tickerinside",
+                }
+                for row in ti["tickers"][ticker]
+            ]
+        ti_latest_row = ti["tickers"][ticker][-1] if ti else None
+        ti_flow_100m = (
+            _usd_to_100m(ti_latest_row["flow_usd"])
+            if ti_latest_row and ti_latest_row["flow_usd"] is not None
+            else None
+        )
+        ti_date = ti_latest_row["date"] if ti_latest_row else None
+        ti_pct = (
+            _ti_pct_to_percent(ti_latest_row["flow_pct_of_assets"])
+            if ti_latest_row
+            else None
+        )
+        record = selfcalc.get(ticker) or {}
+        snap = record.get("snapshot")
+        sc_flow_100m = _usd_to_100m(record.get("flow_usd"))
+        sc_date = snap.get("date") if snap else None
+        switched = ti is None or (
+            ti_lag is not None and ti_lag > ETF_LAG_SWITCH_TRADING_DAYS
+        )
+        daily = merge_daily_series(prev_daily, ti_rows)
+        if snap and sc_flow_100m is not None:
+            # 自算行并入 daily：已切换时主路是自算，同日覆盖；未切换时主路是
+            # TickerInside，自算同日行不覆盖（另一路只进 alternate_flow）。
+            if switched or sc_date not in {row["date"] for row in daily}:
+                daily = merge_daily_series(
+                    daily,
+                    [{"date": sc_date, "flow_usd_100m": sc_flow_100m,
+                      "source": snap["source"]}],
+                )
+        sc_error = record.get("error")
+
+        # 主路选择：切自算后以自算为准；未切时以 TickerInside 为准，
+        # 仅当 TickerInside 当日未测得（null）时用自算补。
+        primary = None  # (flow_100m, date, source, pct, aum, note)
+        if switched:
+            if sc_flow_100m is not None:
+                aum_100m, pct = _selfcalc_aum_pct(ticker)
+                note = "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+                if record.get("flow_note"):
+                    note += record["flow_note"]
+                primary = (sc_flow_100m, sc_date, snap["source"], pct, aum_100m, note)
+            elif sc_error:
+                entries[ticker] = _retained_entry(
+                    ticker, "failed",
+                    f"今日取数失败（自算备用：{sc_error}），显示上一日数据。",
+                )
+                failed_live_capable += 1
+                continue
+            elif snap is not None:
+                # 自算首日（或快照日期未前进）：无新流量，暂显示 TickerInside 旧数。
+                if ti_flow_100m is not None:
+                    primary = _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes)
+                    primary = (
+                        primary[0], primary[1], primary[2], primary[3], primary[4],
+                        primary[5] + "自算首日无流量，暂显示 TickerInside 旧数。",
+                    )
+                else:
+                    entries[ticker] = _etf_entry(
+                        ticker, ti_date, None, None, None, "tickerinside",
+                        ti_date, "unmeasured", daily,
+                        "TickerInside 当日未测得，且自算首日无流量。",
+                    )
+                    continue
+            else:
+                entries[ticker] = _retained_entry(
+                    ticker, "failed", "今日取数失败（TickerInside 与自算备用均无数据），显示上一日数据。"
+                )
+                failed_live_capable += 1
+                continue
+        else:
+            if ti_flow_100m is not None:
+                primary = _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes)
+            elif sc_flow_100m is not None:
+                aum_100m, pct = _selfcalc_aum_pct(ticker)
+                note = "TickerInside 当日未测得，改用自算备用。"
+                if record.get("flow_note"):
+                    note += record["flow_note"]
+                primary = (sc_flow_100m, sc_date, snap["source"], pct, aum_100m, note)
+            else:
+                entries[ticker] = _etf_entry(
+                    ticker, ti_date, None, None, None, "tickerinside",
+                    ti_date, "unmeasured", daily, "TickerInside 当日未测得，且自算无流量。",
+                )
+                continue
+        flow_100m, headline_date, source, pct, aum_100m, note = primary
+        # 冲突：两路同日都有数且差值 >10% -> 两路都保留，展示以主路为准。
+        alternate_flow = None
+        if (
+            ti_flow_100m is not None and sc_flow_100m is not None
+            and ti_date == sc_date and abs(ti_flow_100m) >= 0.1
+        ):
+            other = sc_flow_100m if source == "tickerinside" else ti_flow_100m
+            if abs(other - flow_100m) / abs(flow_100m) > 0.10:
+                alternate_flow = other
+                note += "两路不一致（同日两路流量差值 >10%），展示以主路为准。"
+        status = "live" if _is_fresh(headline_date, today) else "stale"
+        entries[ticker] = _etf_entry(
+            ticker, headline_date, flow_100m, aum_100m, pct, source,
+            headline_date, status, daily, note, alternate_flow=alternate_flow,
+        )
+
+    # --- TLT、GLD：自算主路 ---
+    for ticker in ("TLT", "GLD"):
+        prev_entry = prev_tracked.get(ticker) or {}
+        prev_daily = prev_entry.get("daily") or []
+        record = selfcalc.get(ticker) or {}
+        snap = record.get("snapshot")
+        sc_flow_100m = _usd_to_100m(record.get("flow_usd"))
+        daily = prev_daily
+        if snap and sc_flow_100m is not None:
+            daily = merge_daily_series(
+                daily,
+                [{"date": snap["date"], "flow_usd_100m": sc_flow_100m,
+                  "source": snap["source"]}],
+            )
+        if record.get("error"):
+            entries[ticker] = _retained_entry(
+                ticker, "failed", f"今日取数失败（自算：{record['error']}），显示上一日数据。"
+            )
+            failed_live_capable += 1
+            continue
+        if snap is None:
+            entries[ticker] = _retained_entry(
+                ticker, "failed", "今日取数失败（自算无快照），显示上一日数据。"
+            )
+            failed_live_capable += 1
+            continue
+        aum_100m, pct = _selfcalc_aum_pct(ticker)
+        if sc_flow_100m is None:
+            entries[ticker] = _etf_entry(
+                ticker, snap["date"], None, aum_100m, None, snap["source"],
+                snap["date"], "unmeasured", daily,
+                record.get("flow_note") or "自算无流量。",
+            )
+            continue
+        status = "live" if _is_fresh(snap["date"], today) else "stale"
+        note = record.get("flow_note") or ""
+        entries[ticker] = _etf_entry(
+            ticker, snap["date"], sc_flow_100m, aum_100m, pct, snap["source"],
+            snap["date"], status, daily, note,
+        )
+
+    # --- IBIT：读同 run 的 data/farside-btc.json ---
+    farside = (
+        _load_json_file(os.path.join(out_dir, "farside-btc.json")) if out_dir else {}
+    )
+    ibit_rows = []
+    ibit_latest = None
+    for row in farside.get("rows") or []:
+        if not isinstance(row, dict):
+            continue
+        funds = row.get("funds") or {}
+        if funds.get("IBIT") is None:
+            continue
+        flow_100m = round(funds["IBIT"] / 100.0, 4)  # Farside 表格数值为百万美元（假设，未验证）
+        ibit_rows.append(
+            {"date": row["date"], "flow_usd_100m": flow_100m, "source": "farside"}
+        )
+    ibit_rows.sort(key=lambda r: r["date"])
+    prev_ibit = prev_tracked.get("IBIT") or {}
+    ibit_daily = merge_daily_series(prev_ibit.get("daily") or [], ibit_rows[-ETF_DAILY_KEEP_DAYS:])
+    if ibit_rows:
+        ibit_latest = ibit_rows[-1]
+        status = "live" if _is_fresh(ibit_latest["date"], today) else "stale"
+        entries["IBIT"] = _etf_entry(
+            "IBIT", ibit_latest["date"], ibit_latest["flow_usd_100m"], None, None,
+            "farside", ibit_latest["date"], status, ibit_daily,
+            "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）"
+            "；Farside 未给 AUM，pct 未算。",
+        )
+    else:
+        entries["IBIT"] = _etf_entry(
+            "IBIT", prev_ibit.get("date_et"), None, None, None, "seed",
+            prev_ibit.get("as_of_date"), "seed", prev_ibit.get("daily") or [],
+            "Farside 文件不存在或无 IBIT，未编数。",
+        )
+
+    # --- VOO、QQQ、SMH：本阶段无逐日路，记 seed ---
+    seed_notes = {
+        "VOO": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
+        "QQQ": "逐日流量待探查（第三阶段），暂看 ICI 周度。",
+        "SMH": "自算需 Playwright 取 VanEck 每日 XLSX（第二阶段），本阶段暂无逐日路；暂看 ICI 周度。",
+    }
+    for ticker in ("VOO", "QQQ", "SMH"):
+        prev = prev_tracked.get(ticker) or {}
+        entries[ticker] = _etf_entry(
+            ticker, prev.get("date_et"), None, None, None, "seed",
+            prev.get("as_of_date"), "seed", prev.get("daily") or [],
+            seed_notes[ticker],
+        )
+
+    live_count = sum(1 for entry in entries.values() if entry["status"] == "live")
+    if failed_live_capable >= 9 and entries["IBIT"]["status"] == "seed":
+        raise FetchError(
+            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD），"
+            "且 IBIT 无 Farside 数据；保留旧文件、status 标 failed。"
+        )
+    top_status = "live" if live_count >= 1 else "seed"
+    if top_status == "seed":
+        notes.append("本次无新鲜 live 数，整源 status 记 seed。")
+    tracked = [entries[ticker] for ticker in ETF_TRACKED_ORDER]
+    return {
+        "schema_version": 1,
+        "source": "TickerInside / 自算（BlackRock、SSGA 发行商文件） / Farside（IBIT）",
+        "source_url": TICKERINSIDE_SERIES_URL,
+        "fetched_at_utc": utcnow_iso(),
+        "status": top_status,
+        "attribution": TICKERINSIDE_ATTRIBUTION,
+        "weekly": _weekly_from_ici(out_dir, prev_payload),
+        "monthly_bond_etf_usd_100m": 7100.0,
+        "ytd_etf_net_usd_100m": 17900.0,
+        "tracked": tracked,
+        "notes": notes
+        + [
+            "monthly_bond_etf_usd_100m 7100.0 为种子值（10 月债券 ETF，暂无 live 路）。",
+            "ytd_etf_net_usd_100m 17900.0 为种子值（年初至今 ETF，暂无 live 路）。",
+        ],
+    }
+
+
+def _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes):
+    """TickerInside 主路 headline：pct 取文件自带的 flow_pct_of_assets；
+    aum 只有当 flow 与 pct 都非零且能算出时才填（aum = flow/pct），否则 null。
+    算出的 AUM 与种子值（SOXX 约 $350 亿）偏差 >20% 时 aum 记 null 并写进 notes。"""
+    pct = ti_pct
+    aum_100m = None
+    if ti_flow_100m is not None and pct is not None and abs(pct) >= 0.1:
+        aum_100m = round(ti_flow_100m * 100.0 / pct, 4)
+        seed_aum = SEED_AUM_100M.get(ticker)
+        if seed_aum is not None and abs(aum_100m - seed_aum) / seed_aum > 0.20:
+            notes.append(
+                f"{ticker} TickerInside 反推 AUM {aum_100m:.1f}（亿美元）与种子值"
+                f" {seed_aum:.1f} 偏差超 20%，aum 记 null，不强行凑数。"
+            )
+            aum_100m = None
+    return (
+        ti_flow_100m,
+        ti_latest_row["date"],
+        "tickerinside",
+        pct,
+        aum_100m,
+        "",
+    )
 
 
 def _resolve_ciks():
@@ -1176,6 +2075,8 @@ def run_fetch(selected, out_dir):
     未配置的源（NotConfigured）记 blocked，不计入 attempted。
     """
     os.makedirs(out_dir, exist_ok=True)
+    global ETF_FLOWS_OUT_DIR
+    ETF_FLOWS_OUT_DIR = out_dir  # etf-flows 的快照读写与同 run 文件读取用
     prev_status = _load_json_file(os.path.join(out_dir, "status.json"))
     prev_sources = prev_status.get("sources") or {}
     status_entries = {}
@@ -1214,7 +2115,9 @@ def run_fetch(selected, out_dir):
             _write_json_file(target, payload)
             entry["status"] = "ok"
             entry["error"] = None
-            entry["last_ok"] = payload["fetched_at"]
+            # 各源 payload 的时间字段：旧源用 _payload() 的 fetched_at，
+            # etf-flows 按数据契约（§1.2）用 fetched_at_utc；两者都认。
+            entry["last_ok"] = payload.get("fetched_at") or payload.get("fetched_at_utc")
             if isinstance(payload.get("route"), dict):
                 # SoSoValue：status.json 记录该 symbol 实际走通的是哪条（主机 + 版本）
                 entry["route"] = payload["route"]
@@ -1231,7 +2134,9 @@ def run_fetch(selected, out_dir):
         "sources": status_entries,
         "notes": [
             "status ok/failed/blocked 按源分别记录；failed/blocked 时保留上一次的好文件并标 stale。",
-            "blocked 含两种：未配置（ETF.com 待核查，跳过不计退出码）与 HTTP 403 反爬拦截（计入失败）。",
+            "blocked 含两种：未配置（跳过不计退出码）与 HTTP 403 反爬拦截（计入失败）。"
+            "etf-flows 已接入（TickerInside + 发行商文件自算 + Farside IBIT）；"
+            "ETF.com 本身仍未配置（无公开 API），不作为取数源。",
             "SoSoValue 各 symbol 的 route 字段记录本次实际走通的主机 + 版本（v1 优先、v2 备选）。",
             "Actions 出口能否绕过反爬墙未验证，首次实测结果以本文件为准。",
         ],

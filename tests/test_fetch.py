@@ -16,6 +16,7 @@ tests/fixtures/ 下的最小 fixture（文件头注明“fixture，非真实数�
 import json
 import os
 import sys
+import tempfile
 import unittest
 from unittest import mock
 
@@ -28,8 +29,16 @@ from fetch_all import (  # noqa: E402
     SchemaError,
     _decode_body,
     _resolve_ciks,
+    _ti_pct_to_percent,
+    _usd_to_100m,
+    check_nav_range,
+    compute_selfcalc_flow,
     decide_exit_code,
+    detect_split,
+    fetch_etf_flows,
     fetch_sosovalue,
+    merge_daily_series,
+    parse_blackrock_holdings_csv,
     parse_companyfacts_json,
     parse_edgar_search_json,
     parse_farside_html,
@@ -39,6 +48,9 @@ from fetch_all import (  # noqa: E402
     parse_number,
     parse_sosovalue_json,
     parse_sosovalue_v1_json,
+    parse_ssga_fund_page,
+    parse_tickerinside_series,
+    trading_days_between,
 )
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
@@ -217,6 +229,453 @@ class TestExitCodes(unittest.TestCase):
         self.assertEqual(decide_exit_code(0, 0), 0)
 
 
+class TestTickerInside(unittest.TestCase):
+    def test_anchor_and_null_row_preserved(self):
+        parsed = parse_tickerinside_series(load_json_fixture("tickerinside_series.json"))
+        self.assertEqual(parsed["latest_date"], "2026-11-11")
+        self.assertEqual(parsed["warnings"], [])  # 锚点值与文档值一致，无警告
+        soxx = parsed["tickers"]["SOXX"]
+        self.assertEqual(
+            [row["date"] for row in soxx],
+            ["2026-11-09", "2026-11-10", "2026-11-11"],
+        )
+        # 11-10 null 行原样保留（未测得），不填 0
+        self.assertIsNone(soxx[1]["flow_usd"])
+        self.assertIsNone(soxx[1]["flow_pct_of_assets"])
+        # 锚点：SOXX 11-11 行 flow_usd = +1,065,556,947 美元
+        self.assertEqual(soxx[2]["flow_usd"], 1065556947.0)
+        self.assertEqual(soxx[2]["flow_pct_of_assets"], 0.0305)
+        self.assertEqual(set(parsed["tickers"]), set(fetch_all.TICKERINSIDE_TICKERS))
+
+    def test_missing_ticker_raises(self):
+        obj = load_json_fixture("tickerinside_series.json")
+        del obj["series"]["XLK"]
+        with self.assertRaises(SchemaError):
+            parse_tickerinside_series(obj)
+
+    def test_anchor_value_deviation_warns_only(self):
+        obj = load_json_fixture("tickerinside_series.json")
+        obj["series"]["SOXX"][2][1] = 100000000  # 与锚点偏差超 20%
+        parsed = parse_tickerinside_series(obj)
+        self.assertEqual(parsed["tickers"]["SOXX"][2]["flow_usd"], 100000000.0)
+        self.assertTrue(any("锚点" in w for w in parsed["warnings"]))
+
+    def test_anchor_row_missing_in_window_raises(self):
+        obj = load_json_fixture("tickerinside_series.json")
+        obj["series"]["SOXX"] = obj["series"]["SOXX"][:2]  # 删掉 11-11 行
+        with self.assertRaises(SchemaError):
+            parse_tickerinside_series(obj)
+
+    def test_pct_fraction_or_percent_to_percent(self):
+        self.assertEqual(_ti_pct_to_percent(0.0305), 3.05)
+        self.assertEqual(_ti_pct_to_percent(3.05), 3.05)
+        self.assertIsNone(_ti_pct_to_percent(None))
+
+
+class TestBlackRock(unittest.TestCase):
+    def test_tlt_parses(self):
+        parsed = parse_blackrock_holdings_csv(load_fixture("blackrock_tlt.csv"))
+        # 份额 600,000,000（2026-11-24）；Σ市值 $48,894,000,000 / 份额 = $81.49
+        self.assertEqual(parsed["date"], "2026-11-24")
+        self.assertEqual(parsed["shares"], 600000000.0)
+        self.assertEqual(parsed["total_market_value_usd"], 48894000000.0)
+        self.assertAlmostEqual(parsed["nav"], 81.49, places=2)
+
+    def test_missing_shares_raises(self):
+        text = load_fixture("blackrock_tlt.csv").replace(
+            'Shares Outstanding, "600,000,000.00"\n', ""
+        )
+        with self.assertRaises(SchemaError):
+            parse_blackrock_holdings_csv(text)
+
+    def test_missing_market_value_column_raises(self):
+        text = load_fixture("blackrock_tlt.csv").replace("Market Value", "Mkt Val")
+        with self.assertRaises(SchemaError):
+            parse_blackrock_holdings_csv(text)
+
+    def test_total_row_not_double_counted(self):
+        text = load_fixture("blackrock_tlt.csv") + (
+            "Total,Public,Fixed Income,48894000000,100.0,0,0,0,0,0,0,0,0\n"
+        )
+        parsed = parse_blackrock_holdings_csv(text)
+        self.assertAlmostEqual(parsed["nav"], 81.49, places=2)
+
+
+class TestSSGA(unittest.TestCase):
+    def test_gld_parses_precise_nav(self):
+        parsed = parse_ssga_fund_page(load_fixture("ssga_gld.html"))
+        self.assertEqual(parsed["date"], "2026-11-24")
+        self.assertEqual(parsed["shares"], 360400000.0)  # 360.40 M
+        # 精确值 331.98279858 优先于表内 $331.98
+        self.assertEqual(parsed["nav"], 331.98279858)
+        self.assertTrue(parsed["nav_precise"])
+
+    def test_precise_nav_missing_falls_back_to_table(self):
+        text = load_fixture("ssga_gld.html").replace(
+            '<script type="application/json">{"nav": 331.98279858}</script>', ""
+        )
+        parsed = parse_ssga_fund_page(text)
+        self.assertEqual(parsed["nav"], 331.98)
+        self.assertFalse(parsed["nav_precise"])
+
+    def test_european_format_rejected(self):
+        text = load_fixture("ssga_gld.html").replace("360.40 M", "361,80 M")
+        with self.assertRaises(SchemaError):
+            parse_ssga_fund_page(text)
+
+    def test_missing_nav_raises(self):
+        text = load_fixture("ssga_gld.html").replace(
+            "<tr><th>NAV</th><td>$331.98</td></tr>\n", ""
+        )
+        with self.assertRaises(SchemaError):
+            parse_ssga_fund_page(text)
+
+    def test_nav_per_basket_not_mistaken_for_nav(self):
+        # NAV Per Basket（$33,198,279.86）是另一行，绝不能当成 NAV
+        parsed = parse_ssga_fund_page(load_fixture("ssga_gld.html"))
+        self.assertLess(parsed["nav"], 1000)
+
+
+class TestSelfCalcFlow(unittest.TestCase):
+    def test_first_day_flow_is_none(self):
+        today = {"date": "2026-11-25", "shares": 360400000.0, "nav": 331.98}
+        flow, note = compute_selfcalc_flow(today, None)
+        self.assertIsNone(flow)
+        self.assertIn("首日", note)
+
+    def test_gld_example_reproduces_minus_465m(self):
+        # 方案 §4.2 实算：11-24 361.80M → 11-25 360.40M，NAV $331.98，流量约 −$4.65 亿
+        prev = {"date": "2026-11-24", "shares": 361800000.0, "nav": 331.98}
+        today = {"date": "2026-11-25", "shares": 360400000.0, "nav": 331.98279858}
+        flow, note = compute_selfcalc_flow(today, prev)
+        self.assertAlmostEqual(flow, -464775918.01, delta=1.0)
+        self.assertAlmostEqual(_usd_to_100m(flow), -4.6478, places=4)
+        self.assertEqual(note, "")
+
+    def test_split_2_to_1_adjusted(self):
+        prev = {"date": "2026-11-24", "shares": 100000000.0, "nav": 200.0}
+        today = {"date": "2026-11-25", "shares": 200000000.0, "nav": 100.0}
+        self.assertEqual(detect_split(100000000.0, 200000000.0, 200.0, 100.0), 2.0)
+        flow, note = compute_selfcalc_flow(today, prev)
+        self.assertEqual(flow, 0.0)  # 折算后份额不变，流量为 0（算出来的 0，不是填的 0）
+        self.assertIn("拆股", note)
+
+    def test_large_redemption_is_not_split(self):
+        # SOXX 11-10 式 −11.8% 是真流量：份额比 0.882 不是干净倍数，照常算
+        prev = {"date": "2026-11-09", "shares": 175000000.0, "nav": 200.0}
+        today = {"date": "2026-11-10", "shares": 154350000.0, "nav": 200.0}
+        self.assertIsNone(detect_split(175000000.0, 154350000.0, 200.0, 200.0))
+        flow, _ = compute_selfcalc_flow(today, prev)
+        self.assertAlmostEqual(_usd_to_100m(flow), -41.3, places=4)
+
+    def test_same_day_rerun_produces_no_flow(self):
+        prev = {"date": "2026-11-24", "shares": 600000000.0, "nav": 81.49}
+        today = {"date": "2026-11-24", "shares": 601000000.0, "nav": 81.49}
+        flow, note = compute_selfcalc_flow(today, prev)
+        self.assertIsNone(flow)
+        self.assertIn("未前进", note)
+
+    def test_nav_range(self):
+        check_nav_range("TLT", 81.49, fetch_all.BLACKROCK_NAV_RANGES)
+        check_nav_range("GLD", 331.98, fetch_all.SSGA_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("TLT", 500.0, fetch_all.BLACKROCK_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("XLU", 20.0, fetch_all.SSGA_NAV_RANGES)
+
+
+def _make_blackrock_csv(shares, date_str, market_values):
+    """测试用 BlackRock CSV 生成器（shares 为股数，market_values 为持仓市值列表）。"""
+    lines = [
+        "iShares Test ETF",
+        f'Fund Holdings as of, "{date_str}"',
+        'Inception Date, "Jul 22, 2002"',
+        f'Shares Outstanding, "{shares:,.2f}"',
+        "Stock, 0",
+        "Bond, 100",
+        "Cash, 0",
+        "Other, 0",
+        "Name,Sector,Asset Class,Market Value,Weight (%),Notional Value,Par Value,CUSIP,ISIN,SEDOL,Price,Duration,YTM (%)",
+    ]
+    for idx, value in enumerate(market_values):
+        lines.append(
+            f"HOLDING {idx},Public,Fixed Income,{value},10.0,{value},{value},"
+            f"CUSIP{idx},ISIN{idx},SEDOL{idx},100,20.5,4.9"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def _fake_http_tlt_only(url, headers=None, timeout=None):
+    """测试替身：只有 TLT 的 BlackRock CSV 能取，其余发行商页一律 403。"""
+    if "portfolioId=239454" in url:
+        return 200, load_fixture("blackrock_tlt.csv").encode("utf-8")
+    raise FetchError(f"HTTP 403 {url}")
+
+
+class TestEtfFlowsMerge(unittest.TestCase):
+    def test_merge_dedupe_and_cap_60(self):
+        import datetime as _datetime
+
+        base = _datetime.date(2026, 8, 1)
+        prev = [
+            {"date": (base + _datetime.timedelta(days=i)).isoformat(),
+             "flow_usd_100m": float(i), "source": "tickerinside"}
+            for i in range(70)
+        ]
+        new = [
+            {"date": (base + _datetime.timedelta(days=69)).isoformat(),
+             "flow_usd_100m": 999.0, "source": "tickerinside"},
+            {"date": (base + _datetime.timedelta(days=70)).isoformat(),
+             "flow_usd_100m": 70.0, "source": "tickerinside"},
+        ]
+        merged = merge_daily_series(prev, new)
+        self.assertEqual(len(merged), 60)  # 只保留最近 60 个收盘日
+        self.assertEqual(merged[-1]["date"], (base + _datetime.timedelta(days=70)).isoformat())
+        # 2026-10-09（第 69 天）新行覆盖旧行
+        self.assertEqual(merged[-2]["flow_usd_100m"], 999.0)
+        self.assertEqual(
+            [row["date"] for row in merged], sorted(row["date"] for row in merged)
+        )
+
+    def test_merge_keeps_null_rows(self):
+        prev = [{"date": "2026-11-09", "flow_usd_100m": 5.0, "source": "tickerinside"}]
+        new = [{"date": "2026-11-10", "flow_usd_100m": None, "source": "tickerinside"}]
+        merged = merge_daily_series(prev, new)
+        self.assertEqual(len(merged), 2)
+        self.assertIsNone(merged[1]["flow_usd_100m"])  # null 行保留，不填 0
+
+    def test_conflict_over_10pct_keeps_alternate(self):
+        # 今天 2026-11-12：TickerInside 最新 11-11，滞后 1 个交易日，未切换，
+        # 主路 TickerInside；自算同日流量 30.0 与主路 10.6556 差值 >10%。
+        with tempfile.TemporaryDirectory() as out_dir:
+            prev_snaps = load_json_fixture("etf_snapshots_prev.json")
+            prev_snaps["SOXX"] = {
+                "date": "2026-11-10", "shares": 175000000.0, "nav": 200.0,
+                "source": "selfcalc-blackrock",
+            }
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json"), "w") as fh:
+                json.dump(prev_snaps, fh)
+            soxx_csv = _make_blackrock_csv(
+                190000000, "Nov 11, 2026", [20000000000, 16000000000]
+            )  # NAV 36000M/190M = 189.47；流量 = 189.47 × 15M ≈ $28.42 亿
+
+            def fake_http(url, headers=None, timeout=None):
+                if "portfolioId=239705" in url:
+                    return 200, soxx_csv.encode("utf-8")
+                raise FetchError(f"HTTP 403 {url}")
+
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-12")
+        soxx = [e for e in payload["tracked"] if e["ticker"] == "SOXX"][0]
+        self.assertEqual(soxx["source"], "tickerinside")  # 未切换，主路仍是 TickerInside
+        self.assertAlmostEqual(soxx["daily_flow_usd_100m"], 10.6556, places=4)
+        # 自算同日流量 189.47 × 15M / 1e8 ≈ 28.42，与主路差值 >10%，两路都保留
+        self.assertIsNotNone(soxx.get("alternate_flow"))
+        self.assertAlmostEqual(soxx["alternate_flow"], 28.4211, places=3)
+        self.assertIn("两路不一致", soxx["note"])
+        # daily 里 11-11 仍是主路 TickerInside 的数，不被自算覆盖
+        daily_1111 = [r for r in soxx["daily"] if r["date"] == "2026-11-11"][0]
+        self.assertAlmostEqual(daily_1111["flow_usd_100m"], 10.6556, places=4)
+        self.assertEqual(daily_1111["source"], "tickerinside")
+
+    def test_full_fetch_switched_to_selfcalc(self):
+        # 今天 2026-11-25：TickerInside 最新 11-11，滞后 10 个交易日，7 只切自算备用。
+        with tempfile.TemporaryDirectory() as out_dir:
+            for name in ("etf-flows.json", "ici.json", "farside-btc.json",
+                         "etf-selfcalc-snapshots.json"):
+                src = {
+                    "etf-flows.json": "etf_flows_prev.json",
+                    "ici.json": "ici_etf.json",
+                    "farside-btc.json": "farside_btc_min.json",
+                    "etf-selfcalc-snapshots.json": "etf_snapshots_prev.json",
+                }[name]
+                with open(os.path.join(out_dir, name), "w") as fh:
+                    fh.write(load_fixture(src))
+            tlt_csv = load_fixture("blackrock_tlt.csv").replace(
+                "Nov 24, 2026", "Nov 25, 2026"
+            ).replace("600,000,000.00", "601,000,000.00")
+            soxx_csv = _make_blackrock_csv(
+                176000000, "Nov 25, 2026", [20000000000, 15200000000]
+            )  # NAV 35200M/176M = $200.00；流量 = 200 × 1M = $2.00 亿
+            gld_html = load_fixture("ssga_gld.html").replace(
+                "Nov 24 2026", "Nov 25 2026"
+            ).replace("360.40 M", "359.40 M")
+            spy_html = (
+                load_fixture("ssga_gld.html")
+                .replace("Nov 24 2026", "Nov 25 2026")
+                .replace("$331.98", "$718.51")
+                .replace("360.40 M", "1,071.28 M")
+                .replace("331.98279858", "718.51234567")
+            )
+
+            def fake_http(url, headers=None, timeout=None):
+                if "portfolioId=239454" in url:
+                    return 200, tlt_csv.encode("utf-8")
+                if "portfolioId=239705" in url:
+                    return 200, soxx_csv.encode("utf-8")
+                if url == fetch_all.SSGA_FUND_PAGES["GLD"]:
+                    return 200, gld_html.encode("utf-8")
+                if url == fetch_all.SSGA_FUND_PAGES["SPY"]:
+                    return 200, spy_html.encode("utf-8")
+                raise FetchError(f"HTTP 403 {url}")  # 其余 SSGA 页取不到
+
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            self.assertEqual(payload["schema_version"], 1)
+            self.assertEqual(payload["status"], "live")  # ≥1 只新鲜 live 数
+            self.assertEqual(payload["source_url"], fetch_all.TICKERINSIDE_SERIES_URL)
+            self.assertEqual(payload["attribution"]["credit"], "TickerInside")
+            self.assertEqual(payload["weekly"]["equity_etf_usd_100m"], 4571.0)
+            self.assertEqual(payload["weekly"]["coverage_week_end_et"], "2026-11-18")
+            self.assertEqual(payload["weekly"]["source"], "ici")
+            self.assertEqual(payload["monthly_bond_etf_usd_100m"], 7100.0)
+            self.assertEqual(payload["ytd_etf_net_usd_100m"], 17900.0)
+            self.assertTrue(any("滞后约 10 个交易日" in n for n in payload["notes"]))
+            self.assertTrue(any("SOXX 2026-11-10" in n and "null" in n for n in payload["notes"]))
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            self.assertEqual(
+                [e["ticker"] for e in payload["tracked"]], fetch_all.ETF_TRACKED_ORDER
+            )
+            # SOXX：已切自算备用（BlackRock），流量 200 × 1M = $2.00 亿
+            soxx = by_ticker["SOXX"]
+            self.assertEqual(soxx["source"], "selfcalc-blackrock")
+            self.assertEqual(soxx["status"], "live")
+            self.assertAlmostEqual(soxx["daily_flow_usd_100m"], 2.0, places=4)
+            self.assertIn("来源切换", soxx["note"])
+            self.assertEqual(
+                [r["date"] for r in soxx["daily"]],
+                ["2026-11-09", "2026-11-10", "2026-11-11", "2026-11-25"],
+            )
+            self.assertIsNone(soxx["daily"][1]["flow_usd_100m"])  # 11-10 null 行保留
+            # SPY：已切自算备用（SSGA），流量 718.51234567 × 1M ≈ $7.19 亿
+            spy = by_ticker["SPY"]
+            self.assertEqual(spy["source"], "selfcalc-ssga")
+            self.assertEqual(spy["status"], "live")
+            self.assertAlmostEqual(spy["daily_flow_usd_100m"], 7.1851, places=4)
+            # TLT：自算主路，流量 = 48894M/601M × 1M ≈ $0.81 亿
+            tlt = by_ticker["TLT"]
+            self.assertEqual(tlt["source"], "selfcalc-blackrock")
+            self.assertEqual(tlt["status"], "live")
+            self.assertAlmostEqual(tlt["daily_flow_usd_100m"], 0.8135, places=2)
+            # GLD：自算主路，流量 = 331.98279858 × (359.40M − 361.80M) ≈ −$7.97 亿
+            gld = by_ticker["GLD"]
+            self.assertEqual(gld["source"], "selfcalc-ssga")
+            self.assertEqual(gld["status"], "live")
+            self.assertAlmostEqual(gld["daily_flow_usd_100m"], -7.9676, places=4)
+            # XLP/XLV/XLE/XLU/XLK：自算备用取不到，failed；XLP 有上日 entry 可保留，
+            # 其余 4 只上日无 entry，date_et 为 None（不编数）
+            self.assertEqual(by_ticker["XLP"]["status"], "failed")
+            self.assertEqual(by_ticker["XLP"]["date_et"], "2026-11-11")
+            self.assertAlmostEqual(by_ticker["XLP"]["daily_flow_usd_100m"], 1.0, places=4)
+            for ticker in ("XLV", "XLE", "XLU", "XLK"):
+                self.assertEqual(by_ticker[ticker]["status"], "failed", msg=ticker)
+                self.assertIsNone(by_ticker[ticker]["date_et"], msg=ticker)
+                self.assertIn("取数失败", by_ticker[ticker]["note"], msg=ticker)
+            # IBIT：Farside 11-24 行 200.0（百万美元）→ 2.0（亿美元）
+            ibit = by_ticker["IBIT"]
+            self.assertEqual(ibit["source"], "farside")
+            self.assertEqual(ibit["status"], "live")
+            self.assertAlmostEqual(ibit["daily_flow_usd_100m"], 2.0, places=4)
+            self.assertIsNone(ibit["aum_usd_100m"])
+            self.assertIn("单位假设未验证", ibit["note"])
+            # VOO、QQQ、SMH：本阶段记 seed，不编每日数
+            for ticker in ("VOO", "QQQ", "SMH"):
+                entry = by_ticker[ticker]
+                self.assertEqual(entry["source"], "seed", msg=ticker)
+                self.assertEqual(entry["status"], "seed", msg=ticker)
+                self.assertIsNone(entry["daily_flow_usd_100m"], msg=ticker)
+                self.assertFalse(entry["flag_over_5pct"], msg=ticker)
+            # 快照文件已写回：TLT/GLD/SOXX/SPY 为 11-25，失败的 5 只未写入
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            for ticker in ("TLT", "GLD", "SOXX", "SPY"):
+                self.assertEqual(snaps[ticker]["date"], "2026-11-25", msg=ticker)
+            self.assertNotIn("XLP", snaps)
+
+    def test_first_day_snapshots_only_no_flow(self):
+        # 上线第一天：无上日快照，自算流量记 null；快照文件已存下当天数。
+        with tempfile.TemporaryDirectory() as out_dir:
+            tlt_csv = load_fixture("blackrock_tlt.csv")
+            soxx_csv = _make_blackrock_csv(
+                175000000, "Nov 24, 2026", [20000000000, 15000000000]
+            )
+            gld_html = load_fixture("ssga_gld.html")
+            spy_html = load_fixture("ssga_gld.html").replace(
+                "$331.98", "$718.51"
+            ).replace("360.40 M", "1,071.28 M").replace("331.98279858", "718.51234567")
+
+            def fake_http(url, headers=None, timeout=None):
+                if "portfolioId=239454" in url:
+                    return 200, tlt_csv.encode("utf-8")
+                if "portfolioId=239705" in url:
+                    return 200, soxx_csv.encode("utf-8")
+                if url == fetch_all.SSGA_FUND_PAGES["GLD"]:
+                    return 200, gld_html.encode("utf-8")
+                if url == fetch_all.SSGA_FUND_PAGES["SPY"]:
+                    return 200, spy_html.encode("utf-8")
+                raise FetchError(f"HTTP 403 {url}")
+
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            # TLT/GLD：首日无流量，status unmeasured，但 AUM 已知（NAV×份额）
+            self.assertEqual(by_ticker["TLT"]["status"], "unmeasured")
+            self.assertIsNone(by_ticker["TLT"]["daily_flow_usd_100m"])
+            self.assertAlmostEqual(by_ticker["TLT"]["aum_usd_100m"], 488.94, places=2)
+            self.assertIn("首日", by_ticker["TLT"]["note"])
+            self.assertEqual(by_ticker["GLD"]["status"], "unmeasured")
+            self.assertIsNone(by_ticker["GLD"]["daily_flow_usd_100m"])
+            # 整源无新鲜 live 数，status 记 seed（不是失败：快照已存，明日即有流量）
+            self.assertEqual(payload["status"], "seed")
+            with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+                snaps = json.load(fh)
+            self.assertEqual(snaps["TLT"]["date"], "2026-11-24")
+            self.assertEqual(snaps["GLD"]["shares"], 360400000.0)
+
+    def test_all_failed_raises(self):
+        with tempfile.TemporaryDirectory() as out_dir:
+            with mock.patch.object(fetch_all, "get_json",
+                                   side_effect=FetchError("HTTP 403 tickerinside")):
+                with mock.patch.object(fetch_all, "http_request",
+                                       side_effect=FetchError("HTTP 403 issuer")):
+                    with self.assertRaises(FetchError):
+                        fetch_etf_flows(out_dir, today="2026-11-25")
+
+    def test_weekly_falls_back_to_previous(self):
+        # ici.json 不存在时沿用上一次 etf-flows.json 的 weekly（4200.0 / 2026-11-11）
+        with tempfile.TemporaryDirectory() as out_dir:
+            with open(os.path.join(out_dir, "etf-flows.json"), "w") as fh:
+                fh.write(load_fixture("etf_flows_prev.json"))
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(
+                    fetch_all, "http_request", side_effect=_fake_http_tlt_only
+                ):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+        self.assertEqual(payload["weekly"]["equity_etf_usd_100m"], 4200.0)
+        self.assertEqual(payload["weekly"]["coverage_week_end_et"], "2026-11-11")
+        self.assertEqual(payload["weekly"]["source"], "previous")
+
+    def test_weekly_falls_back_to_seed(self):
+        # ici.json 与上一次文件都不存在时用种子值 4571.0 / 2026-11-18
+        with tempfile.TemporaryDirectory() as out_dir:
+            with mock.patch.object(fetch_all, "get_json",
+                                   return_value=load_json_fixture("tickerinside_series.json")):
+                with mock.patch.object(
+                    fetch_all, "http_request", side_effect=_fake_http_tlt_only
+                ):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+        self.assertEqual(payload["weekly"]["equity_etf_usd_100m"], 4571.0)
+        self.assertEqual(payload["weekly"]["coverage_week_end_et"], "2026-11-18")
+        self.assertEqual(payload["weekly"]["source"], "seed")
+
+
 class TestSourceConfig(unittest.TestCase):
     def test_ici_urls_filled(self):
         # 2026-11-25 校正清单第 1 项：ICI 四页 URL 已填入（核查报告 §1.1），
@@ -234,6 +693,18 @@ class TestSourceConfig(unittest.TestCase):
     def test_etf_com_still_unconfigured(self):
         # ETF.com 无公开 API（v1 结论），仍保持未配置，绝不凭猜测写 URL。
         self.assertIsNone(fetch_all.ETF_COM_URL)
+
+    def test_etf_flows_has_real_fetcher(self):
+        # etf-flows 已有真实 fetcher（TickerInside + 自算）：取数全失败时抛
+        # FetchError，不再是旧占位的 NotConfigured。
+        with mock.patch.object(fetch_all, "get_json",
+                               side_effect=FetchError("HTTP 403 tickerinside")):
+            with mock.patch.object(fetch_all, "http_request",
+                                   side_effect=FetchError("HTTP 403 issuer")):
+                with self.assertRaises(FetchError):
+                    fetch_etf_flows(None, today="2026-11-25")
+        self.assertIn("etf-flows", fetch_all.FETCHERS)
+        self.assertEqual(fetch_all.FETCHERS["etf-flows"][1], "etf-flows.json")
 
 
 class TestICI(unittest.TestCase):

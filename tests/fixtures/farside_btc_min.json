@@ -1,0 +1,1 @@
+{"_fixture":"fixture，非真实数据：同 run 的 farside-btc.json 最小形态（仅用于离线测试 IBIT 取数：funds['IBIT'] 单位百万美元假设，daily_flow = 该值/100）。","fetched_at":"2026-11-25T15:00:00Z","rows":[{"date":"2026-11-23","funds":{"FBTC":12.5,"IBIT":-509.3},"total":-569.7},{"date":"2026-11-24","funds":{"FBTC":5.0,"IBIT":200.0},"total":100.0}],"source_url":"https://farside.co.uk/bitcoin-etf-flow-all-data/"}

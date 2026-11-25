@@ -127,3 +127,32 @@ python3 scripts/probe.py https://example.com --timeout 15
 - probe 在本机对无墙站（example.com）四档跑通（见 S5），第 3/4 档因未装依赖而跳过；
   curl_cffi / Playwright 在 Actions 运行器上同样默认未装，首跑前须在 workflow 或
   probe 调用方装好，否则第 3/4 档只能跳过（不报错）。
+
+## 6. etf-flows 第一阶段（2026-11-25，离线 29 项新增，全部通过）
+
+测试命令（在 `github-actions/` 目录下）：`python3 -m unittest discover -s tests -v`
+结果：77 项全过（原有 48 项 + 新增 29 项）。
+
+| # | 测了什么 | 怎么测 | 结果 |
+|---|---|---|---|
+| 49–53 | TickerInside 解析 | fixture `tickerinside_series.json`（SOXX 11-10 null 行、11-11 锚点行） | 通过：锚点 flow 1,065,556,947 美元；null 行保留；缺一只标的抛 `SchemaError`；锚点值偏差 >20% 只警告；锚点行在窗口内缺失抛错；pct 小数/百分数换算 |
+| 54–57 | BlackRock CSV 解析 | fixture `blackrock_tlt.csv` | 通过：份额 600,000,000（2026-11-24）、Σ市值 $48,894,000,000、NAV $81.49；缺份额/缺 Market Value 列抛错；Total 合计行不重复计入 |
+| 58–62 | SSGA 基金页解析 | fixture `ssga_gld.html` | 通过：份额 360.40M、精确 NAV 331.98279858 优先、截至日 2026-11-24；无精确值回退表内 $331.98；欧洲格式 361,80 M 拒绝；缺 NAV 抛错；NAV Per Basket 不误认 |
+| 63–68 | 自算流量 | 内联快照对 | 通过：首日流量 null；GLD 实算 361.80M→360.40M × $331.98279858 = −$464,775,918（−4.6478 亿美元）复现；2:1 拆股折算后流量 0；−11.8% 大额申赎不误判为拆股、流量 −$41.3 亿；同日重跑无流量；净值越界抛错 |
+| 69–70 | daily 合并 | 内联序列 | 通过：去重 + 60 日上限 + 新行覆盖；null 行保留 |
+| 71 | 两路冲突 >10% | mock 全路（today=2026-11-12，未切换） | 通过：主路 TickerInside 10.6556，`alternate_flow` ≈ 28.42，note 写“两路不一致”；daily 11-11 仍是主路数 |
+| 72 | 全量合并（已切换） | mock 全路 + 临时 out_dir（today=2026-11-25） | 通过：SOXX/SPY 切自算备用 live（流量 2.0 / 7.1851）；TLT 0.8135、GLD −7.9676 live；XLP 失败保留上日数、其余 4 只失败无旧数；IBIT 2.0（Farside）；VOO/QQQ/SMH seed；weekly 4571.0（ICI）；快照文件写回 11-25 |
+| 73 | 上线首日 | mock 全路 + 空 out_dir | 通过：TLT/GLD 流量 null、status unmeasured、AUM 已知；快照文件已存；整源 status seed |
+| 74 | 全部失败 | mock 全路抛错 + 空 out_dir | 通过：抛 `FetchError` |
+| 75–76 | weekly 回退 | mock（仅 TLT 通）+ 有/无上日文件 | 通过：无 ici.json 时沿用上日 weekly（4200.0/2026-11-11，source previous）；再无时种子值 4571.0/2026-11-18（source seed） |
+| 77 | etf-flows 真实 fetcher | mock 全路抛错 | 通过：抛 `FetchError` 而非旧占位的 `NotConfigured`；`ETF_COM_URL` 仍为 None（旧断言不动） |
+
+### 6.1 本机沙箱实跑观察（不是 Actions 结论，仅记行为）
+
+- `python3 scripts/fetch_all.py --only etf-flows --out-dir /tmp/ff-smoke2`（2026-11-25 15:44 UTC）：退出码 0，`etf-flows.json` + `etf-selfcalc-snapshots.json` + `status.json` 均写出，`status.json` 的 etf-flows 为 ok。
+- **TickerInside 本机通**：最新收盘日 2026-11-11，滞后 10 个交易日 → 切换立即生效；SOXX 11-11 实测流量 10.6556（亿美元）= $1,065,556,947，与锚点完全一致；pct 实测 2.382%（证实 `flow_pct_of_assets` 是小数口径，换算逻辑正确）；反推 AUM 447.3（亿美元）与种子值 350.0 偏差 27.8% >20% → aum 按规则记 null 并写进 notes（种子 $350 亿可能已旧，待核对）。
+- **BlackRock 本机通**：TLT 实测 600,000,000 股、NAV $81.80（2026-11-24），与方案锚点（600M 股、约 $81.49–$81.88）一致；SOXX 实测 267,500,000 股、NAV $125.51（在 100–400 区间内）。
+- **SSGA 本机全 403**：GLD/SPY/XLP/XLV/XLE/XLU/XLK 在本机沙箱出口均取不到（与 ICI 本机 403 同类），对应标的记 failed；**不代表 Actions 出口结论**，首跑须以 `status.json` 为准。
+- 同日重跑：快照日期未前进（11-24 = 11-24），流量记 null、不重复算，TLT AUM $490.80 亿正常写出。
+- 附带修复：`run_fetch` 原取 `payload["fetched_at"]`，etf-flows 按数据契约用 `fetched_at_utc`，首轮实跑报 `KeyError` 后改为两者都认（`payload.get("fetched_at") or payload.get("fetched_at_utc")`）；旧源不受影响。
+- 未验证（仍须 Actions 首跑）：SSGA 在 Actions 出口的通断；SSGA 精确 NAV（`331.98279858` 式 JSON 值）在原始 HTML 里的真实形态（本机渲染文本只见到 `$331.98`，代码找不到时安全回退表内值）；XLK 的 BlackRock portfolioId——已查明 XLK 是 SPDR 产品，无 iShares portfolioId，不走 BlackRock 路（方案 §九“BlackRock 覆盖 SOXX/XLK”一说有误，见 build log）。

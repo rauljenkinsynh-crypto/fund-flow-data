@@ -1,0 +1,13 @@
+# fixture，非真实数据：BlackRock v1 holdings CSV 最小结构（前 8 行元数据 + 持仓表；仅用于离线测试解析逻辑）
+iShares 20+ Year Treasury Bond ETF
+Fund Holdings as of, "Nov 24, 2026"
+Inception Date, "Jul 22, 2002"
+Shares Outstanding, "600,000,000.00"
+Stock, 0
+Bond, 100
+Cash, 0
+Other, 0
+Name,Sector,Asset Class,Market Value,Weight (%),Notional Value,Par Value,CUSIP,ISIN,SEDOL,Price,Duration,YTM (%)
+US TREASURY N/B,Public,Fixed Income,20000000000,40.9,20000000000,20000000000,912810AA1,US912810AA12,AAA,100,20.5,4.9
+US TREASURY N/B,Public,Fixed Income,15000000000,30.7,15000000000,15000000000,912810BB2,US912810BB23,BBB,99,21.0,4.8
+US TREASURY N/B,Public,Fixed Income,13894000000,28.4,13894000000,13894000000,912810CC3,US912810CC34,CCC,101,19.8,5.0
