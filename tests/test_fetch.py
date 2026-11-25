@@ -68,14 +68,36 @@ class TestParseNumber(unittest.TestCase):
 
 class TestFarside(unittest.TestCase):
     def test_table_parses(self):
+        # 短表真实结构：logo 行 + ticker 行 + Fee 行，日期为 DD Mon YYYY。
         rows = parse_farside_html(load_fixture("farside_btc.html"))
-        self.assertEqual(len(rows), 2)  # 'Not a date' 行被丢弃
+        self.assertEqual(len(rows), 2)  # 'Not a date' 行与 Total 汇总行被丢弃
         self.assertEqual(rows[0]["date"], "2026-11-20")
         self.assertEqual(rows[0]["total"], 100.0)
         self.assertEqual(rows[1]["date"], "2026-11-23")
         self.assertEqual(rows[1]["total"], -569.7)  # 括号负数
         self.assertEqual(rows[1]["funds"]["IBIT"], -509.3)
         self.assertEqual(rows[1]["funds"]["FBTC"], 12.5)
+
+    def test_btc_all_data_parses(self):
+        # BTC 全量表：首行即 Date | ticker…| Total，但日期仍为 DD Mon YYYY。
+        rows = parse_farside_html(load_fixture("farside_btc_all.html"))
+        self.assertEqual(len(rows), 2)  # Maximum 汇总行被丢弃
+        self.assertEqual(rows[0]["date"], "2026-11-20")
+        self.assertEqual(rows[0]["total"], 100.0)
+        self.assertEqual(rows[1]["date"], "2026-11-23")
+        self.assertEqual(rows[1]["total"], -569.7)
+        self.assertEqual(rows[1]["funds"]["IBIT"], -509.3)
+
+    def test_eth_all_data_parses(self):
+        # ETH 全量表：首行首格为空 + ticker + Total，无 Date 格。
+        rows = parse_farside_html(load_fixture("farside_eth.html"))
+        self.assertEqual(len(rows), 2)  # Average 汇总行被丢弃
+        self.assertEqual(rows[0]["date"], "2026-11-20")
+        self.assertEqual(rows[0]["total"], 20.0)
+        self.assertEqual(rows[1]["date"], "2026-11-23")
+        self.assertEqual(rows[1]["total"], 5.0)
+        self.assertEqual(rows[1]["funds"]["ETHA"], 10.0)
+        self.assertEqual(rows[1]["funds"]["FETH"], -5.0)
 
     def test_no_valid_table_raises(self):
         with self.assertRaises(SchemaError):

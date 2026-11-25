@@ -28,7 +28,10 @@ hidden_files/github-actions-reconciliation-20261125.md 校正清单 1/2/4）：
     该 symbol 实际走通的是哪条（主机 + 版本）。
   - FRED：GET https://api.stlouisfed.org/fred/series/observations
     ?series_id=DGS10&api_key=...&file_type=json。
-  - Farside：https://farside.co.uk/btc/ 与 https://farside.co.uk/eth/，HTML 表格。
+  - Farside：全量表 https://farside.co.uk/bitcoin-etf-flow-all-data/ 与
+    https://farside.co.uk/ethereum-etf-flow-all-data/，HTML 表格（2026-11-25
+    修正：短表 /btc/、/eth/ 只有约 10 天，且表头无 Date 格、日期为 DD Mon YYYY，
+    旧解析器认不出；见 parse_farside_html）。
   - 价格（Yahoo）已在 Space 服务端自动跑，本脚本绝不重复取价格。
   - EDGAR companyfacts：https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json，
     免 key，必须带 User-Agent（含联系方式，SEC 要求）；6 家公司 CIK
@@ -81,9 +84,11 @@ FRED_URL_TEMPLATE = (
 FRED_ENV_KEY = "FRED_API_KEY"  # 只读环境变量名；key 值绝不写进文件
 
 # -- Farside（口径已确切：URL 与 HTML 表格）--
+# 2026-11-25 修正：改取全量表（短表只有约 10 天，且每次成功运行都会把
+# farside-*.json 覆写成只有 10 天）；全量表一次拿到完整历史。
 FARSIDE_URLS = {
-    "btc": "https://farside.co.uk/btc/",
-    "eth": "https://farside.co.uk/eth/",
+    "btc": "https://farside.co.uk/bitcoin-etf-flow-all-data/",
+    "eth": "https://farside.co.uk/ethereum-etf-flow-all-data/",
 }
 
 # -- ICI：四页确切 URL（2026-11-25 校正清单第 1 项，核查报告 §1.1）--
@@ -138,7 +143,16 @@ KNOWN_CAVEATS = {
 HTTP_TIMEOUT = 30        # 秒，单次请求超时
 MAX_RETRIES = 3          # 含首次，共最多 3 次
 BACKOFF_BASE_SECONDS = 2  # 指数退避：2s、4s（第 3 次失败后不再等）
-DEFAULT_HEADERS = {"User-Agent": "fund-flow-dashboard/1.0"}
+# 通用请求头：浏览器 UA（2026-11-25 改：脚本 UA 会被 Farside 的 Cloudflare
+# 按 UA 拦；出口探测已证明完整浏览器头在 ICI 与 Farside 上都返回 200）。
+# 与 scripts/probe.py 的 BROWSER_HEADERS 保持同一 UA。
+DEFAULT_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "en-US,en;q=0.9",
+}
 
 # 数据文件清单（输出文件名 -> 源说明）
 SOURCES = [
@@ -313,11 +327,48 @@ class _TableParser(HTMLParser):
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
+def _parse_farside_date(cell):
+    """Farside 日期转 ISO：接受 ISO（2026-11-23）与 'DD Mon YYYY'（23 Nov 2026）。
+
+    后者是页面真实格式；strptime 的 %b 在 Actions 跑手（Ubuntu，C.UTF-8）
+    下解析英文月份缩写。转不出返回 None（该行跳过，不编数）。
+    """
+    cell = cell.strip()
+    if _DATE_RE.match(cell):
+        return cell
+    try:
+        return datetime.strptime(cell, "%d %b %Y").strftime("%Y-%m-%d")
+    except ValueError:
+        return None
+
+
+def _find_farside_header_row(table):
+    """在表的前 6 行里找 ticker 行：非空单元格最多、且末个非空格为 Total。
+
+    logo 行只有 1 个非空格（Total），Fee 行末格为空，都不会被误认；
+    数据行的末格是数字，也不会被误认。未找到返回 None。
+    """
+    best_idx, best_count = None, 0
+    for idx, row in enumerate(table[:6]):
+        non_empty = [c for c in row if c.strip()]
+        if not non_empty or non_empty[-1].lower() != "total":
+            continue
+        if len(non_empty) > best_count:
+            best_idx, best_count = idx, len(non_empty)
+    return best_idx
+
+
 def parse_farside_html(html_text):
     """解析 Farside BTC/ETH 页面 HTML 表格。
 
-    接受任一含 'Date' 与 'Total' 列的表格；表头按名映射，不按固定列号，
-    列顺序变化时仍能解析。返回 rows：[{date, total, funds: {代码: 数值}}]。
+    真实页面结构（2026-11-25 实测）：
+    - 短表（/btc/、/eth/）第 1 行是发行商 logo 图片（文本为空）+ 末格 Total，
+      第 2 行是 ticker，第 3 行是 Fee；全表无 'Date' 格。
+    - 全量表（bitcoin/ethereum-etf-flow-all-data/）BTC 第 1 行即
+      Date | ticker…| Total；ETH 全量表第 1 行首格为空 + ticker + Total，无 Date。
+    - 日期一律 'DD Mon YYYY'（如 23 Nov 2026），不是 ISO。
+    因此表头判定改为找 ticker 行；日期列取该行含 'date' 的格，否则取第 0 列；
+    Total 列取含 'total' 的格，否则取末列。返回 rows：[{date, total, funds}]。
     无符合条件的表 / 无有效数据行 -> SchemaError。
     """
     parser = _TableParser()
@@ -325,25 +376,30 @@ def parse_farside_html(html_text):
     for table in parser.tables:
         if not table:
             continue
-        header = [c.lower() for c in table[0]]
-        if "date" not in header or "total" not in header:
+        header_idx = _find_farside_header_row(table)
+        if header_idx is None:
             continue
-        date_idx = header.index("date")
-        total_idx = header.index("total")
+        header = table[header_idx]
+        lower = [c.lower() for c in header]
+        date_idx = lower.index("date") if "date" in lower else 0
+        total_idx = lower.index("total") if "total" in lower else len(header) - 1
         rows = []
-        for raw_row in table[1:]:
+        for raw_row in table[header_idx + 1:]:
             if len(raw_row) <= max(date_idx, total_idx):
                 continue
-            date = raw_row[date_idx].strip()
-            if not _DATE_RE.match(date):
+            date = _parse_farside_date(raw_row[date_idx])
+            if date is None:
                 continue
             funds = {}
-            for idx, name in enumerate(table[0]):
+            for idx, name in enumerate(header):
                 if idx in (date_idx, total_idx) or idx >= len(raw_row):
+                    continue
+                name = name.strip()
+                if not name:
                     continue
                 value = parse_number(raw_row[idx])
                 if value is not None:
-                    funds[name.strip()] = value
+                    funds[name] = value
             rows.append(
                 {"date": date, "total": parse_number(raw_row[total_idx]), "funds": funds}
             )
