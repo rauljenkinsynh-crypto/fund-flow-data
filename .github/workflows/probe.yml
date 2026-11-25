@@ -1,0 +1,74 @@
+# 资金流仪表盘 — 首跑出口探测（dispatch-only，只测不写库）
+#
+# 用途：第一次 Actions 运行前，先测 GitHub 运行器出口能不能到达各源。
+# 只打印每档状态码 + 出口 IP/ASN + 内容标记，不取业务数据、不写 data/、
+# 不提交任何文件。判定：状态码 200 且内容标记命中才算通过；200 但返回
+# 质询页/403 文本算不通过（见 hidden_files/github-actions-source-mechanics-20261125.md §7.3）。
+#
+# 四档递进（scripts/probe.py 内实现）：
+#   ① urllib 标准 UA → ② urllib 完整浏览器请求头 →
+#   ③ curl_cffi（TLS 指纹）→ ④ Playwright 真浏览器。
+# ①②档失败不代表死刑，③④档才是裁决档；四档皆 403 即判定该源 Actions 路线不通，
+# 回退半自动，不再追加取巧手段。
+#
+# 本文件不含任何 key 值。SoSoValue v1 探测 URL 不带 key：返回 401 即证明
+# 主机可达（认证层），403 才证明被拦截；带 key 的实测由 fetch 工作流做。
+
+name: probe-egress
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "要探测的 URL（空格分隔；留空用默认清单）"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-egress
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install probe tiers 3-4
+        run: |
+          python3 -m pip install --quiet curl_cffi playwright
+          python3 -m playwright install --with-deps chromium
+
+      - name: Probe egress (4 tiers per URL)
+        run: |
+          if [ -z "${{ inputs.urls }}" ]; then
+            python3 scripts/probe.py \
+              https://www.ici.org/research/stats/flows \
+              https://www.ici.org/research/stats/mmf \
+              https://farside.co.uk/btc/ \
+              https://farside.co.uk/bitcoin-etf-flow-all-data/ \
+              https://www.etf.com/sections/daily-etf-flows/ \
+              "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=BTC&country_code=US" \
+              | tee probe-result.json
+          else
+            # shellcheck disable=SC2086
+            python3 scripts/probe.py ${{ inputs.urls }} | tee probe-result.json
+          fi
+
+      - name: Upload probe result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe-result-${{ github.run_number }}
+          path: probe-result.json
+          retention-days: 30
