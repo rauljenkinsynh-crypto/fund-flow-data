@@ -56,6 +56,7 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import html
 import json
 import os
 import re
@@ -1067,29 +1068,97 @@ def _parse_us_number(raw):
     return parse_number(text)
 
 
-def parse_ssga_fund_page(html_text):
-    """解析 SSGA 美国版基金页 HTML。
+def _parse_ssga_date(raw):
+    """解析 SSGA 日期文本（"Nov 24 2026" / "24-Nov-2026" / "as of Nov 24 2026"）。
+    失败返回 None，不抛错（调用方决定是否回退）。"""
+    if not raw:
+        return None
+    text = str(raw).strip()
+    text = re.sub(r"^as of\s+", "", text, flags=re.IGNORECASE)
+    text = text.replace(",", "").replace(".", "")
+    for fmt in ("%b %d %Y", "%B %d %Y", "%d-%b-%Y", "%d-%B-%Y"):
+        try:
+            return datetime.strptime(text, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
 
-    取“Fund Net Asset Value as of <Mon D YYYY>”截至日；表内 NAV 行与
-    Shares Outstanding 行（“360.40 M”为百万股，美国格式；出现欧洲格式
-    361,80 M 即 SchemaError）。NAV 优先取页内 JSON 形式的精确值
-    （如 "nav": 331.98279858），与表内 NAV 偏差 ≤1% 时采用，否则用表内值。
-    任一字段缺失 -> SchemaError。
-    返回 {"date","shares","nav","nav_precise"}。
-    精确值形态未在原始 HTML 里直接核实（只在渲染文本里见到 $331.98）：
-    找不到 JSON 精确值时安全回退到表内 NAV，不阻塞。
+
+def _parse_ssga_quick_info(html_text):
+    """从 <input id="fund-quick-info"> 的转义 JSON 取 NAV/总资产/截至日。
+
+    真实页面结构（2026-11-25 实测 GLD/SPY/XLU 三页，均为 HTTP 200 原始 HTML）：
+    文本里根本没有 "Fund Net Asset Value as of <日期>" 这句话，NAV/Shares 表
+    也只以 JSON 转义串嵌在别的 blob 里——首跑 7 只全失败就是因为解析器按手写
+    夹具的表格式去找，真实页面里根本没有那张表（Farside 同款教训）。
+    数据在 fund-quick-info 的 value 里：attrs.nav.originalValue 为精确 NAV，
+    attrs.aum.originalValue 为精确总资产（美元），截至日取
+    attrs.nav.asOfDateSimple（"Nov 24 2026"）或 attrs.nav-date.value
+    （"24-Nov-2026"）；顶层 asOfDate 是页面日期（如 Nov 25），不是 NAV 截至日，
+    绝不能用。份额无单独字段：shares = 总资产 / NAV（定义上精确；
+    GLD 360.40M、SPY 1071.28M、XLU 533.50M 三页反推值与已核实数一致）。
     """
+    tag_pos = html_text.find('id="fund-quick-info"')
+    if tag_pos < 0:
+        raise SchemaError("SSGA 基金页未找到 fund-quick-info 数据块")
+    input_start = html_text.rfind("<input", 0, tag_pos)
+    if input_start < 0:
+        raise SchemaError("SSGA 基金页 fund-quick-info 不在 input 标签内")
+    tag_end = html_text.find('"/>', tag_pos)
+    if tag_end < 0:
+        raise SchemaError("SSGA 基金页 fund-quick-info 标签未闭合")
+    value_start = html_text.find('value="', input_start, tag_end)
+    if value_start < 0:
+        raise SchemaError("SSGA 基金页 fund-quick-info 缺少 value")
+    try:
+        data = json.loads(html.unescape(html_text[value_start + 7:tag_end]))
+    except ValueError as exc:
+        raise SchemaError(f"SSGA 基金页 fund-quick-info JSON 无法解析：{exc}")
+    attrs = data.get("attrs") or {}
+    nav_attr = attrs.get("nav") or {}
+    aum_attr = attrs.get("aum") or {}
+    nav = None
+    nav_precise = False
+    raw_precise = nav_attr.get("originalValue")
+    if raw_precise is not None:
+        nav = parse_number(str(raw_precise))
+        if nav is not None:
+            nav_precise = True
+    if nav is None:
+        nav = _parse_us_number(nav_attr.get("value"))
+    if nav is None or nav <= 0:
+        raise SchemaError("SSGA 基金页 fund-quick-info 缺少 NAV")
+    aum = None
+    raw_aum = aum_attr.get("originalValue")
+    if raw_aum is not None:
+        aum = parse_number(str(raw_aum))
+    if aum is None or aum <= 0:
+        raise SchemaError("SSGA 基金页 fund-quick-info 缺少总资产（无法反推份额）")
+    asof = None
+    for candidate in (
+        nav_attr.get("asOfDateSimple"),
+        (attrs.get("nav-date") or {}).get("value"),
+        nav_attr.get("asOfDate"),
+    ):
+        asof = _parse_ssga_date(candidate)
+        if asof:
+            break
+    if asof is None:
+        raise SchemaError("SSGA 基金页 fund-quick-info 缺少 NAV 截至日")
+    return {"date": asof, "shares": aum / nav, "nav": nav, "nav_precise": nav_precise}
+
+
+def _parse_ssga_table(html_text):
+    """旧表格式解析（手写夹具走这条路；真实页面无此表，仅作回退）。"""
     date_match = re.search(
         r"Fund Net Asset Value as of\s+([A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{4})",
         html_text,
     )
     if not date_match:
         raise SchemaError("SSGA 基金页未找到 Fund Net Asset Value as of 截至日")
-    raw_date = date_match.group(1).replace(",", "")
-    try:
-        asof = datetime.strptime(raw_date, "%b %d %Y").strftime("%Y-%m-%d")
-    except ValueError:
-        raise SchemaError(f"SSGA 基金页截至日无法解析：{raw_date!r}")
+    asof = _parse_ssga_date(date_match.group(1))
+    if asof is None:
+        raise SchemaError(f"SSGA 基金页截至日无法解析：{date_match.group(1)!r}")
     parser = _TableParser()
     parser.feed(html_text)
     nav_value = None
@@ -1138,6 +1207,26 @@ def parse_ssga_fund_page(html_text):
             nav = candidate
             nav_precise = True
     return {"date": asof, "shares": shares_value, "nav": nav, "nav_precise": nav_precise}
+
+
+def parse_ssga_fund_page(html_text):
+    """解析 SSGA 美国版基金页 HTML，返回 {"date","shares","nav","nav_precise"}。
+
+    优先走 fund-quick-info JSON（真实页面结构，2026-11-25 实测 GLD/SPY/XLU）；
+    找不到时回退旧表格式（手写夹具）。两路都无数据才 SchemaError。
+    截至日取页面实际携带的 NAV 截至日（通常为 T+1，即前一日收盘），
+    绝不硬找当日日期；页面确实没有任何可用净值时才记 failed。
+    """
+    errors = []
+    try:
+        return _parse_ssga_quick_info(html_text)
+    except SchemaError as exc:
+        errors.append(str(exc))
+    try:
+        return _parse_ssga_table(html_text)
+    except SchemaError as exc:
+        errors.append(str(exc))
+    raise SchemaError("SSGA 基金页未找到可用净值（" + "；".join(errors) + "）")
 
 
 def check_nav_range(ticker, nav, ranges):
@@ -1234,15 +1323,6 @@ def merge_daily_series(prev_daily, new_rows, limit=ETF_DAILY_KEEP_DAYS):
 def _usd_to_100m(usd):
     """美元 -> 亿美元（1 单位 = 1 亿美元）；None 保持 None，不编 0。"""
     return None if usd is None else round(usd / 1e8, 4)
-
-
-def _ti_pct_to_percent(value):
-    """TickerInside flow_pct_of_assets 可能是小数（0.0305）或百分数（3.05），
-    按量级换算成百分数（pct_of_aum 口径）。未验证：以首次 live 运行的锚点核对
-    （SOXX 11-11 流量反推 AUM 应约 $350 亿）为准；若换算错，AUM 偏差检查会报警。"""
-    if value is None:
-        return None
-    return value * 100.0 if abs(value) < 1 else value
 
 
 def _etf_entry(ticker, date_et, flow_100m, aum_100m, pct_of_aum, source,
@@ -1653,8 +1733,16 @@ def fetch_etf_flows(out_dir=None, today=None):
         return aum_100m, pct
 
     def _retained_entry(ticker, status, extra_note):
-        """失败时保留上一日 entry 的数值，只改 status 与 note（不编新数）。"""
+        """失败时保留上一日 entry 的数值，只改 status 与 note（不编新数）。
+
+        上一日无任何数据时（首跑、或上日亦无 entry），note 里不许写
+        “显示上一日数据”——文件里并没有上一日的数据，面板实际按规则回退
+        到种子数；改写“回退种子数（无上一日数据）”。"""
         prev = prev_tracked.get(ticker) or {}
+        if not (prev.get("date_et") or prev.get("daily")):
+            extra_note = extra_note.replace(
+                "显示上一日数据", "回退种子数（无上一日数据）"
+            )
         note = (prev.get("note") or "") + ("；" if prev.get("note") else "") + extra_note
         return _etf_entry(
             ticker,
@@ -1693,11 +1781,6 @@ def fetch_etf_flows(out_dir=None, today=None):
             else None
         )
         ti_date = ti_latest_row["date"] if ti_latest_row else None
-        ti_pct = (
-            _ti_pct_to_percent(ti_latest_row["flow_pct_of_assets"])
-            if ti_latest_row
-            else None
-        )
         record = selfcalc.get(ticker) or {}
         snap = record.get("snapshot")
         sc_flow_100m = _usd_to_100m(record.get("flow_usd"))
@@ -1737,7 +1820,9 @@ def fetch_etf_flows(out_dir=None, today=None):
             elif snap is not None:
                 # 自算首日（或快照日期未前进）：无新流量，暂显示 TickerInside 旧数。
                 if ti_flow_100m is not None:
-                    primary = _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes)
+                    primary = _ti_headline(
+                        ticker, ti_latest_row, ti_flow_100m, notes, snapshot=snap
+                    )
                     primary = (
                         primary[0], primary[1], primary[2], primary[3], primary[4],
                         primary[5] + "自算首日无流量，暂显示 TickerInside 旧数。",
@@ -1757,7 +1842,9 @@ def fetch_etf_flows(out_dir=None, today=None):
                 continue
         else:
             if ti_flow_100m is not None:
-                primary = _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes)
+                primary = _ti_headline(
+                    ticker, ti_latest_row, ti_flow_100m, notes, snapshot=snap
+                )
             elif sc_flow_100m is not None:
                 aum_100m, pct = _selfcalc_aum_pct(ticker)
                 note = "TickerInside 当日未测得，改用自算备用。"
@@ -1906,28 +1993,46 @@ def fetch_etf_flows(out_dir=None, today=None):
     }
 
 
-def _ti_headline(ticker, ti_latest_row, ti_flow_100m, ti_pct, notes):
-    """TickerInside 主路 headline：pct 取文件自带的 flow_pct_of_assets；
-    aum 只有当 flow 与 pct 都非零且能算出时才填（aum = flow/pct），否则 null。
-    算出的 AUM 与种子值（SOXX 约 $350 亿）偏差 >20% 时 aum 记 null 并写进 notes。"""
-    pct = ti_pct
+def _ti_headline(ticker, ti_latest_row, ti_flow_100m, notes, snapshot=None):
+    """TickerInside 主路 headline：流量取 TickerInside，aum/pct 取自算快照总资产现算。
+
+    不采信 TickerInside 自带的 flow_pct_of_assets（实测：SOXX 11-11 pct 2.382%
+    反推总资产 $447.3 亿，与 11-24 快照总资产 $335.7 亿差 27.8%——主要是日期差：
+    11-11 收盘价 $155.40，11-24 快照 NAV $125.51，总资产两周内随市价跌了约 25%；
+    种子 $350 亿是 11 月下旬口径，与 11-11 的总资产不是同一天，不能直接比。
+    种子总资产不动（只有权威来源核实后才能改）。
+    pct = 流量 / 快照总资产（NAV×份额）；快照截至日与流量日不同时在 note 里写明。
+    快照总资产与种子值偏差超 5 倍或不足 0.2 倍时视为单位错误，aum/pct 记 null。
+    无快照时 aum/pct 记 null，不编数。"""
     aum_100m = None
-    if ti_flow_100m is not None and pct is not None and abs(pct) >= 0.1:
-        aum_100m = round(ti_flow_100m * 100.0 / pct, 4)
+    pct = None
+    note = ""
+    if snapshot is not None:
+        aum_100m = round(snapshot["nav"] * snapshot["shares"] / 1e8, 4)
         seed_aum = SEED_AUM_100M.get(ticker)
-        if seed_aum is not None and abs(aum_100m - seed_aum) / seed_aum > 0.20:
+        if seed_aum and not (0.2 * seed_aum <= aum_100m <= 5.0 * seed_aum):
             notes.append(
-                f"{ticker} TickerInside 反推 AUM {aum_100m:.1f}（亿美元）与种子值"
-                f" {seed_aum:.1f} 偏差超 20%，aum 记 null，不强行凑数。"
+                f"{ticker} 快照总资产 {aum_100m:.1f}（亿美元）与种子值"
+                f" {seed_aum:.1f} 偏差超 5 倍（疑似单位错误），aum/pct 记 null。"
             )
             aum_100m = None
+        elif ti_flow_100m is not None and aum_100m:
+            pct = round(ti_flow_100m / aum_100m * 100, 4)
+        snap_date = snapshot.get("date")
+        if snap_date and snap_date != ti_latest_row["date"]:
+            note = (
+                f"pct 按快照日总资产现算（快照截至 {snap_date}，"
+                f"流量日 {ti_latest_row['date']}）。"
+            )
+    else:
+        note = "无自算快照，pct 未算。"
     return (
         ti_flow_100m,
         ti_latest_row["date"],
         "tickerinside",
         pct,
         aum_100m,
-        "",
+        note,
     )
 
 

@@ -156,3 +156,20 @@ python3 scripts/probe.py https://example.com --timeout 15
 - 同日重跑：快照日期未前进（11-24 = 11-24），流量记 null、不重复算，TLT AUM $490.80 亿正常写出。
 - 附带修复：`run_fetch` 原取 `payload["fetched_at"]`，etf-flows 按数据契约用 `fetched_at_utc`，首轮实跑报 `KeyError` 后改为两者都认（`payload.get("fetched_at") or payload.get("fetched_at_utc")`）；旧源不受影响。
 - 未验证（仍须 Actions 首跑）：SSGA 在 Actions 出口的通断；SSGA 精确 NAV（`331.98279858` 式 JSON 值）在原始 HTML 里的真实形态（本机渲染文本只见到 `$331.98`，代码找不到时安全回退表内值）；XLK 的 BlackRock portfolioId——已查明 XLK 是 SPDR 产品，无 iShares portfolioId，不走 BlackRock 路（方案 §九“BlackRock 覆盖 SOXX/XLK”一说有误，见 build log）。
+
+## 7. etf-flows 第一阶段修复（2026-11-25，离线 84 项全过）
+
+修 run #4 线上验证发现的三问题（见 build log 2026-11-25 11:03 条目）：
+
+| # | 测了什么 | 怎么测 | 结果 |
+|---|---|---|---|
+| 78–81 | SSGA 真实页面结构 | 新夹具 `ssga_gld_real.html`（实取 GLD 页的 fund-quick-info input 原样摘录） | 通过：截至日取 NAV 的 2026-11-24（不用页面日期 Nov 25）；份额由总资产/NAV 反推 360,400,000；精确 NAV 331.98279858；无任何可用净值时抛 `SchemaError`；总资产为 0 时抛错 |
+| 82–85 | TickerInside headline 改快照现算 | `_ti_headline` 单元测试（SOXX 快照 267.5M 股 @ $125.51） | 通过：aum 335.74（亿美元）、pct 3.17%（不用 TickerInside 自带 pct）；无快照时 aum/pct 记 null；份额单位错（267.5 股）触发 5 倍保护记 null；同日快照不写日期备注 |
+| 86 | 失败措辞 | 合并测试 `test_full_fetch_switched_to_selfcalc` 追加断言 | 通过：XLP 有上一日数据写“显示上一日数据”；XLV/XLE/XLU/XLK 无上一日数据写“回退种子数”，不出现“显示上一日数据” |
+| — | 旧 `_ti_pct_to_percent` 及 `test_pct_fraction_or_percent_to_percent` | 删除（TickerInside pct 不再采信） | 全量 84 项通过（77 − 1 + 8） |
+
+### 7.1 本机沙箱实跑观察（修复后，2026-11-25 16:03 UTC，`/tmp/etf-live-check`）
+
+- `python3 scripts/fetch_all.py --only etf-flows` 退出码 0，整源 live。**SSGA 7 只全通**：快照 9 只齐全、截至日均为 2026-11-24——GLD 360.40M @ $331.98279858、SPY 1,071,282,116 @ $718.51354、XLP 170.12M @ $91.863632、XLV 262.82M @ $184.628443、XLE 627.75M @ $60.391542、XLU 533.50M @ $43.401394、XLK 676.06M @ $157.033224，与 build log 已核实数一致（份额为总资产/NAV 反推，与公布值偏差 <0.001%）。
+- SOXX headline：aum 335.7426、pct 3.1737（快照现算，注写明快照日与流量日不同）；SPY aum 7697.3071、pct 0.5495；7 只 TickerInside 标的均有快照总资产与 pct，不再记 null。
+- TLT/GLD 首日（本机无旧快照）仍 unmeasured、流量 null，符合向前累积设计。

@@ -29,7 +29,7 @@ from fetch_all import (  # noqa: E402
     SchemaError,
     _decode_body,
     _resolve_ciks,
-    _ti_pct_to_percent,
+    _ti_headline,
     _usd_to_100m,
     check_nav_range,
     compute_selfcalc_flow,
@@ -266,10 +266,55 @@ class TestTickerInside(unittest.TestCase):
         with self.assertRaises(SchemaError):
             parse_tickerinside_series(obj)
 
-    def test_pct_fraction_or_percent_to_percent(self):
-        self.assertEqual(_ti_pct_to_percent(0.0305), 3.05)
-        self.assertEqual(_ti_pct_to_percent(3.05), 3.05)
-        self.assertIsNone(_ti_pct_to_percent(None))
+class TestTiHeadline(unittest.TestCase):
+    def test_snapshot_aum_and_pct(self):
+        # SOXX 实测：快照 267.5M 股 @ $125.51（2026-11-24）-> 总资产 $335.74 亿；
+        # 流量 11-11 的 $10.6556 亿 / 335.74 亿 = 3.17%（不用 TickerInside 自带 pct）。
+        row = {"date": "2026-11-11", "flow_usd": 1065556947,
+               "flow_pct_of_assets": 0.02382}
+        notes = []
+        snap = {"date": "2026-11-24", "shares": 267500000.0, "nav": 125.51}
+        flow, date, source, pct, aum, note = _ti_headline(
+            "SOXX", row, 10.6556, notes, snapshot=snap
+        )
+        self.assertAlmostEqual(aum, 335.7392, places=2)
+        self.assertAlmostEqual(pct, 3.174, places=2)
+        self.assertEqual(source, "tickerinside")
+        self.assertIn("快照截至 2026-11-24", note)  # 快照日与流量日不同，写明
+        self.assertFalse(any("TickerInside 反推" in n for n in notes))
+
+    def test_no_snapshot_pct_is_none(self):
+        row = {"date": "2026-11-11", "flow_usd": 1065556947,
+               "flow_pct_of_assets": 0.02382}
+        flow, date, source, pct, aum, note = _ti_headline(
+            "SOXX", row, 10.6556, []
+        )
+        self.assertIsNone(pct)
+        self.assertIsNone(aum)
+        self.assertIn("无自算快照", note)
+
+    def test_snapshot_unit_error_nulled(self):
+        # 份额单位错（267.5 而不是 267.5M）：总资产与种子值偏差超 5 倍 -> null。
+        row = {"date": "2026-11-11", "flow_usd": 1065556947,
+               "flow_pct_of_assets": 0.02382}
+        notes = []
+        snap = {"date": "2026-11-24", "shares": 267.5, "nav": 125.51}
+        flow, date, source, pct, aum, note = _ti_headline(
+            "SOXX", row, 10.6556, notes, snapshot=snap
+        )
+        self.assertIsNone(pct)
+        self.assertIsNone(aum)
+        self.assertTrue(any("偏差超 5 倍" in n for n in notes))
+
+    def test_same_day_snapshot_no_date_note(self):
+        row = {"date": "2026-11-24", "flow_usd": 100000000,
+               "flow_pct_of_assets": 0.01}
+        snap = {"date": "2026-11-24", "shares": 267500000.0, "nav": 125.51}
+        flow, date, source, pct, aum, note = _ti_headline(
+            "SOXX", row, 1.0, [], snapshot=snap
+        )
+        self.assertAlmostEqual(pct, 0.2979, places=3)
+        self.assertNotIn("快照截至", note)
 
 
 class TestBlackRock(unittest.TestCase):
@@ -334,6 +379,31 @@ class TestSSGA(unittest.TestCase):
         # NAV Per Basket（$33,198,279.86）是另一行，绝不能当成 NAV
         parsed = parse_ssga_fund_page(load_fixture("ssga_gld.html"))
         self.assertLess(parsed["nav"], 1000)
+
+    def test_real_format_parses(self):
+        # 真实页面结构：fund-quick-info 转义 JSON，无 "Fund Net Asset Value
+        # as of" 文本、无 NAV/Shares 真实表格（首跑 7 只全失败的根因）。
+        parsed = parse_ssga_fund_page(load_fixture("ssga_gld_real.html"))
+        self.assertEqual(parsed["date"], "2026-11-24")
+        self.assertAlmostEqual(parsed["shares"], 360400000.0, delta=1.0)
+        self.assertEqual(parsed["nav"], 331.98279858)
+        self.assertTrue(parsed["nav_precise"])
+
+    def test_real_format_uses_nav_date_not_page_date(self):
+        # 夹具顶层 asOfDate 是页面日期 Nov 25，NAV 截至日必须是 Nov 24。
+        parsed = parse_ssga_fund_page(load_fixture("ssga_gld_real.html"))
+        self.assertEqual(parsed["date"], "2026-11-24")
+
+    def test_no_data_anywhere_raises(self):
+        with self.assertRaises(SchemaError):
+            parse_ssga_fund_page("<html><body>no data</body></html>")
+
+    def test_quick_info_missing_aum_raises(self):
+        text = load_fixture("ssga_gld_real.html").replace(
+            "119646600609.25", "0"
+        )
+        with self.assertRaises(SchemaError):
+            parse_ssga_fund_page(text)
 
 
 class TestSelfCalcFlow(unittest.TestCase):
@@ -571,10 +641,14 @@ class TestEtfFlowsMerge(unittest.TestCase):
             self.assertEqual(by_ticker["XLP"]["status"], "failed")
             self.assertEqual(by_ticker["XLP"]["date_et"], "2026-11-11")
             self.assertAlmostEqual(by_ticker["XLP"]["daily_flow_usd_100m"], 1.0, places=4)
+            # 措辞：有上一日数据才写“显示上一日数据”；无上一日数据写“回退种子数”。
+            self.assertIn("显示上一日数据", by_ticker["XLP"]["note"])
             for ticker in ("XLV", "XLE", "XLU", "XLK"):
                 self.assertEqual(by_ticker[ticker]["status"], "failed", msg=ticker)
                 self.assertIsNone(by_ticker[ticker]["date_et"], msg=ticker)
                 self.assertIn("取数失败", by_ticker[ticker]["note"], msg=ticker)
+                self.assertIn("回退种子数", by_ticker[ticker]["note"], msg=ticker)
+                self.assertNotIn("显示上一日数据", by_ticker[ticker]["note"], msg=ticker)
             # IBIT：Farside 11-24 行 200.0（百万美元）→ 2.0（亿美元）
             ibit = by_ticker["IBIT"]
             self.assertEqual(ibit["source"], "farside")
