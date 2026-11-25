@@ -19,17 +19,22 @@
 用法：
     python3 scripts/probe.py https://www.ici.org/research/stats/flows
     python3 scripts/probe.py <url1> <url2> --timeout 20
+    python3 scripts/probe.py --group voo-qqq   # 探查目标组（见 TARGET_GROUPS）
 输出：JSON（stdout），含 probed_at、egress（出口 IP/ASN）、每 URL 每档结果。
+带 marker 的目标还会报告 marker_found：响应正文（解压后）里是否出现标记
+字符串，用于判定 200 不是错误页；marker=None 的目标只看状态码。
 """
 
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import sys
 import time
 import urllib.error
 import urllib.request
+import zlib
 from datetime import datetime, timezone
 
 PLAIN_HEADERS = {"User-Agent": "fund-flow-probe/1.0 (python-urllib)"}
@@ -56,6 +61,46 @@ EGRESS_URL = "https://ipinfo.io/json"
 
 # 只读响应前 64KB 计字节数，不解析、不保存业务数据。
 MAX_READ_BYTES = 65536
+# 带 marker 的目标：正文可能很大（如 stockanalysis 页面约 170KB，
+# 标记在 140KB 之后），为核对标记最多读 1MB；无 marker 时仍只读 64KB。
+MARKER_READ_BYTES = 1048576
+
+# 命名探查目标组：(URL, marker)。marker 为响应正文里必须出现的标记
+# （用于判定 200 不是错误页）；marker=None 表示只看状态码
+# （404/501/400 本身就是结论）。
+# voo-qqq 组（2026-11-25 沙箱实测结论，详见 hidden_files/etf-flows-build-log-20261125.md）：
+#   VOO 净值已通（price-history API，251 日 NAV，最新 2026-11-24），份额无路；
+#   QQQ 的 Invesco dng-api 经纯 HTTP 全部不通（501 路由未实现 / 400 后端失败），
+#   唯一候选是 stockanalysis 页面（sharesOut 692.25M，精度够、新鲜度待二取验证）。
+TARGET_GROUPS = {
+    "voo-qqq": [
+        ("https://investor.vanguard.com/vmf/api/VOO/price-history/1Y", '"nav"'),
+        ("https://investor.vanguard.com/investment-products/etfs/profile/api/VOO/profile", None),
+        ("https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses?idType=QQQ&productType=ETF", None),
+        ("https://dng-api.invesco.com/download/v1/accounts/en_US/shareclasses/download?idType=QQQ&productType=ETF", None),
+        ("https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/QQQ/performance/standard", None),
+        ("https://stockanalysis.com/etf/qqq/", "sharesOut"),
+        ("https://stockanalysis.com/etf/voo/", "sharesOut"),
+        ("https://query1.finance.yahoo.com/v8/finance/chart/VOO?range=5d&interval=1d", '"meta"'),
+    ],
+}
+
+
+def _marker_found(body, content_encoding, marker):
+    """响应正文里是否出现 marker（先按 Content-Encoding 解压 gzip/deflate；
+    marker=None 时返回 None，不判定）。只用于判定 200 不是错误页。"""
+    if marker is None:
+        return None
+    raw = body or b""
+    enc = (content_encoding or "").lower()
+    try:
+        if raw[:2] == b"\x1f\x8b" or "gzip" in enc:
+            raw = gzip.decompress(raw)
+        elif "deflate" in enc:
+            raw = zlib.decompress(raw)
+    except Exception:
+        pass
+    return marker in raw.decode("utf-8", errors="ignore")
 
 
 def utcnow_iso():
@@ -77,7 +122,7 @@ def get_egress(timeout=10):
 
 
 def _tier(name, egress, status=None, elapsed_ms=None, content_bytes=None,
-          error=None, available=True, note=None):
+          error=None, available=True, note=None, marker=None, marker_found=None):
     result = {
         "tier": name,
         "available": available,
@@ -88,30 +133,58 @@ def _tier(name, egress, status=None, elapsed_ms=None, content_bytes=None,
         "content_bytes": content_bytes,
         "error": error,
     }
+    if marker is not None:
+        result["marker"] = marker
+        result["marker_found"] = marker_found
     if note:
         result["note"] = note
     return result
 
 
-def probe_urllib(url, headers, timeout, egress, tier_name):
-    """第 1/2 档：urllib 请求（标准 UA / 完整浏览器请求头）。"""
+def probe_urllib(url, headers, timeout, egress, tier_name, marker=None):
+    """第 1/2 档：urllib 请求（标准 UA / 完整浏览器请求头）。
+    带 marker 时在正文（解压后）里核对标记是否存在；为保证标准库能解压，
+    marker 检查的请求会把 Accept-Encoding 里的 br 去掉（只留 gzip, deflate），
+    状态码仍按其余浏览器头测得。"""
     start = time.monotonic()
+    read_limit = MARKER_READ_BYTES if marker is not None else MAX_READ_BYTES
+    eff_headers = headers
+    note = None
+    if marker is not None:
+        enc = headers.get("Accept-Encoding", "")
+        if "br" in enc:
+            eff_headers = dict(headers)
+            eff_headers["Accept-Encoding"] = ", ".join(
+                p.strip() for p in enc.split(",") if p.strip() != "br"
+            ) or "gzip, deflate"
+            note = "marker 检查时 Accept-Encoding 去掉了 br（标准库无 brotli 解压）"
     try:
-        request = urllib.request.Request(url, headers=headers, method="GET")
+        request = urllib.request.Request(url, headers=eff_headers, method="GET")
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            body = response.read(MAX_READ_BYTES)
+            body = response.read(read_limit)
             status = response.status
+            encoding = response.headers.get("Content-Encoding")
         elapsed_ms = round((time.monotonic() - start) * 1000)
         return _tier(tier_name, egress, status=status, elapsed_ms=elapsed_ms,
-                     content_bytes=len(body))
+                     content_bytes=len(body), marker=marker,
+                     marker_found=_marker_found(body, encoding, marker),
+                     note=note)
     except urllib.error.HTTPError as exc:
         elapsed_ms = round((time.monotonic() - start) * 1000)
+        try:
+            body = exc.read(read_limit)
+            encoding = exc.headers.get("Content-Encoding") if exc.headers else None
+        except Exception:
+            body, encoding = b"", None
         return _tier(tier_name, egress, status=exc.code, elapsed_ms=elapsed_ms,
-                     error=f"HTTP {exc.code}")
+                     error=f"HTTP {exc.code}", marker=marker,
+                     marker_found=_marker_found(body, encoding, marker),
+                     note=note)
     except Exception as exc:
         elapsed_ms = round((time.monotonic() - start) * 1000)
         return _tier(tier_name, egress, elapsed_ms=elapsed_ms,
-                     error=f"{type(exc).__name__}: {exc}")
+                     error=f"{type(exc).__name__}: {exc}", marker=marker,
+                     marker_found=None)
 
 
 def probe_curl_cffi(url, timeout, egress):
@@ -167,13 +240,14 @@ def probe_playwright(url, timeout, egress):
                      error=f"{type(exc).__name__}: {exc}")
 
 
-def probe_url(url, timeout, egress):
-    """对一个 URL 跑四档递进探测。"""
+def probe_url(url, timeout, egress, marker=None):
+    """对一个 URL 跑四档递进探测。marker 只在第 1/2 档核对（第 3/4 档不读正文）。"""
     return {
         "url": url,
+        "marker": marker,
         "tiers": [
-            probe_urllib(url, PLAIN_HEADERS, timeout, egress, "1-urllib-plain"),
-            probe_urllib(url, BROWSER_HEADERS, timeout, egress, "2-urllib-browser-headers"),
+            probe_urllib(url, PLAIN_HEADERS, timeout, egress, "1-urllib-plain", marker),
+            probe_urllib(url, BROWSER_HEADERS, timeout, egress, "2-urllib-browser-headers", marker),
             probe_curl_cffi(url, timeout, egress),
             probe_playwright(url, timeout, egress),
         ],
@@ -185,10 +259,17 @@ def main(argv=None):
         description="逐源四档递进探测（只测可达性：状态码/耗时/出口 IP/ASN，"
         "不取业务数据、不写 data/ 文件）。"
     )
-    parser.add_argument("urls", nargs="+", help="要探测的 URL（一个或多个）")
+    parser.add_argument("urls", nargs="*", help="要探测的 URL（一个或多个）")
+    parser.add_argument("--group", choices=list(TARGET_GROUPS),
+                        help="探查命名目标组（如 voo-qqq），与 urls 可并用")
     parser.add_argument("--timeout", type=int, default=30,
                         help="单档超时秒数，默认 30")
     args = parser.parse_args(argv)
+    targets = [(u, None) for u in args.urls]
+    if args.group:
+        targets.extend(TARGET_GROUPS[args.group])
+    if not targets:
+        parser.error("请给出至少一个 URL，或用 --group 指定命名目标组")
     egress = get_egress()
     report = {
         "probed_at": utcnow_iso(),
@@ -197,8 +278,10 @@ def main(argv=None):
             "本工具只记录每档 HTTP 状态码、耗时与出口 IP/ASN，不解析、不保存业务数据，不写 data/ 文件。",
             "curl_cffi / Playwright 未安装时对应档位标记 available=false 并跳过，不报错。",
             "判定标准：状态码 200 且非质询页才算通过；200 但返回质询页/403 文本算不通过（本工具不判内容，须人工核对）。",
+            "带 marker 的目标：第 1/2 档还会核对正文里是否出现标记（marker_found），用于判定 200 不是错误页。",
         ],
-        "results": [probe_url(url, args.timeout, egress) for url in args.urls],
+        "results": [probe_url(url, args.timeout, egress, marker)
+                    for url, marker in targets],
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0
