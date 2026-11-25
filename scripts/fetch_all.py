@@ -211,10 +211,10 @@ VANECK_NAV_HISTORY_URL = (
 # 净值合理性区间（美元，按 2026-11-25 市价定的宽带；SMH 近期 NAV 约 $400–487）
 VANECK_NAV_RANGES = {"SMH": (100.0, 800.0)}
 
-# -- 新浪财经美股行情（QQQ、VOO 份额；2026-11-25 实测）--
-# 接口 http://hq.sinajs.cn/list=gb_qqq,gb_voo，须带 Referer
-# http://finance.sina.com.cn（不带回 Forbidden）；返回 GBK 编码，一行一个
-# 品种，逗号分隔；数字为 ASCII，可直接解析。
+# -- 新浪财经美股行情（QQQ、VOO 份额主路；SOXX、TLT、IBIT 交叉核对）--
+# 接口 http://hq.sinajs.cn/list=gb_qqq,gb_voo,gb_soxx,gb_tlt,gb_ibit，须带
+# Referer http://finance.sina.com.cn（不带回 Forbidden）；返回 GBK 编码，
+# 一行一个品种，逗号分隔；数字为 ASCII，可直接解析。
 # 字段（从 0 数，2026-11-25 12:39 EST 实测逐项核对）：1=最新价，12=总市值，
 # 19=份额数（总股本；注意：任务书初版写 20 是错的，实测价格×第 19 字段才
 # 等于总市值字段，第 20 字段恒为 0），25=美东时间（如 "Nov 25 12:39PM EST"，
@@ -225,13 +225,28 @@ VANECK_NAV_RANGES = {"SMH": (100.0, 800.0)}
 # 流量只能用收盘价算：只有美东收盘后（跑的当前美东时间 ≥16:00，且第 25
 # 字段时间 ≥16:00，即字段 1 为收盘价）才写快照；盘中跑跳过快照、源仍记 ok。
 # 快照日期取第 25 字段的美东日期，NAV 口径取收盘价（字段 1）。
-# 已知疑点（不阻塞上线）：SPY 新浪份额与 SSGA 快照反推差 1.6%，故 SPY 不
-# 走新浪（仍以 SSGA 为准）；新浪份额是否每日更新，待 2026-11-26 二取验证。
-SINA_GB_URL = "http://hq.sinajs.cn/list=gb_qqq,gb_voo"
+# 13 只覆盖矩阵（2026-11-25 13:03 一次批量实测，全 38 字段逐项核对）：
+# - 主路（selfcalc-sina）：QQQ 694,250,000、VOO 1,548,595,410（与 12:24
+#   取值一致，份额盘中不更新、隔夜更新）。
+# - 交叉核对（xcheck-sina，只核对不算流量）：SOXX 267,500,000、TLT
+#   600,000,000 与 BlackRock 11-24 快照精确一致；IBIT 1,329,760,000
+#   （价 33.705，总市值 $44.72B 自洽），Farside 不给份额、无主源可比。
+# - 不接：XLV、GLD 份额与总市值均为 0（无数据）；SPY/XLK/XLP/XLE/XLU/
+#   SMH 与发行商 11-24 快照差 0.7%–2.5%（SPY 1.6%、XLK 0.7%、XLP 2.5%、
+#   XLE 1.1%、XLU 1.2%、SMH 2.4%），新浪不公布份额截至日、无法判定是滞后
+#   还是口径差——六只绝不接入新浪快照，也不许用新浪覆盖主源。
+# 铁律：交叉核对快照存进同一快照文件、键加 _xcheck 后缀（绝不占主源键位，
+# 不覆盖 BlackRock/Farside 快照）；SOXX/TLT 同日份额偏差 >1% 只在 note
+# 里标出、不改数；IBIT 只存快照、不算流量、不改 Farside 的数。
+SINA_GB_URL = "http://hq.sinajs.cn/list=gb_qqq,gb_voo,gb_soxx,gb_tlt,gb_ibit"
 SINA_REFERER = "http://finance.sina.com.cn"
 SINA_TICKERS = ["QQQ", "VOO"]
+SINA_XCHECK_TICKERS = ["SOXX", "TLT", "IBIT"]
 # 净值合理性区间（美元，按 2026-11-25 市价定的宽带；超出即该标的 failed）
-SINA_NAV_RANGES = {"QQQ": (300.0, 900.0), "VOO": (300.0, 900.0)}
+SINA_NAV_RANGES = {
+    "QQQ": (300.0, 900.0), "VOO": (300.0, 900.0),
+    "SOXX": (50.0, 300.0), "TLT": (30.0, 200.0), "IBIT": (10.0, 100.0),
+}
 
 # 自算分工：TLT、GLD、SMH、QQQ、VOO 以自算为主路；7 只 TickerInside 标的以自算为备用
 # （滞后 >3 个交易日自动切换；快照每天都取，保持备用快照温热，切换当日即有昨日数可算）。
@@ -1551,9 +1566,11 @@ def _now_et():
         return datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=5)
 
 
-def _fetch_sina_snapshot(ticker, today=None):
+def _fetch_sina_snapshot(ticker, today=None, source="selfcalc-sina"):
     """取新浪 gb_ 行情，返回快照 {"date","shares","nav","source"}。
 
+    source：主路传 "selfcalc-sina"（QQQ/VOO）；交叉核对传 "xcheck-sina"
+    （SOXX/TLT/IBIT，只核对不算流量）。
     流量只能用收盘价算：只有跑的当前美东时间 ≥16:00 且第 25 字段时间
     ≥16:00（即字段 1 为收盘价）时才写快照；否则返回 {"skipped": True,
     "note": ...}（调用方不写快照、不算流量，但源仍记 ok）。
@@ -1600,8 +1617,31 @@ def _fetch_sina_snapshot(ticker, today=None):
         "date": date_et,
         "shares": parsed["shares"],
         "nav": parsed["price"],
-        "source": "selfcalc-sina",
+        "source": source,
     }
+
+
+def _sina_xcheck_note(ticker, snap, main_snap):
+    """交叉核对 note：新浪快照与同 run 主源快照比对同日份额，只写字、不改数。
+
+    main_snap 为 None（主源快照缺失）或日期不一致 -> 未比对；
+    同日份额偏差 >1% -> 标出差异、以主源为准；≤1% -> 记一致。
+    IBIT 无主源份额可比，不走本函数（调用方另写 note）。"""
+    if main_snap is None:
+        return "新浪交叉核对：主源快照缺失，未比对；数未改。"
+    if snap["date"] != main_snap.get("date"):
+        return (
+            f"新浪交叉核对：快照日期与主源不一致（新浪 {snap['date']}，"
+            f"主源 {main_snap.get('date')}），未比对；数未改。"
+        )
+    main_shares = main_snap["shares"]
+    deviation = abs(snap["shares"] - main_shares) / main_shares
+    if deviation > 0.01:
+        return (
+            f"新浪交叉核对：同日份额与主源差 {deviation:.2%}（>1%），"
+            "数未改，以主源为准。"
+        )
+    return f"新浪交叉核对：同日份额与主源一致（差 {deviation:.2%}）。"
 
 
 def check_nav_range(ticker, nav, ranges):
@@ -2009,7 +2049,8 @@ def _is_fresh(date_et, today):
 
 
 def fetch_etf_flows(out_dir=None, today=None):
-    """ETF 流量：TickerInside 7 只 + 发行商文件自算 + 新浪 QQQ/VOO 份额 + Farside IBIT。
+    """ETF 流量：TickerInside 7 只 + 发行商文件自算 + 新浪 QQQ/VOO 份额
+    + 新浪 SOXX/TLT/IBIT 份额交叉核对 + Farside IBIT。
 
     合并规则（方案 §五 + 任务书 §3）：
     - 每只标的只有一个主路：7 只以 TickerInside 为准，滞后 >3 个交易日自动切
@@ -2024,6 +2065,9 @@ def fetch_etf_flows(out_dir=None, today=None):
       失败 -> 抛 FetchError（run_fetch 会保留旧文件、status 标 failed）。
     - 自算快照每天都取（12 只全取，保持备用快照温热，切换当日即有昨日数可算）；
       快照文件 data/etf-selfcalc-snapshots.json 由本函数自己读写。
+    - 交叉核对（SOXX/TLT/IBIT 新浪份额）：快照存同一文件、键加 _xcheck 后缀，
+      source 记 xcheck-sina；只比对同日份额、偏差 >1% 只写 note，绝不参与
+      流量计算、绝不覆盖主源；IBIT 只存快照；取数失败/盘中跳过只记 note。
     out_dir 缺省时用模块级 ETF_FLOWS_OUT_DIR（run_fetch 传入）；today 缺省为
     当天 UTC 日期（测试可传入固定日期以消除日期敏感性）。
     """
@@ -2106,6 +2150,41 @@ def fetch_etf_flows(out_dir=None, today=None):
         flow, flow_note = compute_selfcalc_flow(snap, prev_snap)
         selfcalc[ticker] = {"snapshot": snap, "flow_usd": flow, "flow_note": flow_note}
         new_snapshots[ticker] = snap
+
+    # --- 新浪交叉核对快照：SOXX、TLT、IBIT（只核对，绝不参与流量计算）---
+    # 铁律：快照存进同一快照文件、键加 _xcheck 后缀（绝不占主源键位，不覆盖
+    # BlackRock/Farside 快照）；SOXX/TLT 与同 run 主源快照比对同日份额，
+    # 偏差 >1% 只在 note 里标出、不改数；IBIT 无主源份额可比，只存快照。
+    # 取数失败 / 盘中跳过只记 note，不记 failed、不阻塞整源、不影响
+    # failed_live_capable 计数。
+    xcheck = {}
+    for ticker in SINA_XCHECK_TICKERS:
+        try:
+            snap = _fetch_sina_snapshot(ticker, today=today, source="xcheck-sina")
+        except (FetchError, SchemaError) as exc:
+            xcheck[ticker] = {
+                "snapshot": None,
+                "note": f"新浪交叉核对取数失败（{exc}），主源数未动。",
+            }
+            continue
+        if isinstance(snap, dict) and snap.get("skipped"):
+            xcheck[ticker] = {
+                "snapshot": None,
+                "note": snap["note"].replace(
+                    "新浪盘中跳过快照", "新浪交叉核对盘中跳过快照"
+                ),
+            }
+            continue
+        new_snapshots[f"{ticker}_xcheck"] = snap
+        if ticker == "IBIT":
+            note = (
+                f"新浪交叉核对份额快照 {snap['shares']:,.0f}"
+                f"（{snap['date']}，仅存快照、未算流量，未动 Farside 数）。"
+            )
+        else:
+            main_snap = (selfcalc.get(ticker) or {}).get("snapshot")
+            note = _sina_xcheck_note(ticker, snap, main_snap)
+        xcheck[ticker] = {"snapshot": snap, "note": note}
     _save_selfcalc_snapshots(out_dir, new_snapshots)
 
     def _selfcalc_aum_pct(ticker):
@@ -2430,10 +2509,19 @@ def fetch_etf_flows(out_dir=None, today=None):
     top_status = "live" if live_count >= 1 else "seed"
     if top_status == "seed":
         notes.append("本次无新鲜 live 数，整源 status 记 seed。")
+    # 交叉核对 note 只追加文字，绝不改已发布的流量/来源/status。
+    for ticker in SINA_XCHECK_TICKERS:
+        record = xcheck.get(ticker) or {}
+        note = record.get("note")
+        if note and ticker in entries:
+            prev_note = entries[ticker].get("note") or ""
+            entries[ticker]["note"] = (
+                (prev_note + "；" if prev_note else "") + note
+            )
     tracked = [entries[ticker] for ticker in ETF_TRACKED_ORDER]
     return {
         "schema_version": 1,
-        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额） / Farside（IBIT）",
+        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（IBIT）",
         "source_url": TICKERINSIDE_SERIES_URL,
         "fetched_at_utc": utcnow_iso(),
         "status": top_status,

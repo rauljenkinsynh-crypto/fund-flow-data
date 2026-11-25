@@ -54,6 +54,7 @@ from fetch_all import (  # noqa: E402
     parse_vaneck_nav_history,
     trading_days_between,
     _sina_date_from_us_time,
+    _sina_xcheck_note,
 )
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
@@ -753,6 +754,93 @@ class TestSina(unittest.TestCase):
             check_nav_range("QQQ", 100.0, fetch_all.SINA_NAV_RANGES)
 
 
+class TestSinaXcheck(unittest.TestCase):
+    def test_xcheck_tickers_exact(self):
+        # 交叉核对只含 SOXX、TLT、IBIT；六只差异品种与 XLV/GLD 绝不接入。
+        self.assertEqual(fetch_all.SINA_XCHECK_TICKERS, ["SOXX", "TLT", "IBIT"])
+        for ticker in ("SPY", "XLK", "XLP", "XLE", "XLU", "SMH", "XLV", "GLD"):
+            self.assertNotIn(ticker, fetch_all.SINA_XCHECK_TICKERS, msg=ticker)
+            self.assertNotIn(ticker, fetch_all.SINA_TICKERS, msg=ticker)
+        for symbol in ("gb_soxx", "gb_tlt", "gb_ibit"):
+            self.assertIn(symbol, fetch_all.SINA_GB_URL)
+
+    def test_soxx_tlt_ibit_real_values_parse(self):
+        # 真实值（2026-11-25 13:03 EST 实测）：SOXX 价 123.56、份额 267,500,000；
+        # TLT 价 82.39、份额 600,000,000；IBIT 价 33.705、份额 1,329,760,000。
+        body = _make_sina_body([
+            ("soxx", 123.56, 267500000, "Nov 25 1:03PM EST", 125.51),
+            ("tlt", 82.39, 600000000, "Nov 25 1:03PM EST", 81.80),
+            ("ibit", 33.705, 1329760000, "Nov 25 1:03PM EST", 32.85),
+        ])
+        parsed = {p["ticker"]: p for p in
+                  (parse_sina_gb_line(l) for l in body.strip().splitlines())}
+        self.assertEqual(parsed["SOXX"]["shares"], 267500000.0)
+        self.assertAlmostEqual(parsed["SOXX"]["mktcap"], 33052300000.0, delta=1.0)
+        self.assertEqual(parsed["TLT"]["shares"], 600000000.0)
+        self.assertAlmostEqual(parsed["TLT"]["mktcap"], 49434000000.0, delta=1.0)
+        self.assertEqual(parsed["IBIT"]["shares"], 1329760000.0)
+        self.assertAlmostEqual(parsed["IBIT"]["mktcap"], 44819560800.0, delta=1.0)
+
+    def test_zero_shares_lines_rejected(self):
+        # XLV、GLD 真实形态：份额与总市值均为 0（无数据）-> SchemaError，不接入。
+        body = _make_sina_body([
+            ("xlv", 184.25, 0, "Nov 25 1:03PM EST", 184.63),
+            ("gld", 323.08, 0, "Nov 25 1:03PM EST", 331.98),
+        ])
+        for line in body.strip().splitlines():
+            with self.assertRaises(SchemaError, msg=line[:40]):
+                parse_sina_gb_line(line)
+
+    def test_nav_ranges(self):
+        check_nav_range("SOXX", 123.56, fetch_all.SINA_NAV_RANGES)
+        check_nav_range("TLT", 82.39, fetch_all.SINA_NAV_RANGES)
+        check_nav_range("IBIT", 33.705, fetch_all.SINA_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("SOXX", 49.0, fetch_all.SINA_NAV_RANGES)
+        with self.assertRaises(SchemaError):
+            check_nav_range("IBIT", 5.0, fetch_all.SINA_NAV_RANGES)
+
+    def test_xcheck_note_branches(self):
+        main = {"date": "2026-11-25", "shares": 267500000.0}
+        self.assertIn("一致（差 0.00%）", _sina_xcheck_note(
+            "SOXX", {"date": "2026-11-25", "shares": 267500000.0}, main))
+        self.assertIn(">1%", _sina_xcheck_note(
+            "SOXX", {"date": "2026-11-25", "shares": 271000000.0}, main))
+        self.assertIn("数未改", _sina_xcheck_note(
+            "SOXX", {"date": "2026-11-25", "shares": 271000000.0}, main))
+        self.assertIn("未比对", _sina_xcheck_note(
+            "TLT", {"date": "2026-11-24", "shares": 600000000.0},
+            {"date": "2026-11-25", "shares": 600000000.0}))
+        self.assertIn("未比对", _sina_xcheck_note(
+            "TLT", {"date": "2026-11-25", "shares": 600000000.0}, None))
+
+    def test_fetch_snapshot_source_tag(self):
+        # source 参数：交叉核对记 xcheck-sina，缺省仍为 selfcalc-sina。
+        import datetime as _datetime
+
+        body = _make_sina_body([
+            ("soxx", 123.56, 267500000, "Nov 25 4:00PM EST", 125.51),
+        ])
+
+        def fake_http(url, headers=None, timeout=None, **kwargs):
+            if "hq.sinajs.cn" in url:
+                return 200, body.encode("gbk")
+            raise FetchError(f"HTTP 403 {url}")
+
+        with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+            with mock.patch.object(
+                fetch_all, "_now_et",
+                return_value=_datetime.datetime(2026, 11, 25, 21, 0),
+            ):
+                snap = fetch_all._fetch_sina_snapshot(
+                    "SOXX", today="2026-11-25", source="xcheck-sina")
+                self.assertEqual(snap["source"], "xcheck-sina")
+                self.assertEqual(snap["date"], "2026-11-25")
+                self.assertEqual(snap["shares"], 267500000.0)
+                default = fetch_all._fetch_sina_snapshot("SOXX", today="2026-11-25")
+                self.assertEqual(default["source"], "selfcalc-sina")
+
+
 class TestEtfFlowsMerge(unittest.TestCase):
     def test_merge_dedupe_and_cap_60(self):
         import datetime as _datetime
@@ -1125,6 +1213,158 @@ class TestEtfFlowsMerge(unittest.TestCase):
             self.assertEqual(snaps["QQQ"]["date"], "2026-11-25")
             self.assertEqual(snaps["QQQ"]["shares"], 695000000.0)
             self.assertEqual(snaps["VOO"]["date"], "2026-11-25")
+
+    def _run_xcheck_fetch(self, out_dir, sina_soxx_shares, now_hour,
+                          now_minute=0, sina_us_time="Nov 25 4:00PM EST"):
+        """交叉核对集成测试脚手架：上日快照 + BlackRock/Sina/Farside 全 mock。
+
+        BlackRock SOXX 11-25 份额固定 267,500,000（NAV 35,200M/267.5M ≈
+        $131.59），TLT 11-25 份额 600,000,000 不变（流量 0）；新浪 SOXX
+        份额由 sina_soxx_shares 控制偏差；收盘后/盘中由 now_hour 与
+        sina_us_time 控制。"""
+        import datetime as _datetime
+
+        for name in ("etf-flows.json", "ici.json", "farside-btc.json",
+                     "etf-selfcalc-snapshots.json"):
+            src = {
+                "etf-flows.json": "etf_flows_prev.json",
+                "ici.json": "ici_etf.json",
+                "farside-btc.json": "farside_btc_min.json",
+                "etf-selfcalc-snapshots.json": "etf_snapshots_prev.json",
+            }[name]
+            with open(os.path.join(out_dir, name), "w") as fh:
+                fh.write(load_fixture(src))
+        tlt_csv = load_fixture("blackrock_tlt.csv").replace(
+            "Nov 24, 2026", "Nov 25, 2026"
+        )
+        soxx_csv = _make_blackrock_csv(
+            267500000, "Nov 25, 2026", [20000000000, 15200000000]
+        )
+        gld_html = load_fixture("ssga_gld.html").replace(
+            "Nov 24 2026", "Nov 25 2026"
+        ).replace("360.40 M", "359.40 M")
+        spy_html = (
+            load_fixture("ssga_gld.html")
+            .replace("Nov 24 2026", "Nov 25 2026")
+            .replace("$331.98", "$718.51")
+            .replace("360.40 M", "1,071.28 M")
+            .replace("331.98279858", "718.51234567")
+        )
+        sina_body = _make_sina_body([
+            ("qqq", 620.00, 694250000, sina_us_time, 638.10),
+            ("voo", 650.00, 1548595410, sina_us_time, 660.71),
+            ("soxx", 131.59, sina_soxx_shares, sina_us_time, 125.51),
+            ("tlt", 81.49, 600000000, sina_us_time, 81.80),
+            ("ibit", 33.70, 1329760000, sina_us_time, 32.85),
+        ])
+
+        def fake_http(url, headers=None, timeout=None, **kwargs):
+            if "portfolioId=239454" in url:
+                return 200, tlt_csv.encode("utf-8")
+            if "portfolioId=239705" in url:
+                return 200, soxx_csv.encode("utf-8")
+            if url == fetch_all.SSGA_FUND_PAGES["GLD"]:
+                return 200, gld_html.encode("utf-8")
+            if url == fetch_all.SSGA_FUND_PAGES["SPY"]:
+                return 200, spy_html.encode("utf-8")
+            if "hq.sinajs.cn" in url:
+                self.assertEqual(headers.get("Referer"), fetch_all.SINA_REFERER)
+                return 200, sina_body.encode("gbk")
+            raise FetchError(f"HTTP 403 {url}")
+
+        with mock.patch.object(fetch_all, "get_json",
+                               return_value=load_json_fixture("tickerinside_series.json")):
+            with mock.patch.object(fetch_all, "http_request", side_effect=fake_http):
+                with mock.patch.object(
+                    fetch_all, "_now_et",
+                    return_value=_datetime.datetime(2026, 11, 25, now_hour, now_minute),
+                ):
+                    payload = fetch_etf_flows(out_dir, today="2026-11-25")
+        with open(os.path.join(out_dir, "etf-selfcalc-snapshots.json")) as fh:
+            snaps = json.load(fh)
+        return payload, snaps
+
+    def test_sina_xcheck_consistent_no_flow_change(self):
+        # 收盘后：新浪 SOXX/TLT 与 BlackRock 同日份额精确一致（差 0.00%），
+        # 主源流量数未动；IBIT 只存快照、Farside 数未动；QQQ/VOO 不受影响。
+        import datetime as _datetime  # noqa: F401  (脚手架内用)
+
+        with tempfile.TemporaryDirectory() as out_dir:
+            payload, snaps = self._run_xcheck_fetch(
+                out_dir, sina_soxx_shares=267500000, now_hour=21)
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            # SOXX：BlackRock 流量 = 131.59 × (267.5M − 175M) ≈ $121.72 亿，未动
+            soxx = by_ticker["SOXX"]
+            self.assertEqual(soxx["source"], "selfcalc-blackrock")
+            self.assertAlmostEqual(soxx["daily_flow_usd_100m"], 121.72, places=2)
+            self.assertIn("交叉核对", soxx["note"])
+            self.assertIn("一致（差 0.00%）", soxx["note"])
+            self.assertNotIn("数未改", soxx["note"])
+            # TLT：份额不变，流量 0.0；note 一致
+            tlt = by_ticker["TLT"]
+            self.assertEqual(tlt["source"], "selfcalc-blackrock")
+            self.assertAlmostEqual(tlt["daily_flow_usd_100m"], 0.0, places=4)
+            self.assertIn("交叉核对", tlt["note"])
+            self.assertIn("一致（差 0.00%）", tlt["note"])
+            # IBIT：仍走 Farside（11-24 行 200.0 百万美元 → 2.0 亿美元），数未动
+            ibit = by_ticker["IBIT"]
+            self.assertEqual(ibit["source"], "farside")
+            self.assertAlmostEqual(ibit["daily_flow_usd_100m"], 2.0, places=4)
+            self.assertIn("交叉核对", ibit["note"])
+            self.assertIn("1,329,760,000", ibit["note"])
+            self.assertIn("未动 Farside 数", ibit["note"])
+            # QQQ：仍走新浪主路（首日 unmeasured），不受交叉核对影响
+            self.assertEqual(by_ticker["QQQ"]["source"], "selfcalc-sina")
+            self.assertEqual(by_ticker["QQQ"]["status"], "unmeasured")
+            # 快照文件：_xcheck 键与主源键并存，主源键未被覆盖
+            for key, shares in (("SOXX_xcheck", 267500000.0),
+                                ("TLT_xcheck", 600000000.0),
+                                ("IBIT_xcheck", 1329760000.0)):
+                self.assertEqual(snaps[key]["date"], "2026-11-25", msg=key)
+                self.assertEqual(snaps[key]["shares"], shares, msg=key)
+                self.assertEqual(snaps[key]["source"], "xcheck-sina", msg=key)
+            self.assertEqual(snaps["SOXX"]["source"], "selfcalc-blackrock")
+            self.assertEqual(snaps["SOXX"]["shares"], 267500000.0)
+            self.assertEqual(snaps["TLT"]["source"], "selfcalc-blackrock")
+            self.assertEqual(snaps["TLT"]["shares"], 600000000.0)
+            self.assertNotIn("QQQ_xcheck", snaps)
+            self.assertNotIn("VOO_xcheck", snaps)
+
+    def test_sina_xcheck_deviation_flagged(self):
+        # 新浪 SOXX 271,000,000 vs BlackRock 267,500,000，差 1.31%（>1%）：
+        # note 标出差异、不改数；流量仍是 BlackRock 的 121.72。
+        with tempfile.TemporaryDirectory() as out_dir:
+            payload, snaps = self._run_xcheck_fetch(
+                out_dir, sina_soxx_shares=271000000, now_hour=21)
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            soxx = by_ticker["SOXX"]
+            self.assertAlmostEqual(soxx["daily_flow_usd_100m"], 121.72, places=2)
+            self.assertEqual(soxx["source"], "selfcalc-blackrock")
+            self.assertIn("交叉核对", soxx["note"])
+            self.assertIn(">1%", soxx["note"])
+            self.assertIn("1.31%", soxx["note"])
+            self.assertIn("数未改，以主源为准", soxx["note"])
+            self.assertEqual(snaps["SOXX_xcheck"]["shares"], 271000000.0)
+            self.assertEqual(snaps["SOXX"]["shares"], 267500000.0)
+
+    def test_sina_xcheck_intraday_skipped(self):
+        # 盘中：交叉核对跳过快照，不写 _xcheck 键；主源流量照常算、数未动。
+        with tempfile.TemporaryDirectory() as out_dir:
+            payload, snaps = self._run_xcheck_fetch(
+                out_dir, sina_soxx_shares=267500000, now_hour=12, now_minute=30,
+                sina_us_time="Nov 25 12:25PM EST")
+            by_ticker = {e["ticker"]: e for e in payload["tracked"]}
+            for key in ("SOXX_xcheck", "TLT_xcheck", "IBIT_xcheck"):
+                self.assertNotIn(key, snaps, msg=key)
+            for ticker in ("SOXX", "TLT", "IBIT"):
+                self.assertIn("交叉核对", by_ticker[ticker]["note"], msg=ticker)
+                self.assertIn("盘中跳过", by_ticker[ticker]["note"], msg=ticker)
+            self.assertAlmostEqual(
+                by_ticker["SOXX"]["daily_flow_usd_100m"], 121.72, places=2)
+            self.assertEqual(by_ticker["SOXX"]["source"], "selfcalc-blackrock")
+            self.assertAlmostEqual(
+                by_ticker["IBIT"]["daily_flow_usd_100m"], 2.0, places=4)
+            self.assertEqual(by_ticker["IBIT"]["source"], "farside")
 
     def test_all_failed_raises(self):
         with tempfile.TemporaryDirectory() as out_dir:
