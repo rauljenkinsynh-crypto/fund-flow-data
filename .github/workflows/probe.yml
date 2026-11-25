@@ -61,9 +61,9 @@ jobs:
               "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=BTC&country_code=US" \
               | tee probe-result.json
           else
-            # shellcheck disable=SC2086
-            python3 scripts/probe.py ${{ inputs.urls }} | tee probe-result.json
-          fi
+            read -ra URLS <<< "${{ inputs.urls }}"
+            python3 scripts/probe.py "${URLS[@]}" | tee probe-result.json
+            fi
 
       - name: Upload probe result
         if: always()
