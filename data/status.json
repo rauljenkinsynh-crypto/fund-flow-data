@@ -1,29 +1,30 @@
 {
-  "fetched_at": "2026-11-25T14:17:40Z",
+  "fetched_at": "2026-11-25T14:27:43Z",
   "sources": {
     "ici": {
-      "status": "ok",
-      "error": null,
-      "fetched_at": "2026-11-25T14:17:33Z",
-      "last_ok": "2026-11-25T14:17:33Z"
+      "status": "failed",
+      "error": "ICI 4 页失败：flows（https://www.ici.org/research/stats/flows）：HTTP 403 https://www.ici.org/research/stats/flows :: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#47;&#47;www&#46;ici&#46;org&#47;research&#47;stats&#47;flows\" on this server.<P>\nReference&#32;&#35;18&#46;917b3517&#46;1795616852&#46;a237450a\n<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;917b3517&#46;1795616852&#46;a237450a</P>\n</BODY>\n</HT",
+      "fetched_at": "2026-11-25T14:27:32Z",
+      "last_ok": "2026-11-25T14:17:33Z",
+      "stale": true
     },
     "farside-btc": {
-      "status": "failed",
-      "error": "Farside 页面未找到含 Date/Total 列的有效表格（可能被反爬替换或改版）",
-      "fetched_at": "2026-11-25T14:17:33Z",
-      "last_ok": null
+      "status": "ok",
+      "error": null,
+      "fetched_at": "2026-11-25T14:27:33Z",
+      "last_ok": "2026-11-25T14:27:34Z"
     },
     "farside-eth": {
-      "status": "failed",
-      "error": "Farside 页面未找到含 Date/Total 列的有效表格（可能被反爬替换或改版）",
-      "fetched_at": "2026-11-25T14:17:34Z",
-      "last_ok": null
+      "status": "ok",
+      "error": null,
+      "fetched_at": "2026-11-25T14:27:34Z",
+      "last_ok": "2026-11-25T14:27:35Z"
     },
     "sosovalue-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:17:35Z",
-      "last_ok": "2026-11-25T14:17:35Z",
+      "fetched_at": "2026-11-25T14:27:35Z",
+      "last_ok": "2026-11-25T14:27:35Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -34,8 +35,8 @@
     "sosovalue-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:17:35Z",
-      "last_ok": "2026-11-25T14:17:36Z",
+      "fetched_at": "2026-11-25T14:27:35Z",
+      "last_ok": "2026-11-25T14:27:35Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -46,19 +47,19 @@
     "fred-dgs10": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:17:36Z",
-      "last_ok": "2026-11-25T14:17:36Z"
+      "fetched_at": "2026-11-25T14:27:35Z",
+      "last_ok": "2026-11-25T14:27:36Z"
     },
     "ai-chain": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-25T14:17:36Z",
-      "last_ok": "2026-11-25T14:17:40Z"
+      "fetched_at": "2026-11-25T14:27:36Z",
+      "last_ok": "2026-11-25T14:27:43Z"
     },
     "etf-flows": {
       "status": "blocked",
       "error": "ETF.com 源未配置：无公开 API（v1 核查结论），确切取数方式待核查员报告；报告前本源保持 blocked，不编数。",
-      "fetched_at": "2026-11-25T14:17:40Z",
+      "fetched_at": "2026-11-25T14:27:43Z",
       "last_ok": null
     }
   },
