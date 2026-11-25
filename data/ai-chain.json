@@ -1,0 +1,5061 @@
+{
+  "fetched_at": "2026-11-25T14:17:40Z",
+  "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
+  "rows": [
+    {
+      "ticker": "CRWV",
+      "name_cn": "CoreWeave",
+      "name_en": "CoreWeave Inc",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。",
+        "口径提醒：公司定义 capex 含融资租赁取得资产，大于现金购置口径；companyfacts 只取现金购置口径，双口径须人工并列。"
+      ],
+      "cik": "0001769628",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001769628.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-03-12",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-19",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-17",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-09",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-07",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-18",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-11-08",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-17",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-09",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-08-06",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-08-12",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-26",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-10",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-10",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-07",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-09",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-19",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2025-07-07",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-10-10",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-08-07",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-17",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-09",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-31",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-05",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-21",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-28",
+          "company": [
+            "Galaxy Digital Inc.  (GLXY)  (CIK 0001859392)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-19",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-08",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-10-10",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-01-16",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-01-16",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-04",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-03",
+          "company": [
+            "Neostellar Capital Corp.  (NSLR, NSLRL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-10-24",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-05-08",
+          "company": [
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-18",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-28",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-17",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-31",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-12-11",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-22",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-14",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-18",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-06",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-04-21",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-27",
+          "company": [
+            "PagerDuty, Inc.  (PD)  (CIK 0001568100)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2021-06-24",
+          "company": [
+            "Sysorex, Inc.  (SYSX)  (CIK 0001737372)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-03-13",
+          "company": [
+            "PagerDuty, Inc.  (PD)  (CIK 0001568100)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-18",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-27",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2025-07-07",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-07-07",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-06",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-10-09",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-10-02",
+          "company": [
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-28",
+          "company": [
+            "Galaxy Digital Inc.  (GLXY)  (CIK 0001859392)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-04-14",
+          "company": [
+            "Sysorex, Inc.  (SYSX)  (CIK 0001737372)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-16",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-06",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22CoreWeave+Inc%22+notes+offering&dateRange=custom&forms=8-K"
+    },
+    {
+      "ticker": "ORCL",
+      "name_cn": "甲骨文",
+      "name_en": "Oracle Corporation",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。",
+        "口径提醒：OCF 含客户预付款（2027 财年 Q1 为 $11.363B），companyfacts 无法自动剔除，capex/OCF 须人工复核。"
+      ],
+      "cik": "0001341439",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001341439.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-04",
+          "company": [
+            "ORACLE CORP  (ORCL, ORCL-PD)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-04",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2008-06-04",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-20",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-09-27",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-17",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-02-03",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-02-06",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-05-15",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-04",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-07-08",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-11-09",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-02-06",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-07-08",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-07-10",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-10-25",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-07-16",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-09-26",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-09-27",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-04",
+          "company": [
+            "ORACLE CORP  (ORCL, ORCL-PD)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-02-03",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-04-17",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-04-08",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-09-26",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-11-09",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2010-04-07",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-05-05",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-04-01",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-11-09",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-03-24",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-07-07",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-04-26",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-02-09",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-05",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-09-18",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-07-15",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-10",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-09-09",
+          "company": [
+            "Zendesk, Inc.  (CIK 0001463172)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-06",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-03-29",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-03-10",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-12-18",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-20",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-02",
+          "company": [
+            "Paramount Skydance Corp  (PSKY)  (CIK 0002041610)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2006-03-02",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-10-26",
+          "company": [
+            "SIEBEL SYSTEMS INC  (CIK 0001006835)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-04",
+          "company": [
+            "ORACLE CORP  (ORCL, ORCL-PD)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-01-11",
+          "company": [
+            "SALESFORCE COM INC  (CRM)  (CIK 0001108524)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-04",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-03-12",
+          "company": [
+            "COMMUNICATION INTELLIGENCE CORP  (ISGN)  (CIK 0000727634)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-07-31",
+          "company": [
+            "Fidelity National Information Services, Inc.  (FIS)  (CIK 0001136893)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-03-02",
+          "company": [
+            "PATRON SYSTEMS INC  (CIK 0001075043)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-03-25",
+          "company": [
+            "RAINMAKER SYSTEMS INC  (CIK 0001094007)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-12-16",
+          "company": [
+            "Pivotal Software, Inc.  (CIK 0001574135)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-20",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-02-22",
+          "company": [
+            "Slack Technologies, Inc.  (CIK 0001764925)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-09-27",
+          "company": [
+            "NAVISITE INC  (CIK 0001084750)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-04-17",
+          "company": [
+            "PORTAL SOFTWARE INC  (CIK 0001080306)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-12-07",
+          "company": [
+            "PIONEER POWER SOLUTIONS, INC.  (PPSI)  (CIK 0001449792)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-09-28",
+          "company": [
+            "FIRST DATA CORP  (CIK 0000883980)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-04-20",
+          "company": [
+            "SIEBEL SYSTEMS INC  (CIK 0001006835)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-12-14",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-06-08",
+          "company": [
+            "JDA SOFTWARE GROUP INC  (CIK 0001006892)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-02-06",
+          "company": [
+            "CB RICHARD ELLIS GROUP INC  (CBRE)  (CIK 0001138118)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-11-04",
+          "company": [
+            "DEXCOM INC  (DXCM)  (CIK 0001093557)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-11-04",
+          "company": [
+            "DEXCOM INC  (DXCM)  (CIK 0001093557)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2003-08-11",
+          "company": [
+            "AXTIVE CORP  (CIK 0001015172)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2010-04-07",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2008-06-27",
+          "company": [
+            "BOTTOMLINE TECHNOLOGIES INC /DE/  (CIK 0001073349)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2001-02-28",
+          "company": [
+            "SEAGATE SOFTWARE INFORMATION MANAGEMENT GROUP HOLDINGS INC  (CIK 0001126499)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2018-10-15",
+          "company": [
+            "Workday, Inc.  (WDAY)  (CIK 0001327811)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2005-03-14",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-04-20",
+          "company": [
+            "SUN MICROSYSTEMS, INC.  (CIK 0000709519)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2018-10-15",
+          "company": [
+            "Workday, Inc.  (WDAY)  (CIK 0001327811)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-12-07",
+          "company": [
+            "INTERMEDIA COMMUNICATIONS INC  (CIK 0000885067)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-09-27",
+          "company": [
+            "Visual Network Design, Inc.  (CIK 0001476638)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2011-11-17",
+          "company": [
+            "Rackwise, Inc.  (CIK 0001476638)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-03-06",
+          "company": [
+            "ORACLE CORP  (ORCL)  (CIK 0001341439)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-03-01",
+          "company": [
+            "HYPERION SOLUTIONS CORP  (CIK 0001001113)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-05-16",
+          "company": [
+            "AGILE SOFTWARE CORP  (CIK 0001088653)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2012-01-09",
+          "company": [
+            "Rackwise, Inc.  (CIK 0001476638)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-27",
+          "company": [
+            "Warner Bros. Discovery, Inc.  (WBD)  (CIK 0001437107)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-02",
+          "company": [
+            "Paramount Skydance Corp  (PSKY)  (CIK 0002041610)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-06-08",
+          "company": [
+            "JDA SOFTWARE GROUP INC  (CIK 0001006892)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-09-19",
+          "company": [
+            "SIEBEL SYSTEMS INC  (CIK 0001006835)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-09-15",
+          "company": [
+            "ORACLE CORP /DE/  (CIK 0000777676)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2005-11-17",
+          "company": [
+            "BIO SOLUTIONS INTERNATIONAL INC  (CIK 0000842013)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-04-28",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-11-03",
+          "company": [
+            "BIO SOLUTIONS INTERNATIONAL INC  (CIK 0000842013)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2005-11-07",
+          "company": [
+            "BIO SOLUTIONS INTERNATIONAL INC  (CIK 0000842013)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2017-11-09",
+          "company": [
+            "Rimini Street, Inc.  (RMNI)  (CIK 0001635282)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2002-01-30",
+          "company": [
+            "ZILOG INC  (CIK 0000319450)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-10-30",
+          "company": [
+            "INFERX CORP  (CIK 0001329548)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-07-11",
+          "company": [
+            "ACCRUE SOFTWARE INC  (CIK 0001087243)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-05-20",
+          "company": [
+            "OneSpan Inc.  (OSPN)  (CIK 0001044777)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-06-11",
+          "company": [
+            "REALNETWORKS INC  (CIK 0001046327)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-04-03",
+          "company": [
+            "INTERMEDIA COMMUNICATIONS INC  (CIK 0000885067)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-03-18",
+          "company": [
+            "VERITAS SOFTWARE CORP /DE/  (CIK 0001084408)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-09-12",
+          "company": [
+            "SIEBEL SYSTEMS INC  (CIK 0001006835)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-10-26",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22Oracle+Corporation%22+notes+offering&dateRange=custom&forms=8-K"
+    },
+    {
+      "ticker": "MSFT",
+      "name_cn": "微软",
+      "name_en": "Microsoft Corporation",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。"
+      ],
+      "cik": "0000789019",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2013-05-01",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-12-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-07",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-05-15",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-09-27",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-02-08",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-02-03",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-02-12",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-08-05",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-11-03",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-04",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-16",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-30",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-02-08",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-09-27",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-05-15",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-06-08",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-06-09",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-07",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-09-27",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-02-08",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-11-19",
+          "company": [
+            "YAHOO INC  (CIK 0001011006)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2010-09-17",
+          "company": [
+            "Cole Credit Property Trust III, Inc.  (CIK 0001425923)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-12-18",
+          "company": [
+            "ACCLAIM ENTERTAINMENT INC  (CIK 0000804888)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-02-12",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-11-01",
+          "company": [
+            "DIGITAL RIVER INC /DE  (CIK 0001062530)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-11-03",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-12-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-05-01",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-08-05",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-04",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-02-03",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2002-02-21",
+          "company": [
+            "ACCLAIM ENTERTAINMENT INC  (CIK 0000804888)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-12-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-05-01",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-06-18",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-06-10",
+          "company": [
+            "ACCLAIM ENTERTAINMENT INC  (CIK 0000804888)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-04-30",
+          "company": [
+            "BARNES & NOBLE INC  (CIK 0000890491)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-02-17",
+          "company": [
+            "STARTEK INC  (CIK 0001031029)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-16",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-16",
+          "company": [
+            "Activision Blizzard, Inc.  (CIK 0000718877)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-30",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-02-15",
+          "company": [
+            "RAINMAKER SYSTEMS INC  (CIK 0001094007)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-01-22",
+          "company": [
+            "ACCLAIM ENTERTAINMENT INC  (CIK 0000804888)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2005-03-25",
+          "company": [
+            "LIBERTY MEDIA INTERNATIONAL INC  (CIK 0001284698)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-12-07",
+          "company": [
+            "INTERMEDIA COMMUNICATIONS INC  (CIK 0000885067)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2002-02-28",
+          "company": [
+            "EXPEDIA INC  (CIK 0001095357)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-12-04",
+          "company": [
+            "BARNES & NOBLE INC  (CIK 0000890491)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2013-09-27",
+          "company": [
+            "GlobalOptions Group, Inc.  (CIK 0001294649)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-09-24",
+          "company": [
+            "GlobalOptions Group, Inc.  (CIK 0001294649)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-04-13",
+          "company": [
+            "STARTEK INC  (CIK 0001031029)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-10-16",
+          "company": [
+            "Activision Blizzard, Inc.  (CIK 0000718877)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-10-17",
+          "company": [
+            "SCHWAB CHARLES CORP  (SCHW, SCHW-PD, SCHW-PJ)  (CIK 0000316709)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-04-05",
+          "company": [
+            "Verb Technology Company, Inc.  (VERB)  (CIK 0001566610)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-04-15",
+          "company": [
+            "SCHWAB CHARLES CORP  (SCHW, SCHW-PD, SCHW-PJ)  (CIK 0000316709)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-06",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-03-04",
+          "company": [
+            "Cinnabar Ventures Inc  (CIK 0001409136)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2014-02-12",
+          "company": [
+            "Patent Properties, Inc.  (CIK 0001294649)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-01-18",
+          "company": [
+            "SCHWAB CHARLES CORP  (SCHW, SCHW-PD, SCHW-PJ)  (CIK 0000316709)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-05-03",
+          "company": [
+            "LIBERTY MEDIA INTERNATIONAL INC  (CIK 0001284698)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2009-05-05",
+          "company": [
+            "IXI Mobile, Inc.  (CIK 0001319644)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2009-08-07",
+          "company": [
+            "IXI Mobile, Inc.  (CIK 0001319644)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-02-20",
+          "company": [
+            "PIVOTAL CORP  (CIK 0001086329)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2002-06-04",
+          "company": [
+            "ICG COMMUNICATIONS INC /DE/  (CIK 0001013240)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-08-06",
+          "company": [
+            "AUDIBLE INC  (CIK 0001077926)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-09-09",
+          "company": [
+            "Zendesk, Inc.  (CIK 0001463172)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-03-10",
+          "company": [
+            "TransMontaigne Partners L.P.  (CIK 0001319229)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-12-17",
+          "company": [
+            "WPCS INTERNATIONAL INC  (AYRO)  (CIK 0001086745)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-03-25",
+          "company": [
+            "IMMERSION CORP  (IMMR)  (CIK 0001058811)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-02-10",
+          "company": [
+            "AUDIBLE INC  (CIK 0001077926)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-04-03",
+          "company": [
+            "INTERMEDIA COMMUNICATIONS INC  (CIK 0000885067)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-10-01",
+          "company": [
+            "AMERICREDIT CORP  (CIK 0000804269)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-04-23",
+          "company": [
+            "FUTURELINK CORP  (CIK 0001061399)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-01-11",
+          "company": [
+            "SALESFORCE COM INC  (CRM)  (CIK 0001108524)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-10-28",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-01-18",
+          "company": [
+            "ADVANCED MICRO DEVICES INC  (AMD)  (CIK 0000002488)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-02-15",
+          "company": [
+            "AUDIBLE INC  (CIK 0001077926)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-05-30",
+          "company": [
+            "SPLUNK INC  (CIK 0001353283)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-07-12",
+          "company": [
+            "Generation Zero Group, Inc.  (CIK 0001390072)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2018-10-01",
+          "company": [
+            "WELLS FARGO & COMPANY/MN  (WFC, WFCNP, WFC-PA, WFC-PC, WFC-PD, WFC-PL, WFC-PY, WFC-PZ)  (CIK 0000072971)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-08-07",
+          "company": [
+            "FORESCOUT TECHNOLOGIES, INC  (CIK 0001145057)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2019-08-08",
+          "company": [
+            "FORESCOUT TECHNOLOGIES, INC  (CIK 0001145057)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-07-29",
+          "company": [
+            "BOSTON PROPERTIES INC  (BXP)  (CIK 0001037540)",
+            "BOSTON PROPERTIES LTD PARTNERSHIP  (CIK 0001043121)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2001-11-02",
+          "company": [
+            "INTERLIANT INC  (CIK 0001065910)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2002-03-15",
+          "company": [
+            "USA NETWORKS INC  (MTCH)  (CIK 0000891103)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-07-12",
+          "company": [
+            "PASW INC  (VHC)  (CIK 0001082324)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-08-07",
+          "company": [
+            "GABELLI ASSET MANAGEMENT INC  (GAMI)  (CIK 0001060349)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-01-31",
+          "company": [
+            "SL GREEN REALTY CORP  (SLG, SLG-PI)  (CIK 0001040971)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2015-07-27",
+          "company": [
+            "PLANTRONICS INC /CA/  (CIK 0000914025)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2013-07-30",
+          "company": [
+            "KILROY REALTY CORP  (KRC)  (CIK 0001025996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-02-09",
+          "company": [
+            "MAD CATZ INTERACTIVE INC  (CIK 0001088162)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-11-04",
+          "company": [
+            "THQ INC  (CIK 0000865570)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-08-04",
+          "company": [
+            "MAD CATZ INTERACTIVE INC  (CIK 0001088162)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-07-27",
+          "company": [
+            "ADVANCED MICRO DEVICES INC  (AMD)  (CIK 0000002488)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-12-03",
+          "company": [
+            "MICROSOFT CORP  (MSFT)  (CIK 0000789019)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-07-15",
+          "company": [
+            "YAHOO INC  (CIK 0001011006)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22Microsoft+Corporation%22+notes+offering&dateRange=custom&forms=8-K"
+    },
+    {
+      "ticker": "GOOGL",
+      "name_cn": "Alphabet",
+      "name_en": "Alphabet Inc.",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。",
+        "口径提醒：有价证券含受短期限制的 SpaceX 股份（2026 Q3 为 $75.2B），净现金口径须人工复核。"
+      ],
+      "cik": "0001652044",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001652044.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-04",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-08-09",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-08-09",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-04-27",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-08-09",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2016-05-03",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-24",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-21",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-11",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22Alphabet+Inc.%22+notes+offering&dateRange=custom&forms=8-K"
+    },
+    {
+      "ticker": "META",
+      "name_cn": "Meta",
+      "name_en": "Meta Platforms, Inc.",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。"
+      ],
+      "cik": "0001326801",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001326801.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Meta Platforms, Inc.  (META, METAM)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-05-03",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-03",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-04",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-12",
+          "company": [
+            "Meta Platforms, Inc.  (META, METAM)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-04",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-03",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-04",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-05",
+          "company": [
+            "Meta Platforms, Inc.  (META, METAM)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-05-03",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-12",
+          "company": [
+            "Meta Platforms, Inc.  (META, METAM)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-04-03",
+          "company": [
+            "NETWORK-1 TECHNOLOGIES, INC.  (NTIP)  (CIK 0001065078)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-10-29",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-10",
+          "company": [
+            "Virtuix Holdings Inc.  (VTIX)  (CIK 0001606242)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-10-29",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-09",
+          "company": [
+            "Meta Platforms, Inc.  (META)  (CIK 0001326801)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-03",
+          "company": [
+            "Uniti Group Inc.  (UNIT)  (CIK 0002020795)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-17",
+          "company": [
+            "Uniti Group Inc.  (UNIT)  (CIK 0002020795)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-04",
+          "company": [
+            "VORNADO REALTY TRUST  (VNO, VNORP, VNO-PL, VNO-PM, VNO-PN, VNO-PO)  (CIK 0000899689)",
+            "VORNADO REALTY LP  (CIK 0001040765)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-03",
+          "company": [
+            "VORNADO REALTY TRUST  (VNO, VNORP, VNO-PL, VNO-PM, VNO-PN, VNO-PO)  (CIK 0000899689)",
+            "VORNADO REALTY LP  (CIK 0001040765)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-02-15",
+          "company": [
+            "VORNADO REALTY TRUST  (VNO, VNORP, VNO-PL, VNO-PM, VNO-PN, VNO-PO)  (CIK 0000899689)",
+            "VORNADO REALTY LP  (CIK 0001040765)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-11-02",
+          "company": [
+            "VORNADO REALTY TRUST  (VNO, VNORP, VNO-PL, VNO-PM, VNO-PN, VNO-PO)  (CIK 0000899689)",
+            "VORNADO REALTY LP  (CIK 0001040765)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-09",
+          "company": [
+            "VORNADO REALTY TRUST  (VNO, VNORP, VNO-PL, VNO-PM, VNO-PN, VNO-PO)  (CIK 0000899689)",
+            "VORNADO REALTY LP  (CIK 0001040765)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-05-23",
+          "company": [
+            "Shutterstock, Inc.  (SSTK)  (CIK 0001549346)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-10-23",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2024-07-25",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-05",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-02-16",
+          "company": [
+            "DIGITAL REALTY TRUST, INC.  (DLR, DLR-PJ, DLR-PK, DLR-PL)  (CIK 0001297996)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-25",
+          "company": [
+            "CLEANSPARK, INC.  (CLSK, CLSKW)  (CIK 0000827876)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-11-29",
+          "company": [
+            "ALEXANDRIA REAL ESTATE EQUITIES, INC.  (ARE)  (CIK 0001035443)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-10",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-16",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "Applied Digital Corp.  (APLD)  (CIK 0001144879)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-06",
+          "company": [
+            "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-28",
+          "company": [
+            "Galaxy Digital Inc.  (GLXY)  (CIK 0001859392)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-05-01",
+          "company": [
+            "Hut 8 Corp.  (HUT)  (CIK 0001964789)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-10",
+          "company": [
+            "Hut 8 Corp.  (HUT)  (CIK 0001964789)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-01-10",
+          "company": [
+            "AXT INC  (AXTI)  (CIK 0001051627)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-07-06",
+          "company": [
+            "AXT INC  (AXTI)  (CIK 0001051627)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-08-02",
+          "company": [
+            "AXT INC  (AXTI)  (CIK 0001051627)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-10",
+          "company": [
+            "ENBRIDGE INC  (ENB, EBBGF, EBBNF, EBGEF, EBRGF, EBRZF, ENBFF, ENBGF, ENBHF, ENBMF, ENBNF, ENBOF, ENBRF, ENBSF)  (CIK 0000895728)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22Meta+Platforms%2C+Inc.%22+notes+offering&dateRange=custom&forms=8-K"
+    },
+    {
+      "ticker": "AMZN",
+      "name_cn": "亚马逊",
+      "name_en": "Amazon.com, Inc.",
+      "status": "ok",
+      "fiscal_period_end": null,
+      "filed_date": null,
+      "ocf_usd": null,
+      "capex_cash_usd": null,
+      "capex_ocf_pct": null,
+      "fcf_usd": null,
+      "debt_proceeds_usd": null,
+      "debt_repayments_usd": null,
+      "cash_usd": null,
+      "securities_usd": null,
+      "debt_noncurrent_usd": null,
+      "debt_current_usd": null,
+      "total_debt_usd": null,
+      "net_debt_usd": null,
+      "notes": [
+        "OCF 未能获取（companyfacts 无最新 10-Q 的 NetCashProvidedByOperatingActivities）。",
+        "capex 未能获取（companyfacts 无最新 10-Q 的 PaymentsToAcquirePropertyPlantAndEquipment）。",
+        "本季发债/偿还额未能获取（companyfacts 无对应 tag）。",
+        "资产负债表项目不完整，净债务未能计算。"
+      ],
+      "cik": "0001018724",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001018724.json",
+      "debt_events": [
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-12-05",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-06-03",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-04-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-14",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-12-01",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-09",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-05-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-05-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-15",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-12-01",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-04-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-09",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-14",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-06-03",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-12-05",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-12-20",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-01-27",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-06-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-10-23",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-07-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-06-03",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-12-05",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-12-01",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-11-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2014-12-05",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-10-21",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-06-03",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K/A",
+          "filing_date": "2013-01-25",
+          "company": [
+            "COLE CORPORATE INCOME TRUST, INC.  (CIK 0001490626)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-12-01",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-05-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-20",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-07-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-10-24",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2022-04-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-04-26",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-04-24",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-04-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2004-01-27",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-05-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-04-07",
+          "company": [
+            "NEWS CORP  (NWS, NWSA)  (CIK 0001564708)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-09",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-10-25",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-04-26",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-08-15",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-04-23",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-04-24",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-07-09",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-13",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-14",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2003-10-21",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2017-04-27",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2007-07-24",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-07-25",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2010-07-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-12",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-02-02",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-09-14",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-10-22",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-01-30",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-06-08",
+          "company": [
+            "Cipher Digital Inc.  (CIFR)  (CIK 0001819989)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2012-04-26",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-07-26",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-10-28",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-02-02",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2021-07-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-03-16",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-08-15",
+          "company": [
+            "Air Transport Services Group, Inc.  (ATSG)  (CIK 0000894081)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2018-11-28",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2006-04-25",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2011-04-27",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2005-10-25",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2018-08-01",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2008-04-18",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-08-01",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-02-06",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-05-06",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2009-01-29",
+          "company": [
+            "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2019-11-25",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2020-08-04",
+          "company": [
+            "MONMOUTH REAL ESTATE INVESTMENT CORP  (CIK 0000067625)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2023-08-15",
+          "company": [
+            "Air Transport Services Group, Inc.  (ATSG)  (CIK 0000894081)"
+          ],
+          "accession": null,
+          "title": null
+        }
+      ],
+      "debt_events_source": "https://efts.sec.gov/LATEST/search-index?q=%22Amazon.com%2C+Inc.%22+notes+offering&dateRange=custom&forms=8-K"
+    }
+  ],
+  "unit": "USD",
+  "ok_companies": 6,
+  "total_companies": 6,
+  "notes": [
+    "口径：最新已公布 10-Q 的单季度；资产负债表取最新 10-Q/10-K。",
+    "capex 为现金购置口径（PaymentsToAcquirePropertyPlantAndEquipment）；公司定义口径（含融资租赁）companyfacts 无法自动区分，须人工并列。",
+    "净债务 =（长期债非流动 + 一年内到期）−（现金及等价物 + 有价证券），租赁负债不计入。",
+    "发债事件检索端点未验证；无命中只标“未能获取”。"
+  ]
+}

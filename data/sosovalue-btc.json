@@ -1,0 +1,173 @@
+{
+  "fetched_at": "2026-11-25T14:17:35Z",
+  "source_url": "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=BTC&country_code=US&limit=50",
+  "rows": [
+    {
+      "date": "2026-10-26",
+      "net_flow_usd": 110344120.0,
+      "total_value_traded_usd": 1863077616.9,
+      "total_net_assets_usd": 102839745964.24516,
+      "cum_net_inflow_usd": 57293208418.088
+    },
+    {
+      "date": "2026-10-27",
+      "net_flow_usd": 175993377.0,
+      "total_value_traded_usd": 1575156229.7,
+      "total_net_assets_usd": 103943311408.8796,
+      "cum_net_inflow_usd": 57469201795.088
+    },
+    {
+      "date": "2026-10-28",
+      "net_flow_usd": 137330298.95,
+      "total_value_traded_usd": 1261862561.5,
+      "total_net_assets_usd": 104876683004.63847,
+      "cum_net_inflow_usd": 57606532094.037994
+    },
+    {
+      "date": "2026-10-29",
+      "net_flow_usd": 17071922.455000002,
+      "total_value_traded_usd": 2108990154.7,
+      "total_net_assets_usd": 104268166683.82224,
+      "cum_net_inflow_usd": 57623604016.493
+    },
+    {
+      "date": "2026-10-30",
+      "net_flow_usd": -643330345.885,
+      "total_value_traded_usd": 6350689995.0,
+      "total_net_assets_usd": 98139977651.38004,
+      "cum_net_inflow_usd": 56980273670.608
+    },
+    {
+      "date": "2026-11-02",
+      "net_flow_usd": -398617353.4,
+      "total_value_traded_usd": 1991815926.5,
+      "total_net_assets_usd": 98124458163.02667,
+      "cum_net_inflow_usd": 56581656317.208
+    },
+    {
+      "date": "2026-11-03",
+      "net_flow_usd": -115563333.61999999,
+      "total_value_traded_usd": 1460343755.8,
+      "total_net_assets_usd": 99157322791.52667,
+      "cum_net_inflow_usd": 56466092983.588
+    },
+    {
+      "date": "2026-11-04",
+      "net_flow_usd": 74567738.35000001,
+      "total_value_traded_usd": 3594956562.0,
+      "total_net_assets_usd": 102255112366.22893,
+      "cum_net_inflow_usd": 56540660721.937996
+    },
+    {
+      "date": "2026-11-05",
+      "net_flow_usd": -430203000.85,
+      "total_value_traded_usd": 3885147006.0,
+      "total_net_assets_usd": 96647198354.14713,
+      "cum_net_inflow_usd": 56110457721.088
+    },
+    {
+      "date": "2026-11-06",
+      "net_flow_usd": -411917545.09999996,
+      "total_value_traded_usd": 2333150247.3,
+      "total_net_assets_usd": 95896862408.52428,
+      "cum_net_inflow_usd": 55698540175.988
+    },
+    {
+      "date": "2026-11-09",
+      "net_flow_usd": -201081930.01,
+      "total_value_traded_usd": 1726290132.4,
+      "total_net_assets_usd": 94434986267.61964,
+      "cum_net_inflow_usd": 55497458245.978
+    },
+    {
+      "date": "2026-11-10",
+      "net_flow_usd": -95001233.75,
+      "total_value_traded_usd": 2062983908.6,
+      "total_net_assets_usd": 92823526744.15384,
+      "cum_net_inflow_usd": 55402457012.228
+    },
+    {
+      "date": "2026-11-11",
+      "net_flow_usd": -299898422.14,
+      "total_value_traded_usd": 2269834567.708,
+      "total_net_assets_usd": 93696850737.42168,
+      "cum_net_inflow_usd": 55102558590.088
+    },
+    {
+      "date": "2026-11-12",
+      "net_flow_usd": -283997508.0,
+      "total_value_traded_usd": 2885345830.3,
+      "total_net_assets_usd": 89556010553.95004,
+      "cum_net_inflow_usd": 54818561082.088
+    },
+    {
+      "date": "2026-11-13",
+      "net_flow_usd": -185450233.4,
+      "total_value_traded_usd": 2588280169.4,
+      "total_net_assets_usd": 86199738908.25476,
+      "cum_net_inflow_usd": 54633110848.687996
+    },
+    {
+      "date": "2026-11-16",
+      "net_flow_usd": 7986219.699999999,
+      "total_value_traded_usd": 2853679712.0,
+      "total_net_assets_usd": 84315771501.6814,
+      "cum_net_inflow_usd": 54641097068.388
+    },
+    {
+      "date": "2026-11-17",
+      "net_flow_usd": -239944866.82,
+      "total_value_traded_usd": 2352304584.3,
+      "total_net_assets_usd": 79649640510.39108,
+      "cum_net_inflow_usd": 54401152201.568
+    },
+    {
+      "date": "2026-11-18",
+      "net_flow_usd": -306421294.3350003,
+      "total_value_traded_usd": 2562627854.6,
+      "total_net_assets_usd": 77706592903.46516,
+      "cum_net_inflow_usd": 54094730907.232994
+    },
+    {
+      "date": "2026-11-19",
+      "net_flow_usd": -582193660.705,
+      "total_value_traded_usd": 3235223266.0,
+      "total_net_assets_usd": 76549156272.32428,
+      "cum_net_inflow_usd": 53512537246.528
+    },
+    {
+      "date": "2026-11-20",
+      "net_flow_usd": -669162059.12,
+      "total_value_traded_usd": 4703133644.5,
+      "total_net_assets_usd": 71345056310.82204,
+      "cum_net_inflow_usd": 52843375187.408
+    },
+    {
+      "date": "2026-11-23",
+      "net_flow_usd": -569739636.2999997,
+      "total_value_traded_usd": 3527036174.8,
+      "total_net_assets_usd": 74124798305.68867,
+      "cum_net_inflow_usd": 52273635551.108
+    },
+    {
+      "date": "2026-11-24",
+      "net_flow_usd": -231556490.06999975,
+      "total_value_traded_usd": 2499017019.7,
+      "total_net_assets_usd": 72009917872.68272,
+      "cum_net_inflow_usd": 52042079061.038
+    }
+  ],
+  "symbol": "BTC",
+  "route": {
+    "host": "openapi.sosovalue.com",
+    "version": "v1",
+    "endpoint": "/etfs/summary-history",
+    "url": "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=BTC&country_code=US&limit=50"
+  },
+  "unit": "USD",
+  "notes": [
+    "v1 优先、v2 备选；实际走通的路线见 route（主机 + 版本），并同步写入 status.json。",
+    "v1 历史窗口据官方文档仅最近 1 个月，长历史须靠本仓库逐日累积。",
+    "T+1 结算：当日行 total_net_inflow 为 null 时已跳过，未记 0。"
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "fetched_at": "2026-11-25T14:17:33Z",
+  "source_url": "https://www.ici.org/topics/weekly-estimated-flow-reports",
+  "rows": [
+    {
+      "date": "2026-10-14",
+      "report": "combined",
+      "total": -471693.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": -476423.0,
+        "Domestic": -479395.0,
+        "World": 2972.0,
+        "Hybrid": -2339.0,
+        "Bond": 7919.0,
+        "Taxable": 6798.0,
+        "Municipal": 1121.0,
+        "Commodity": -850.0,
+        "Total": -471693.0
+      }
+    },
+    {
+      "date": "2026-10-14",
+      "report": "flows",
+      "total": -524940.0,
+      "unit": "USD millions",
+      "categories": {
+        "Total equity": -511152.0,
+        "Domestic": -509062.0,
+        "World": -2090.0,
+        "Hybrid": -2674.0,
+        "Total bond": -11113.0,
+        "Taxable": -4206.0,
+        "Municipal": -6908.0,
+        "Total": -524940.0
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "report": "combined",
+      "total": 19099.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 20665.0,
+        "Domestic": 13845.0,
+        "World": 6820.0,
+        "Hybrid": -2088.0,
+        "Bond": -169.0,
+        "Taxable": 429.0,
+        "Municipal": -598.0,
+        "Commodity": 691.0,
+        "Total": 19099.0
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "report": "etf",
+      "total": 53202.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 42264.0,
+        "Domestic": 34579.0,
+        "World": 7685.0,
+        "Hybrid": 204.0,
+        "Bond": 10043.0,
+        "Taxable": 6294.0,
+        "Municipal": 3749.0,
+        "Commodity": 691.0,
+        "Total": 53202.0
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "report": "flows",
+      "total": -34103.0,
+      "unit": "USD millions",
+      "categories": {
+        "Total equity": -21599.0,
+        "Domestic": -20734.0,
+        "World": -865.0,
+        "Hybrid": -2292.0,
+        "Total bond": -10213.0,
+        "Taxable": -5865.0,
+        "Municipal": -4348.0,
+        "Total": -34103.0
+      }
+    },
+    {
+      "date": "2026-10-28",
+      "report": "combined",
+      "total": 9363.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 11081.0,
+        "Domestic": 7096.0,
+        "World": 3985.0,
+        "Hybrid": -2993.0,
+        "Bond": 3164.0,
+        "Taxable": 1445.0,
+        "Municipal": 1719.0,
+        "Commodity": -1889.0,
+        "Total": 9363.0
+      }
+    },
+    {
+      "date": "2026-10-28",
+      "report": "etf",
+      "total": 46511.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 34221.0,
+        "Domestic": 26586.0,
+        "World": 7635.0,
+        "Hybrid": -57.0,
+        "Bond": 14236.0,
+        "Taxable": 9375.0,
+        "Municipal": 4862.0,
+        "Commodity": -1889.0,
+        "Total": 46511.0
+      }
+    },
+    {
+      "date": "2026-10-28",
+      "report": "flows",
+      "total": -37148.0,
+      "unit": "USD millions",
+      "categories": {
+        "Total equity": -23140.0,
+        "Domestic": -19489.0,
+        "World": -3650.0,
+        "Hybrid": -2936.0,
+        "Total bond": -11072.0,
+        "Taxable": -7930.0,
+        "Municipal": -3142.0,
+        "Total": -37148.0
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "report": "combined",
+      "total": 17156.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 17434.0,
+        "Domestic": 11913.0,
+        "World": 5521.0,
+        "Hybrid": -2761.0,
+        "Bond": 2353.0,
+        "Taxable": 2456.0,
+        "Municipal": -104.0,
+        "Commodity": 130.0,
+        "Total": 17156.0
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "report": "etf",
+      "total": 49829.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 35539.0,
+        "Domestic": 30868.0,
+        "World": 4671.0,
+        "Hybrid": 271.0,
+        "Bond": 13889.0,
+        "Taxable": 12228.0,
+        "Municipal": 1660.0,
+        "Commodity": 130.0,
+        "Total": 49829.0
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "report": "flows",
+      "total": -32675.0,
+      "unit": "USD millions",
+      "categories": {
+        "Total equity": -18107.0,
+        "Domestic": -18955.0,
+        "World": 848.0,
+        "Hybrid": -3032.0,
+        "Total bond": -11536.0,
+        "Taxable": -9772.0,
+        "Municipal": -1764.0,
+        "Total": -32675.0
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "report": "mmf",
+      "total": 8015.74,
+      "unit": "USD billions",
+      "categories": {
+        "Government": 6622.38,
+        "Retail": 3119.28,
+        "Institutional": 4896.46,
+        "Prime": 1231.6,
+        "Tax-exempt": 161.76,
+        "Total": 8015.74
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "report": "combined",
+      "total": 34315.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 37020.0,
+        "Domestic": 31505.0,
+        "World": 5515.0,
+        "Hybrid": -4147.0,
+        "Bond": 1671.0,
+        "Taxable": 1183.0,
+        "Municipal": 488.0,
+        "Commodity": -228.0,
+        "Total": 34315.0
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "report": "etf",
+      "total": 56915.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 45222.0,
+        "Domestic": 37060.0,
+        "World": 8162.0,
+        "Hybrid": 133.0,
+        "Bond": 11789.0,
+        "Taxable": 10126.0,
+        "Municipal": 1663.0,
+        "Commodity": -228.0,
+        "Total": 56915.0
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "report": "flows",
+      "total": -22562.0,
+      "unit": "USD millions",
+      "categories": {
+        "Total equity": -8200.0,
+        "Domestic": -5553.0,
+        "World": -2647.0,
+        "Hybrid": -4279.0,
+        "Total bond": -10083.0,
+        "Taxable": -8908.0,
+        "Municipal": -1175.0,
+        "Total": -22562.0
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "report": "mmf",
+      "total": 7980.02,
+      "unit": "USD billions",
+      "categories": {
+        "Government": 6589.63,
+        "Retail": 3114.88,
+        "Institutional": 4865.14,
+        "Prime": 1230.49,
+        "Tax-exempt": 159.9,
+        "Total": 7980.02
+      }
+    },
+    {
+      "date": "2026-11-18",
+      "report": "etf",
+      "total": 76732.0,
+      "unit": "USD millions",
+      "categories": {
+        "Equity": 74800.0,
+        "Domestic": 53322.0,
+        "World": 21478.0,
+        "Hybrid": -98.0,
+        "Bond": 1741.0,
+        "Taxable": 2223.0,
+        "Municipal": -482.0,
+        "Commodity": 289.0,
+        "Total": 76732.0
+      }
+    },
+    {
+      "date": "2026-11-18",
+      "report": "mmf",
+      "total": 7976.44,
+      "unit": "USD billions",
+      "categories": {
+        "Government": 6588.39,
+        "Retail": 3112.37,
+        "Institutional": 4864.07,
+        "Prime": 1226.39,
+        "Tax-exempt": 161.66,
+        "Total": 7976.44
+      },
+      "change_vs_prior_week": -3.58
+    }
+  ],
+  "source_urls": {
+    "flows": "https://www.ici.org/research/stats/flows",
+    "combined": "https://www.ici.org/research/stats/combined_flows",
+    "etf": "https://www.ici.org/research/stats/etf_flows",
+    "mmf": "https://www.ici.org/research/stats/mmf"
+  },
+  "unit": "流量/综合/ETF：USD millions；货币基金：USD billions",
+  "notes": [
+    "每次重取最近 5 周全量覆盖（历史周会被修正），ici.json 整体覆写，不追加。",
+    "flows 每周三 10:00 ET 发布；etf 单篇晚约 6 天；mmf 每周四 15:30 ET，节假日周提前至周三。",
+    "判据 A（货币基金）取 mmf 最新周 Total 行 $ Change；判据 B（ETF 总量）取 combined 或 etf 表 Total 行最新周。"
+  ]
+}
