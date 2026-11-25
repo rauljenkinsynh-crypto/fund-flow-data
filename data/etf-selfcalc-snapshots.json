@@ -58,5 +58,35 @@
     "shares": 133491874.99570654,
     "nav": 427.393,
     "source": "selfcalc-vaneck"
+  },
+  "QQQ": {
+    "date": "2026-11-25",
+    "shares": 694250000.0,
+    "nav": 633.93,
+    "source": "selfcalc-sina"
+  },
+  "VOO": {
+    "date": "2026-11-25",
+    "shares": 1548595410.0,
+    "nav": 658.87,
+    "source": "selfcalc-sina"
+  },
+  "SOXX_xcheck": {
+    "date": "2026-11-25",
+    "shares": 267500000.0,
+    "nav": 127.98,
+    "source": "xcheck-sina"
+  },
+  "TLT_xcheck": {
+    "date": "2026-11-25",
+    "shares": 600000000.0,
+    "nav": 82.24,
+    "source": "xcheck-sina"
+  },
+  "IBIT_xcheck": {
+    "date": "2026-11-25",
+    "shares": 1329760000.0,
+    "nav": 34.07,
+    "source": "xcheck-sina"
   }
 }

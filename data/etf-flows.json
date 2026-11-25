@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额） / Farside（IBIT）",
+  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（IBIT）",
   "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
-  "fetched_at_utc": "2026-11-25T17:54:08Z",
+  "fetched_at_utc": "2026-11-25T23:29:11Z",
   "status": "live",
   "attribution": {
     "credit": "TickerInside",
@@ -125,7 +125,7 @@
           "source": "tickerinside"
         }
       ],
-      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。；新浪交叉核对：快照日期与主源不一致（新浪 2026-11-25，主源 2026-11-24），未比对；数未改。"
     },
     {
       "ticker": "SMH",
@@ -142,16 +142,16 @@
     },
     {
       "ticker": "VOO",
-      "date_et": null,
+      "date_et": "2026-11-25",
       "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
+      "aum_usd_100m": 10203.2306,
       "pct_of_aum": null,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "seed",
+      "source": "selfcalc-sina",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
       "daily": [],
-      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。；新浪盘中跳过快照（当前美东 12:54 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "SPY",
@@ -259,16 +259,16 @@
     },
     {
       "ticker": "QQQ",
-      "date_et": null,
+      "date_et": "2026-11-25",
       "daily_flow_usd_100m": null,
-      "aum_usd_100m": null,
+      "aum_usd_100m": 4401.059,
       "pct_of_aum": null,
       "flag_over_5pct": false,
-      "source": "seed",
-      "as_of_date": null,
-      "status": "seed",
+      "source": "selfcalc-sina",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
       "daily": [],
-      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。；新浪盘中跳过快照（当前美东 12:54 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "IBIT",
@@ -582,7 +582,7 @@
           "source": "farside"
         }
       ],
-      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对份额快照 1,329,760,000（2026-11-25，仅存快照、未算流量，未动 Farside 数）。"
     },
     {
       "ticker": "XLP",
@@ -1115,7 +1115,7 @@
       "as_of_date": "2026-11-24",
       "status": "unmeasured",
       "daily": [],
-      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对：快照日期与主源不一致（新浪 2026-11-25，主源 2026-11-24），未比对；数未改。"
     },
     {
       "ticker": "GLD",

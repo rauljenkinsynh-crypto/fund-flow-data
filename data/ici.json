@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T17:53:50Z",
+  "fetched_at": "2026-11-25T23:28:52Z",
   "source_url": "https://www.ici.org/topics/weekly-estimated-flow-reports",
   "rows": [
     {
@@ -153,20 +153,6 @@
       }
     },
     {
-      "date": "2026-11-04",
-      "report": "mmf",
-      "total": 8015.74,
-      "unit": "USD billions",
-      "categories": {
-        "Government": 6622.38,
-        "Retail": 3119.28,
-        "Institutional": 4896.46,
-        "Prime": 1231.6,
-        "Tax-exempt": 161.76,
-        "Total": 8015.74
-      }
-    },
-    {
       "date": "2026-11-11",
       "report": "combined",
       "total": 34355.0,
@@ -292,8 +278,22 @@
         "Prime": 1226.39,
         "Tax-exempt": 161.66,
         "Total": 7976.44
+      }
+    },
+    {
+      "date": "2026-11-24",
+      "report": "mmf",
+      "total": 7978.93,
+      "unit": "USD billions",
+      "categories": {
+        "Government": 6593.4,
+        "Retail": 3111.63,
+        "Institutional": 4867.31,
+        "Prime": 1224.13,
+        "Tax-exempt": 161.4,
+        "Total": 7978.93
       },
-      "change_vs_prior_week": -3.58
+      "change_vs_prior_week": 2.49
     }
   ],
   "source_urls": {
