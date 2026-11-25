@@ -1,0 +1,107 @@
+# 资金流仪表盘 — GitHub Actions 定时取数
+#
+# 部署方法：把本仓库 github-actions/ 下的 .github/ 整个复制到数据仓库根目录，
+# 即本文件最终位于 <仓库根目录>/.github/workflows/fund-flow-fetch.yml。
+#   cp -r github-actions/.github <数据仓库根目录>/
+# 再按 README.md 建好 Secrets、首次手动触发一次。
+#
+# 本文件不含任何 key 值。两个 key 只以 Secrets 形式经环境变量传入脚本：
+#   SOSOVALUE_API_KEY、FRED_API_KEY（只写名字，值由 parent 复制进 Secrets，
+#   绝不经聊天明文传递）。
+#
+# 定时（cron 一律 UTC；ET=UTC-5 为 EST、UTC-4 为 EDT）：
+#   - 每周三 15:05 UTC = 10:05 EST / 11:05 EDT，ICI 周报发布（10:00 ET）之后。
+#   - 每周二至周六 02:00 UTC = 周一至周五 21:00 EST / 22:00 EDT，
+#     美股收盘后，取 Farside / SoSoValue 当日流量（T+1 口径，盘中不取）。
+#   - 每周日 13:00 UTC，EDGAR 每周一次（AI 资金链财报与发债事件）。
+#   每次触发都跑全部源（幂等、便宜）：各源独立写各自的 data/<源>.json，
+#   任一源失败不阻塞其他源。workflow_dispatch 可手动指定只跑部分源。
+#
+# 未验证声明：Actions 出口能否绕过 SoSoValue / Farside / ICI 的反爬墙，
+# 未经实测，本文件不宣称已绕过；首次实测结果以 data/status.json 为准。
+# ICI / ETF.com 的确切 URL 待另一路核查员钉死，脚本里目前是未配置跳过，
+# 定时跑到它们时只写 blocked 状态，不失败、不编数。
+
+name: fund-flow-fetch
+
+on:
+  schedule:
+    - cron: "5 15 * * 3"    # 每周三 10:05 ET 后（ICI 周报）
+    - cron: "0 2 * * 2-6"   # 每交易日收盘后约 21:00 ET（Farside / SoSoValue）
+    - cron: "0 13 * * 0"    # 每周日（EDGAR：AI 资金链）
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: "要跑的源（all 或逗号分隔，如 farside-btc,sosovalue-btc）"
+        required: false
+        default: "all"
+      reason:
+        description: "手动触发原因（备注用）"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+# 同一时间只跑一份取数，避免并发提交冲突；排队等前一份跑完，不取消。
+concurrency:
+  group: fund-flow-fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOSOVALUE_API_KEY: ${{ secrets.SOSOVALUE_API_KEY }}
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch all sources
+        id: fetch
+        # 退出码：0 全成功；2 部分成功；1 全部失败（未配置的源不计入）。
+        # 即使部分失败也要继续提交已成功的源，所以先记下退出码再提交，
+        # 最后按原退出码结束，让本次运行的状态如实反映成功/失败。
+        run: |
+          set +e
+          if [ "${{ inputs.sources }}" = "all" ] || [ -z "${{ inputs.sources }}" ]; then
+            python3 scripts/fetch_all.py
+          else
+            python3 scripts/fetch_all.py --only "${{ inputs.sources }}"
+          fi
+          echo "fetch_exit=$?" >> "$GITHUB_OUTPUT"
+          set -e
+
+      - name: Commit data/ changes
+        # 只提交 data/ 目录；脚本与 workflow 本身的改动不由机器人提交。
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "data/ 无变化，无需提交。"
+          else
+            git commit -m "data: fund-flow fetch $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+            git push
+          fi
+
+      - name: Upload data snapshot (artifact)
+        # 调试用：每次运行留一份 data/ 快照，失败时可直接下载看 status.json。
+        uses: actions/upload-artifact@v4
+        with:
+          name: fund-flow-data-${{ github.run_number }}
+          path: data/
+          retention-days: 30
+
+      - name: Report fetch exit code
+        # 如实收尾：部分/全部失败时让本次运行标红（红不是事故，是待修信号）。
+        run: |
+          echo "fetch exit code: ${{ steps.fetch.outputs.fetch_exit }}"
+          exit ${{ steps.fetch.outputs.fetch_exit }}
