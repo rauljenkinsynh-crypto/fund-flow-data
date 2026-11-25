@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T16:09:20Z",
+  "fetched_at": "2026-11-25T16:51:38Z",
   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
   "rows": [
     {
@@ -3117,159 +3117,6 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-05-01",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-02-13",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-11-06",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-05-01",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-11-06",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-11-06",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-02-13",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-02-13",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-11-06",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-02-13",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2025-11-06",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
-          "filing_date": "2026-08-10",
-          "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
-          ],
-          "accession": null,
-          "title": null
-        },
-        {
-          "form": "8-K",
           "filing_date": "2026-08-10",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
@@ -3297,6 +3144,141 @@
         },
         {
           "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-11-06",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-08-10",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
           "filing_date": "2025-05-01",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
@@ -3307,6 +3289,24 @@
         {
           "form": "8-K",
           "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2026-02-13",
+          "company": [
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+          ],
+          "accession": null,
+          "title": null
+        },
+        {
+          "form": "8-K",
+          "filing_date": "2025-05-01",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -4210,7 +4210,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2022-12-01",
+          "filing_date": "2026-09-14",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
@@ -4219,7 +4219,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-09-14",
+          "filing_date": "2022-12-01",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
