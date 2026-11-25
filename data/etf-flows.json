@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件） / Farside（IBIT）",
+  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额） / Farside（IBIT）",
   "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
-  "fetched_at_utc": "2026-11-25T16:51:43Z",
+  "fetched_at_utc": "2026-11-25T17:54:08Z",
   "status": "live",
   "attribution": {
     "credit": "TickerInside",
@@ -138,7 +138,7 @@
       "as_of_date": "2026-11-24",
       "status": "unmeasured",
       "daily": [],
-      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "VOO",
@@ -151,7 +151,7 @@
       "as_of_date": null,
       "status": "seed",
       "daily": [],
-      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。；新浪盘中跳过快照（当前美东 12:54 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "SPY",
@@ -268,7 +268,7 @@
       "as_of_date": null,
       "status": "seed",
       "daily": [],
-      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "逐日流量待探查（第三阶段），暂看 ICI 周度。；pct 为 null，flag_over_5pct 记 false。；新浪盘中跳过快照（当前美东 12:54 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "IBIT",

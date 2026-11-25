@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T16:51:38Z",
+  "fetched_at": "2026-11-25T17:54:02Z",
   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
   "rows": [
     {
@@ -213,9 +213,9 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-08-06",
+          "filing_date": "2025-08-12",
           "company": [
-            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
           "accession": null,
           "title": null
@@ -231,9 +231,9 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-08-12",
+          "filing_date": "2025-08-06",
           "company": [
-            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
           ],
           "accession": null,
           "title": null
@@ -501,7 +501,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2024-10-10",
+          "filing_date": "2025-01-16",
           "company": [
             "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
           ],
@@ -510,7 +510,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-01-16",
+          "filing_date": "2024-10-10",
           "company": [
             "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
           ],
@@ -591,18 +591,18 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-05-28",
+          "filing_date": "2024-05-08",
           "company": [
-            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
+            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
           ],
           "accession": null,
           "title": null
         },
         {
           "form": "8-K",
-          "filing_date": "2024-05-08",
+          "filing_date": "2025-05-28",
           "company": [
-            "SURO CAPITAL CORP.  (SSSS, SSSSL)  (CIK 0001509470)"
+            "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
           "accession": null,
           "title": null
@@ -654,7 +654,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-12-11",
+          "filing_date": "2026-09-22",
           "company": [
             "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
@@ -663,7 +663,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-09-22",
+          "filing_date": "2025-12-11",
           "company": [
             "CoreWeave, Inc.  (CRWV)  (CIK 0001769628)"
           ],
@@ -2874,7 +2874,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-02-13",
+          "filing_date": "2026-05-11",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -2883,7 +2883,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-05-11",
+          "filing_date": "2026-02-13",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -3117,18 +3117,18 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-08-10",
+          "filing_date": "2025-05-01",
           "company": [
-            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
+            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
           "accession": null,
           "title": null
         },
         {
           "form": "8-K",
-          "filing_date": "2025-05-01",
+          "filing_date": "2026-08-10",
           "company": [
-            "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
+            "Alphabet Inc.  (GOOG, GOOGL, GOOGM, GOOGN)  (CIK 0001652044)"
           ],
           "accession": null,
           "title": null
