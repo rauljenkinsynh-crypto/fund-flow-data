@@ -306,7 +306,8 @@ class TestFredCredit(unittest.TestCase):
     def test_fetch_error_redacts_key(self):
         # 回归：get_json 报错里带完整请求 URL（含 key），fetch 必须脱敏后才抛出。
         def fake(url, headers=None, timeout=None, **kwargs):
-            raise SchemaError(f"返回不是合法 JSON（{url}，HTTP 500）: bad")
+            # 模拟 get_json 的真实报错：消息里带完整请求 URL（含真实 key）。
+            raise SchemaError("返回不是合法 JSON（https://api.stlouisfed.org/fred/series/observations?series_id=BAMLH0A0HYM2&api_key=test-key-123&file_type=json，HTTP 500）: bad")
 
         with mock.patch.dict(os.environ, {"FRED_API_KEY": "test-key-123"}):
             with mock.patch.object(fetch_all, "get_json", side_effect=fake):
@@ -314,6 +315,13 @@ class TestFredCredit(unittest.TestCase):
                     fetch_fred_credit()
         self.assertNotIn("test-key-123", str(ctx.exception))
         self.assertIn("<redacted>", str(ctx.exception))
+
+    def test_series_url_uses_real_key(self):
+        # 回归：_fred_series_url 曾把 api_key 写成字面量 <redacted>，导致
+        # Actions 上 FRED 一律 400。URL 里必须是真实 key，绝不能含 <redacted>。
+        url = fetch_all._fred_series_url("BAMLH0A0HYM2", "test-key-123")
+        self.assertIn("api_key=test-key-123", url)
+        self.assertNotIn("<redacted>", url)
 
     def test_fetch_missing_key_raises(self):
         with mock.patch.dict(os.environ, {}, clear=True):

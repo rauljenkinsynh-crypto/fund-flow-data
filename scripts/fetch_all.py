@@ -435,6 +435,11 @@ def _decode_body(body, content_encoding):
     return body
 
 
+def _redact_url(url):
+    """把 URL 里 api_key 的值替换成 <redacted>，供报错信息使用，防 key 泄漏。"""
+    return re.sub(r"api_key=[^&\s\"']*", "api_key=<redacted>", url)
+
+
 def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOUT,
                  cookies=False):
     """带重试的 HTTP 请求。返回 (status, body_bytes)。
@@ -468,12 +473,12 @@ def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOU
                 try:
                     decoded = _decode_body(raw, resp.headers.get("Content-Encoding"))
                 except Exception as exc:
-                    raise FetchError(f"响应解压失败 {url} :: {exc}")
+                    raise FetchError(f"响应解压失败 {_redact_url(url)} :: {exc}")
                 return resp.status, decoded
         except urllib.error.HTTPError as exc:
             detail = exc.read()[:500].decode("utf-8", "replace") if exc.fp else ""
             last_error = FetchError(
-                f"HTTP {exc.code} {url} :: {detail}", status=exc.code
+                f"HTTP {exc.code} {_redact_url(url)} :: {detail}", status=exc.code
             )
             if exc.code == 429 or exc.code >= 500:
                 if attempt < MAX_RETRIES:
@@ -483,7 +488,7 @@ def http_request(url, method="GET", headers=None, data=None, timeout=HTTP_TIMEOU
                     continue
             raise last_error
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
-            last_error = FetchError(f"网络异常 {url} :: {exc}")
+            last_error = FetchError(f"网络异常 {_redact_url(url)} :: {exc}")
             if attempt < MAX_RETRIES:
                 wait = BACKOFF_BASE_SECONDS * (2 ** (attempt - 1))
                 log(f"网络异常，{wait}s 后重试（第 {attempt}/{MAX_RETRIES} 次）")
@@ -498,7 +503,7 @@ def get_json(url, headers=None, timeout=HTTP_TIMEOUT):
     try:
         return json.loads(body.decode("utf-8"))
     except (ValueError, UnicodeDecodeError) as exc:
-        raise SchemaError(f"返回不是合法 JSON（{url}，HTTP {status}）: {exc}")
+        raise SchemaError(f"返回不是合法 JSON（{_redact_url(url)}，HTTP {status}）: {exc}")
 
 
 def post_json(url, payload, headers=None, timeout=HTTP_TIMEOUT):
@@ -510,7 +515,7 @@ def post_json(url, payload, headers=None, timeout=HTTP_TIMEOUT):
     try:
         return json.loads(body.decode("utf-8"))
     except (ValueError, UnicodeDecodeError) as exc:
-        raise SchemaError(f"返回不是合法 JSON（{url}，HTTP {status}）: {exc}")
+        raise SchemaError(f"返回不是合法 JSON（{_redact_url(url)}，HTTP {status}）: {exc}")
 
 
 # ------------------------------------------------------------- 离线解析 ---
@@ -1980,7 +1985,7 @@ def _fred_series_url(series_id, key, observation_start=None):
     """拼 FRED observations URL（与 DGS10 同款路径；key 只放进请求 URL，绝不进输出文件）。"""
     url = (
         "https://api.stlouisfed.org/fred/series/observations"
-        f"?series_id={series_id}&api_key=<redacted>&file_type=json"
+        f"?series_id={series_id}&api_key={key}&file_type=json"
     )
     if observation_start:
         url += f"&observation_start={observation_start}"
