@@ -1,14 +1,14 @@
 {
   "TLT": {
-    "date": "2026-11-24",
-    "shares": 600000000.0,
-    "nav": 81.80059376478334,
+    "date": "2026-11-25",
+    "shares": 602600000.0,
+    "nav": 82.31433532688351,
     "source": "selfcalc-blackrock"
   },
   "SOXX": {
-    "date": "2026-11-24",
-    "shares": 267500000.0,
-    "nav": 125.51125506971962,
+    "date": "2026-11-25",
+    "shares": 261050000.0,
+    "nav": 125.35554914728976,
     "source": "selfcalc-blackrock"
   },
   "GLD": {
@@ -54,9 +54,9 @@
     "source": "selfcalc-ssga"
   },
   "SMH": {
-    "date": "2026-11-24",
-    "shares": 133491874.99570654,
-    "nav": 427.393,
+    "date": "2026-11-25",
+    "shares": 133141882.24029785,
+    "nav": 422.6563,
     "source": "selfcalc-vaneck"
   },
   "QQQ": {

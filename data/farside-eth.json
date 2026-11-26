@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T23:28:55Z",
+  "fetched_at": "2026-11-26T10:22:46Z",
   "source_url": "https://farside.co.uk/ethereum-etf-flow-all-data/",
   "rows": [
     {
@@ -9148,8 +9148,20 @@
     },
     {
       "date": "2026-11-25",
-      "total": 0.0,
-      "funds": {}
+      "total": -68.5,
+      "funds": {
+        "ETHA": -68.5,
+        "ETHB": 0.0,
+        "FETH": 0.0,
+        "ETHW": 0.0,
+        "TETH": 0.0,
+        "ETHV": 0.0,
+        "QETH": 0.0,
+        "EZET": 0.0,
+        "MSSE": 0.0,
+        "ETHE": 0.0,
+        "ETH": 0.0
+      }
     }
   ],
   "symbol": "ETH",

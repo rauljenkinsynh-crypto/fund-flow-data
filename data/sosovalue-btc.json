@@ -1,14 +1,7 @@
 {
-  "fetched_at": "2026-11-25T23:28:55Z",
+  "fetched_at": "2026-11-26T10:22:47Z",
   "source_url": "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=BTC&country_code=US&limit=50",
   "rows": [
-    {
-      "date": "2026-10-26",
-      "net_flow_usd": 110344120.0,
-      "total_value_traded_usd": 1863077616.9,
-      "total_net_assets_usd": 102839745964.24516,
-      "cum_net_inflow_usd": 57293208418.088
-    },
     {
       "date": "2026-10-27",
       "net_flow_usd": 175993377.0,
@@ -155,6 +148,13 @@
       "total_value_traded_usd": 2499017019.7,
       "total_net_assets_usd": 72009917872.68272,
       "cum_net_inflow_usd": 52042079061.038
+    },
+    {
+      "date": "2026-11-25",
+      "net_flow_usd": -453119620.9600002,
+      "total_value_traded_usd": 3092525408.1,
+      "total_net_assets_usd": 72026690545.29016,
+      "cum_net_inflow_usd": 51588959440.077995
     }
   ],
   "symbol": "BTC",

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T23:29:03Z",
+  "fetched_at": "2026-11-26T10:22:52Z",
   "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json",
   "rows": [
     {
@@ -3297,7 +3297,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2025-05-01",
+          "filing_date": "2026-02-13",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -3306,7 +3306,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2026-02-13",
+          "filing_date": "2025-05-01",
           "company": [
             "Alphabet Inc.  (GOOG, GOOGL)  (CIK 0001652044)"
           ],
@@ -4678,7 +4678,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2017-08-16",
+          "filing_date": "2005-04-26",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],
@@ -4687,7 +4687,7 @@
         },
         {
           "form": "8-K",
-          "filing_date": "2005-04-26",
+          "filing_date": "2017-08-16",
           "company": [
             "AMAZON COM INC  (AMZN)  (CIK 0001018724)"
           ],

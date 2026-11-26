@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（IBIT）",
   "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
-  "fetched_at_utc": "2026-11-25T23:29:11Z",
+  "fetched_at_utc": "2026-11-26T10:23:00Z",
   "status": "live",
   "attribution": {
     "credit": "TickerInside",
@@ -20,14 +20,14 @@
   "tracked": [
     {
       "ticker": "SOXX",
-      "date_et": "2026-11-11",
-      "daily_flow_usd_100m": 10.6556,
-      "aum_usd_100m": 335.7426,
-      "pct_of_aum": 3.1737,
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": -8.0854,
+      "aum_usd_100m": 327.2407,
+      "pct_of_aum": -2.4708,
       "flag_over_5pct": false,
-      "source": "tickerinside",
-      "as_of_date": "2026-11-11",
-      "status": "stale",
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "live",
       "daily": [
         {
           "date": "2026-10-14",
@@ -123,22 +123,33 @@
           "date": "2026-11-11",
           "flow_usd_100m": 10.6556,
           "source": "tickerinside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -8.0854,
+          "source": "selfcalc-blackrock"
         }
       ],
-      "note": "pct 按快照日总资产现算（快照截至 2026-11-24，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。；新浪交叉核对：快照日期与主源不一致（新浪 2026-11-25，主源 2026-11-24），未比对；数未改。"
+      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。；新浪交叉核对盘中跳过快照（当前美东 05:22 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "SMH",
-      "date_et": "2026-11-24",
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": 570.5349,
-      "pct_of_aum": null,
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": -1.4793,
+      "aum_usd_100m": 562.7326,
+      "pct_of_aum": -0.2629,
       "flag_over_5pct": false,
       "source": "selfcalc-vaneck",
-      "as_of_date": "2026-11-24",
-      "status": "unmeasured",
-      "daily": [],
-      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。"
+      "as_of_date": "2026-11-25",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -1.4793,
+          "source": "selfcalc-vaneck"
+        }
+      ],
+      "note": ""
     },
     {
       "ticker": "VOO",
@@ -151,7 +162,7 @@
       "as_of_date": "2026-11-25",
       "status": "unmeasured",
       "daily": [],
-      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "新浪盘中跳过快照（当前美东 05:22 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "SPY",
@@ -268,24 +279,19 @@
       "as_of_date": "2026-11-25",
       "status": "unmeasured",
       "daily": [],
-      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "新浪盘中跳过快照（当前美东 05:22 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "IBIT",
-      "date_et": "2026-11-24",
-      "daily_flow_usd_100m": -1.753,
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": -3.297,
       "aum_usd_100m": null,
       "pct_of_aum": null,
       "flag_over_5pct": false,
       "source": "farside",
-      "as_of_date": "2026-11-24",
+      "as_of_date": "2026-11-25",
       "status": "live",
       "daily": [
-        {
-          "date": "2026-09-01",
-          "flow_usd_100m": -2.012,
-          "source": "farside"
-        },
         {
           "date": "2026-09-02",
           "flow_usd_100m": 1.154,
@@ -580,9 +586,14 @@
           "date": "2026-11-24",
           "flow_usd_100m": -1.753,
           "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -3.297,
+          "source": "farside"
         }
       ],
-      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对份额快照 1,329,760,000（2026-11-25，仅存快照、未算流量，未动 Farside 数）。"
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对盘中跳过快照（当前美东 05:23 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "XLP",
@@ -1106,16 +1117,22 @@
     },
     {
       "ticker": "TLT",
-      "date_et": "2026-11-24",
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": 490.8036,
-      "pct_of_aum": null,
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": 2.1402,
+      "aum_usd_100m": 496.0262,
+      "pct_of_aum": 0.4315,
       "flag_over_5pct": false,
       "source": "selfcalc-blackrock",
-      "as_of_date": "2026-11-24",
-      "status": "unmeasured",
-      "daily": [],
-      "note": "快照日期未前进（今日 2026-11-24 ≤ 上日 2026-11-24），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对：快照日期与主源不一致（新浪 2026-11-25，主源 2026-11-24），未比对；数未改。"
+      "as_of_date": "2026-11-25",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 2.1402,
+          "source": "selfcalc-blackrock"
+        }
+      ],
+      "note": "新浪交叉核对盘中跳过快照（当前美东 05:23 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "GLD",
@@ -1132,7 +1149,7 @@
     }
   ],
   "notes": [
-    "TickerInside 最新收盘日 2026-11-11，滞后约 10 个交易日（截至 2026-11-25）。",
+    "TickerInside 最新收盘日 2026-11-11，滞后约 11 个交易日（截至 2026-11-26）。",
     "滞后超 3 个交易日，7 只主路标的自动切自算备用并标注来源切换。",
     "SOXX 2026-11-10 在 TickerInside 为 null（未测得；该日单日 −$41.3 亿为种子数），面板须用种子数展示该日标红。",
     "monthly_bond_etf_usd_100m 7100.0 为种子值（10 月债券 ETF，暂无 live 路）。",
