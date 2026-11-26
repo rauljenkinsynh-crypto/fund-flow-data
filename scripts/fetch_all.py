@@ -69,7 +69,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
 import zlib
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 
 # ---------------------------------------------------------------- CONFIG ---
@@ -89,6 +89,34 @@ FRED_URL_TEMPLATE = (
     "?series_id=DGS10&api_key={key}&file_type=json"
 )
 FRED_ENV_KEY = "FRED_API_KEY"  # 只读环境变量名；key 值绝不写进文件
+
+# -- FRED 信用利差（OAS，2026-11-25 接入；与 DGS10 同款 API 路径）--
+# 六档 ICE BofA OAS，单位百分点（%）。FRED 数据 T+1，当日值次日早上才出，
+# 最新值截至日一律以 FRED 返回的日期为准，不得写当天日期。
+# 序列窗口：最近 3 年（observation_start 动态算），供面板画走势；FRED
+# 网站自 2026-04 起只显示近 3 年，API 全量则太重，3 年窗口与之对齐。
+# 锚点（2026-11-25 用 fredgraph.csv 直取验证）：2026-11-24 高收益 3.72%、
+# 投资级 0.98%、BBB 1.22%、BB 2.25%、单 B 4.05%、CCC 14.05%；
+# CCC−B 缺口当日 = 14.05 − 4.05 = 10.00 个百分点。
+FRED_CREDIT_SERIES = {
+    "BAMLH0A0HYM2": "高收益债 OAS",
+    "BAMLC0A0CM": "投资级 OAS",
+    "BAMLC0A4CBBB": "BBB 级 OAS",
+    "BAMLH0A1HYBB": "BB 级 OAS",
+    "BAMLH0A2HYB": "单 B 级 OAS",
+    "BAMLH0A3HYC": "CCC 及以下 OAS",
+}
+FRED_CREDIT_SHORT_KEYS = {
+    "BAMLH0A0HYM2": "hy",
+    "BAMLC0A0CM": "ig",
+    "BAMLC0A4CBBB": "bbb",
+    "BAMLH0A1HYBB": "bb",
+    "BAMLH0A2HYB": "b",
+    "BAMLH0A3HYC": "ccc",
+}
+FRED_CREDIT_B_SERIES = "BAMLH0A2HYB"    # 缺口公式的减项
+FRED_CREDIT_CCC_SERIES = "BAMLH0A3HYC"  # 缺口公式的被减项
+FRED_CREDIT_WINDOW_DAYS = 1095  # 最近 3 年
 
 # -- Farside（口径已确切：URL 与 HTML 表格）--
 # 2026-11-25 修正：改取全量表（短表只有约 10 天，且每次成功运行都会把
@@ -327,6 +355,7 @@ SOURCES = [
     "sosovalue-btc",
     "sosovalue-eth",
     "fred-dgs10",
+    "fred-credit",
     "ai-chain",
     "etf-flows",
 ]
@@ -841,6 +870,57 @@ def parse_fred_json(obj):
         raise SchemaError("FRED observations 为空")
     rows.sort(key=lambda r: r["date"])
     return rows
+
+
+def _latest_fred_value(rows):
+    """取 FRED observations 行里最后一个非 None 值的 (date, value)；全是 None 则返回 (None, None)。"""
+    for row in reversed(rows or []):
+        if row.get("value") is not None:
+            return row["date"], row["value"]
+    return None, None
+
+
+def compute_ccc_minus_b(rows_b, rows_ccc):
+    """CCC−B 缺口：按日期对齐单 B 与 CCC 两档 OAS 序列，相减。
+
+    返回 [{"date", "gap"}]（两档日期并集，按日期排序；当日任一档无值则
+    gap 为 None，不编 0、不插值）。
+    """
+    by_date_b = {r["date"]: r["value"] for r in rows_b or []}
+    by_date_ccc = {r["date"]: r["value"] for r in rows_ccc or []}
+    out = []
+    for date in sorted(set(by_date_b) | set(by_date_ccc)):
+        vb = by_date_b.get(date)
+        vc = by_date_ccc.get(date)
+        gap = (vc - vb) if (vb is not None and vc is not None) else None
+        out.append({"date": date, "gap": gap})
+    return out
+
+
+def build_fred_credit_rows(series_rows):
+    """把六档 OAS 序列拼成逐日总表：[{date, hy, ig, bbb, bb, b, ccc, ccc_minus_b}]。
+
+    series_rows: {series_id: parse_fred_json 行}；某档当日无值记 None，
+    不填 0、不插值。日期取六档并集，按日期排序。
+    """
+    short = FRED_CREDIT_SHORT_KEYS
+    by_series = {
+        series_id: {r["date"]: r["value"] for r in rows}
+        for series_id, rows in (series_rows or {}).items()
+    }
+    dates = set()
+    for mapping in by_series.values():
+        dates.update(mapping)
+    panel = []
+    for date in sorted(dates):
+        row = {"date": date}
+        for series_id, key in short.items():
+            row[key] = by_series.get(series_id, {}).get(date)
+        vb = row["b"]
+        vc = row["ccc"]
+        row["ccc_minus_b"] = (vc - vb) if (vb is not None and vc is not None) else None
+        panel.append(row)
+    return panel
 
 
 def _latest_fact_value(entries, forms=("10-Q",)):
@@ -1896,6 +1976,87 @@ def fetch_fred_dgs10():
     )
 
 
+def _fred_series_url(series_id, key, observation_start=None):
+    """拼 FRED observations URL（与 DGS10 同款路径；key 只放进请求 URL，绝不进输出文件）。"""
+    url = (
+        "https://api.stlouisfed.org/fred/series/observations"
+        f"?series_id={series_id}&api_key=<redacted>&file_type=json"
+    )
+    if observation_start:
+        url += f"&observation_start={observation_start}"
+    return url
+
+
+def fetch_fred_credit():
+    """FRED 信用利差（六档 ICE BofA OAS，日频，T+1）。
+
+    六档逐一取数：任一档取不到（联网失败 / 结构不符 / 全是 null），
+    整个源失败并在错误里写明是哪一档，不用 0 或插值填充、不出半份文件。
+    最新值截至日取 FRED 返回的日期，绝不写当天日期。
+    防 key 泄漏：get_json 的报错里会带完整请求 URL（含 key），此处捕获后
+    一律把 key 替换成 <redacted> 再抛出，错误进 status.json 也不带 key。
+    """
+    key = os.environ.get(FRED_ENV_KEY)
+    if not key:
+        raise FetchError(f"缺少 Secret {FRED_ENV_KEY}（未配置，无法调用 FRED API）")
+    start = (datetime.now(timezone.utc).date() - timedelta(days=FRED_CREDIT_WINDOW_DAYS)).isoformat()
+    series_rows = {}
+    for series_id in FRED_CREDIT_SERIES:
+        url = _fred_series_url(series_id, key, observation_start=start)
+        try:
+            obj = get_json(url)
+            rows = parse_fred_json(obj)
+        except (FetchError, SchemaError) as exc:
+            safe = str(exc).replace(key, "<redacted>")
+            raise FetchError(f"FRED 信用利差 {series_id} 取数失败：{safe}")
+        latest_date, latest_value = _latest_fred_value(rows)
+        if latest_value is None:
+            raise FetchError(f"FRED 信用利差 {series_id} 无有效值（返回行全部为 null）")
+        series_rows[series_id] = rows
+    panel = build_fred_credit_rows(series_rows)
+    gap_rows = compute_ccc_minus_b(
+        series_rows[FRED_CREDIT_B_SERIES], series_rows[FRED_CREDIT_CCC_SERIES]
+    )
+    gap_date, gap_value = _latest_fred_value(
+        [{"date": r["date"], "value": r["gap"]} for r in gap_rows]
+    )
+    series_meta = {}
+    for series_id, label in FRED_CREDIT_SERIES.items():
+        latest_date, latest_value = _latest_fred_value(series_rows[series_id])
+        series_meta[series_id] = {
+            "label": label,
+            "unit": "percent",
+            "latest_value": latest_value,
+            "latest_date": latest_date,
+        }
+    as_of = max(meta["latest_date"] for meta in series_meta.values())
+    return _payload(
+        "https://api.stlouisfed.org/fred/series/observations?file_type=json"
+        "（6 档 ICE BofA OAS，api_key 已脱敏）",
+        panel,
+        extra={
+            "series": series_meta,
+            "derived": {
+                "ccc_minus_b": {
+                    "label": "CCC−B 缺口",
+                    "formula": "BAMLH0A3HYC − BAMLH0A2HYB",
+                    "unit": "percent",
+                    "latest_value": gap_value,
+                    "latest_date": gap_date,
+                }
+            },
+            "as_of": as_of,
+            "unit": "percent",
+            "notes": [
+                "FRED 数据 T+1：当日值次日早上才出；最新值截至日为 FRED 返回的日期，不是今天。",
+                "序列窗口为最近 3 年（observation_start 动态算），供面板画走势。",
+                "value 为 null 的日期表示当日无值，已记为 null，未编 0、未插值。",
+                "CCC−B 缺口 = CCC 及以下 OAS − 单 B 级 OAS；当日任一档无值则缺口为 null。",
+            ],
+        },
+    )
+
+
 def fetch_farside(kind):
     """Farside BTC/ETH ETF 流量表。kind 为 'btc' 或 'eth'。"""
     url = FARSIDE_URLS[kind]
@@ -2703,6 +2864,7 @@ FETCHERS = {
     "sosovalue-btc": (lambda: fetch_sosovalue("BTC"), "sosovalue-btc.json"),
     "sosovalue-eth": (lambda: fetch_sosovalue("ETH"), "sosovalue-eth.json"),
     "fred-dgs10": (fetch_fred_dgs10, "fred-dgs10.json"),
+    "fred-credit": (fetch_fred_credit, "fred-credit.json"),
     "ai-chain": (fetch_ai_chain, "ai-chain.json"),
     "etf-flows": (fetch_etf_flows, "etf-flows.json"),
 }
@@ -2812,7 +2974,7 @@ def main(argv=None):
     parser.add_argument(
         "--only",
         default="all",
-        help="只跑指定源，逗号分隔，如 farside-btc,sosovalue-btc；默认 all（全部 8 个源）。",
+        help="只跑指定源，逗号分隔，如 farside-btc,sosovalue-btc；默认 all（全部 9 个源）。",
     )
     parser.add_argument(
         "--out-dir",

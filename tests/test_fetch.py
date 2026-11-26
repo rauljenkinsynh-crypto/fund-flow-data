@@ -33,9 +33,13 @@ from fetch_all import (  # noqa: E402
     _usd_to_100m,
     check_nav_range,
     compute_selfcalc_flow,
+    _latest_fred_value,
+    build_fred_credit_rows,
+    compute_ccc_minus_b,
     decide_exit_code,
     detect_split,
     fetch_etf_flows,
+    fetch_fred_credit,
     fetch_sosovalue,
     merge_daily_series,
     parse_blackrock_holdings_csv,
@@ -171,6 +175,165 @@ class TestFred(unittest.TestCase):
     def test_missing_observations_raises(self):
         with self.assertRaises(SchemaError):
             parse_fred_json(load_json_fixture("fred_bad.json"))
+
+
+class TestFredCredit(unittest.TestCase):
+    # 锚点（2026-11-25 用 fredgraph.csv 直取验证的真实值，非 fixture 编造）：
+    # 2026-11-24 高收益 3.72%、投资级 0.98%、BBB 1.22%、BB 2.25%、
+    # 单 B 4.05%、CCC 14.05%；CCC−B 缺口当日 = 10.00 个百分点。
+    ANCHOR_1123 = {
+        "BAMLH0A0HYM2": "3.63",
+        "BAMLC0A0CM": "0.97",
+        "BAMLC0A4CBBB": "1.20",
+        "BAMLH0A1HYBB": "2.19",
+        "BAMLH0A2HYB": "3.93",
+        "BAMLH0A3HYC": "13.87",
+    }
+    ANCHOR_1124 = {
+        "BAMLH0A0HYM2": "3.72",
+        "BAMLC0A0CM": "0.98",
+        "BAMLC0A4CBBB": "1.22",
+        "BAMLH0A1HYBB": "2.25",
+        "BAMLH0A2HYB": "4.05",
+        "BAMLH0A3HYC": "14.05",
+    }
+
+    def _fred_obs(self, pairs):
+        return {"observations": [{"date": d, "value": v} for d, v in pairs]}
+
+    def _fake_get_json(self, fail_series=None, null_series=None):
+        def fake(url, headers=None, timeout=None, **kwargs):
+            for series_id in fetch_all.FRED_CREDIT_SERIES:
+                if f"series_id={series_id}" in url:
+                    if fail_series and series_id in fail_series:
+                        raise FetchError(f"HTTP 500 {url}")
+                    pairs = [
+                        ("2026-11-23", self.ANCHOR_1123[series_id]),
+                        ("2026-11-24", self.ANCHOR_1124[series_id]),
+                    ]
+                    if null_series and series_id in null_series:
+                        pairs = [("2026-11-23", "."), ("2026-11-24", ".")]
+                    return self._fred_obs(pairs)
+            raise FetchError(f"未预期的 URL：{url}")
+        return fake
+
+    def test_gap_basic(self):
+        rows_b = [
+            {"date": "2026-11-23", "value": 3.93},
+            {"date": "2026-11-24", "value": 4.05},
+        ]
+        rows_ccc = [
+            {"date": "2026-11-23", "value": 13.87},
+            {"date": "2026-11-24", "value": 14.05},
+        ]
+        gaps = compute_ccc_minus_b(rows_b, rows_ccc)
+        self.assertEqual(gaps[0], {"date": "2026-11-23", "gap": 9.94})
+        self.assertEqual(gaps[1], {"date": "2026-11-24", "gap": 10.00})
+
+    def test_gap_missing_and_unsorted(self):
+        # 单 B 缺 11-24、CCC 多 11-25、输入乱序：输出按日期排，缺的记 None。
+        rows_b = [
+            {"date": "2026-11-24", "value": None},
+            {"date": "2026-11-23", "value": 3.93},
+        ]
+        rows_ccc = [
+            {"date": "2026-11-25", "value": 14.10},
+            {"date": "2026-11-23", "value": 13.87},
+            {"date": "2026-11-24", "value": 14.05},
+        ]
+        gaps = compute_ccc_minus_b(rows_b, rows_ccc)
+        self.assertEqual([g["date"] for g in gaps],
+                         ["2026-11-23", "2026-11-24", "2026-11-25"])
+        self.assertEqual(gaps[0]["gap"], 9.94)
+        self.assertIsNone(gaps[1]["gap"])  # 单 B 当日无值，不编 0
+        self.assertIsNone(gaps[2]["gap"])  # 只有 CCC 有该日，不编 0
+
+    def test_latest_skips_null(self):
+        rows = [
+            {"date": "2026-11-23", "value": 3.63},
+            {"date": "2026-11-24", "value": None},  # '.' -> None，最新值取前一日
+        ]
+        self.assertEqual(_latest_fred_value(rows), ("2026-11-23", 3.63))
+        self.assertEqual(_latest_fred_value(
+            [{"date": "2026-11-23", "value": None}]), (None, None))
+
+    def test_build_panel(self):
+        series_rows = {
+            "BAMLH0A0HYM2": [{"date": "2026-11-24", "value": 3.72}],
+            "BAMLC0A0CM": [{"date": "2026-11-24", "value": 0.98}],
+            "BAMLC0A4CBBB": [{"date": "2026-11-24", "value": 1.22}],
+            "BAMLH0A1HYBB": [{"date": "2026-11-24", "value": 2.25}],
+            "BAMLH0A2HYB": [{"date": "2026-11-24", "value": 4.05}],
+            "BAMLH0A3HYC": [{"date": "2026-11-24", "value": None}],
+        }
+        panel = build_fred_credit_rows(series_rows)
+        self.assertEqual(len(panel), 1)
+        self.assertEqual(panel[0]["hy"], 3.72)
+        self.assertEqual(panel[0]["ig"], 0.98)
+        self.assertIsNone(panel[0]["ccc"])
+        self.assertIsNone(panel[0]["ccc_minus_b"])  # CCC 当日无值，缺口为 None
+
+    def test_fetch_returns_anchors(self):
+        with mock.patch.dict(os.environ, {"FRED_API_KEY": "test-key-123"}):
+            with mock.patch.object(fetch_all, "get_json",
+                                   side_effect=self._fake_get_json()):
+                payload = fetch_fred_credit()
+        meta = payload["series"]
+        self.assertEqual(meta["BAMLH0A0HYM2"]["latest_value"], 3.72)
+        self.assertEqual(meta["BAMLH0A0HYM2"]["latest_date"], "2026-11-24")
+        self.assertEqual(meta["BAMLC0A0CM"]["latest_value"], 0.98)
+        self.assertEqual(meta["BAMLC0A4CBBB"]["latest_value"], 1.22)
+        self.assertEqual(meta["BAMLH0A1HYBB"]["latest_value"], 2.25)
+        self.assertEqual(meta["BAMLH0A2HYB"]["latest_value"], 4.05)
+        self.assertEqual(meta["BAMLH0A3HYC"]["latest_value"], 14.05)
+        self.assertEqual(payload["as_of"], "2026-11-24")  # 以 FRED 返回日期为准
+        derived = payload["derived"]["ccc_minus_b"]
+        self.assertEqual(derived["latest_value"], 10.00)
+        self.assertEqual(derived["latest_date"], "2026-11-24")
+        self.assertEqual(payload["rows"][-1]["ccc_minus_b"], 10.00)
+        self.assertEqual(payload["rows"][-1]["hy"], 3.72)
+        self.assertNotIn("test-key-123", json.dumps(payload))  # key 绝不进输出文件
+
+    def test_fetch_series_failure_names_series(self):
+        with mock.patch.dict(os.environ, {"FRED_API_KEY": "test-key-123"}):
+            with mock.patch.object(fetch_all, "get_json",
+                                   side_effect=self._fake_get_json(
+                                       fail_series={"BAMLH0A3HYC"})):
+                with self.assertRaises(FetchError) as ctx:
+                    fetch_fred_credit()
+        self.assertIn("BAMLH0A3HYC", str(ctx.exception))
+
+    def test_fetch_error_redacts_key(self):
+        # 回归：get_json 报错里带完整请求 URL（含 key），fetch 必须脱敏后才抛出。
+        def fake(url, headers=None, timeout=None, **kwargs):
+            raise SchemaError(f"返回不是合法 JSON（{url}，HTTP 500）: bad")
+
+        with mock.patch.dict(os.environ, {"FRED_API_KEY": "test-key-123"}):
+            with mock.patch.object(fetch_all, "get_json", side_effect=fake):
+                with self.assertRaises(FetchError) as ctx:
+                    fetch_fred_credit()
+        self.assertNotIn("test-key-123", str(ctx.exception))
+        self.assertIn("<redacted>", str(ctx.exception))
+
+    def test_fetch_missing_key_raises(self):
+        with mock.patch.dict(os.environ, {}, clear=True):
+            with self.assertRaises(FetchError):
+                fetch_fred_credit()
+
+    def test_fetch_all_null_series_fails(self):
+        with mock.patch.dict(os.environ, {"FRED_API_KEY": "test-key-123"}):
+            with mock.patch.object(fetch_all, "get_json",
+                                   side_effect=self._fake_get_json(
+                                       null_series={"BAMLH0A0HYM2"})):
+                with self.assertRaises(FetchError) as ctx:
+                    fetch_fred_credit()
+        self.assertIn("BAMLH0A0HYM2", str(ctx.exception))
+
+    def test_source_registered(self):
+        self.assertIn("fred-credit", fetch_all.SOURCES)
+        self.assertIn("fred-credit", fetch_all.FETCHERS)
+        self.assertEqual(fetch_all.FETCHERS["fred-credit"][1], "fred-credit.json")
+        self.assertEqual(len(fetch_all.FRED_CREDIT_SERIES), 6)
 
 
 class TestCompanyFacts(unittest.TestCase):
