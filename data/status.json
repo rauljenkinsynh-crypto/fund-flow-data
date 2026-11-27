@@ -1,29 +1,29 @@
 {
-  "fetched_at": "2026-11-26T10:23:00Z",
+  "fetched_at": "2026-11-27T10:28:15Z",
   "sources": {
     "ici": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:44Z",
-      "last_ok": "2026-11-26T10:22:44Z"
+      "fetched_at": "2026-11-27T10:27:56Z",
+      "last_ok": "2026-11-27T10:27:58Z"
     },
     "farside-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:44Z",
-      "last_ok": "2026-11-26T10:22:45Z"
+      "fetched_at": "2026-11-27T10:27:58Z",
+      "last_ok": "2026-11-27T10:27:59Z"
     },
     "farside-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:45Z",
-      "last_ok": "2026-11-26T10:22:46Z"
+      "fetched_at": "2026-11-27T10:27:59Z",
+      "last_ok": "2026-11-27T10:27:59Z"
     },
     "sosovalue-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:46Z",
-      "last_ok": "2026-11-26T10:22:47Z",
+      "fetched_at": "2026-11-27T10:27:59Z",
+      "last_ok": "2026-11-27T10:28:00Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -34,8 +34,8 @@
     "sosovalue-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:47Z",
-      "last_ok": "2026-11-26T10:22:47Z",
+      "fetched_at": "2026-11-27T10:28:00Z",
+      "last_ok": "2026-11-27T10:28:00Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -46,26 +46,26 @@
     "fred-dgs10": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:47Z",
-      "last_ok": "2026-11-26T10:22:48Z"
+      "fetched_at": "2026-11-27T10:28:00Z",
+      "last_ok": "2026-11-27T10:28:00Z"
     },
     "fred-credit": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:48Z",
-      "last_ok": "2026-11-26T10:22:49Z"
+      "fetched_at": "2026-11-27T10:28:00Z",
+      "last_ok": "2026-11-27T10:28:02Z"
     },
     "ai-chain": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:49Z",
-      "last_ok": "2026-11-26T10:22:52Z"
+      "fetched_at": "2026-11-27T10:28:02Z",
+      "last_ok": "2026-11-27T10:28:06Z"
     },
     "etf-flows": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-26T10:22:52Z",
-      "last_ok": "2026-11-26T10:23:00Z"
+      "fetched_at": "2026-11-27T10:28:06Z",
+      "last_ok": "2026-11-27T10:28:15Z"
     }
   },
   "notes": [

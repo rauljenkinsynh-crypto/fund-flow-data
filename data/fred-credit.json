@@ -1,17 +1,7 @@
 {
-  "fetched_at": "2026-11-26T10:22:49Z",
+  "fetched_at": "2026-11-27T10:28:02Z",
   "source_url": "https://api.stlouisfed.org/fred/series/observations?file_type=json（6 档 ICE BofA OAS，api_key 已脱敏）",
   "rows": [
-    {
-      "date": "2023-11-27",
-      "hy": 3.89,
-      "ig": 1.14,
-      "bbb": 1.41,
-      "bb": 2.48,
-      "b": 4.08,
-      "ccc": 9.76,
-      "ccc_minus_b": 5.68
-    },
     {
       "date": "2023-11-28",
       "hy": 3.9,
