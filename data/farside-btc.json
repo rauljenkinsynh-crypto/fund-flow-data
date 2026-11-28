@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-27T10:27:59Z",
+  "fetched_at": "2026-11-28T09:43:28Z",
   "source_url": "https://farside.co.uk/bitcoin-etf-flow-all-data/",
   "rows": [
     {
@@ -12375,6 +12375,24 @@
         "MSBT": 0.0,
         "GBTC": -13.9,
         "BTC": -60.1
+      }
+    },
+    {
+      "date": "2026-11-27",
+      "total": -389.0,
+      "funds": {
+        "IBIT": -327.2,
+        "FBTC": -20.8,
+        "BITB": -12.3,
+        "ARKB": -5.7,
+        "BTCO": 0.0,
+        "EZBC": 0.0,
+        "BRRR": 0.0,
+        "HODL": 0.0,
+        "BTCW": 0.0,
+        "MSBT": 0.0,
+        "GBTC": -23.0,
+        "BTC": 0.0
       }
     }
   ],

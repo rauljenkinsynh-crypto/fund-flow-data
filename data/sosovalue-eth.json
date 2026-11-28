@@ -1,14 +1,7 @@
 {
-  "fetched_at": "2026-11-27T10:28:00Z",
+  "fetched_at": "2026-11-28T09:43:29Z",
   "source_url": "https://openapi.sosovalue.com/openapi/v1/etfs/summary-history?symbol=ETH&country_code=US&limit=50",
   "rows": [
-    {
-      "date": "2026-10-28",
-      "net_flow_usd": -21411413.040000007,
-      "total_value_traded_usd": 480717198.8,
-      "total_net_assets_usd": 14272769497.65628,
-      "cum_net_inflow_usd": 12549032289.73085
-    },
     {
       "date": "2026-10-29",
       "net_flow_usd": -105480897.65999988,
@@ -155,6 +148,13 @@
       "total_value_traded_usd": 599273373.1,
       "total_net_assets_usd": 8868472743.50004,
       "cum_net_inflow_usd": 10991908549.12085
+    },
+    {
+      "date": "2026-11-27",
+      "net_flow_usd": -69271003.275,
+      "total_value_traded_usd": 324519364.8,
+      "total_net_assets_usd": 8701595218.2192,
+      "cum_net_inflow_usd": 10922637545.84585
     }
   ],
   "symbol": "ETH",

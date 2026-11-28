@@ -12,9 +12,9 @@
     "source": "selfcalc-blackrock"
   },
   "GLD": {
-    "date": "2026-11-25",
-    "shares": 360599999.99849486,
-    "nav": 317.57723113,
+    "date": "2026-11-27",
+    "shares": 360599999.9990089,
+    "nav": 332.9801752,
     "source": "selfcalc-ssga"
   },
   "SPY": {
@@ -54,9 +54,9 @@
     "source": "selfcalc-ssga"
   },
   "SMH": {
-    "date": "2026-11-25",
-    "shares": 133141882.24029785,
-    "nav": 422.6563,
+    "date": "2026-11-27",
+    "shares": 133841868.9243339,
+    "nav": 439.1967,
     "source": "selfcalc-vaneck"
   },
   "QQQ": {
@@ -88,5 +88,95 @@
     "shares": 1329760000.0,
     "nav": 34.07,
     "source": "xcheck-sina"
+  },
+  "XLB": {
+    "date": "2026-11-25",
+    "shares": 154697449.59927222,
+    "nav": 51.193606,
+    "source": "selfcalc-ssga"
+  },
+  "XLC": {
+    "date": "2026-11-25",
+    "shares": 206350000.96902776,
+    "nav": 105.363335,
+    "source": "selfcalc-ssga"
+  },
+  "XLF": {
+    "date": "2026-11-25",
+    "shares": 943895420.8233995,
+    "nav": 56.489979,
+    "source": "selfcalc-ssga"
+  },
+  "XLI": {
+    "date": "2026-11-25",
+    "shares": 182775999.79803312,
+    "nav": 162.917809,
+    "source": "selfcalc-ssga"
+  },
+  "XLRE": {
+    "date": "2026-11-25",
+    "shares": 189099998.18142113,
+    "nav": 43.852924,
+    "source": "selfcalc-ssga"
+  },
+  "XLY": {
+    "date": "2026-11-25",
+    "shares": 191656503.46328637,
+    "nav": 117.476713,
+    "source": "selfcalc-ssga"
+  },
+  "DIA": {
+    "date": "2026-11-25",
+    "shares": 88192867.03786397,
+    "nav": 501.299445,
+    "source": "selfcalc-ssga"
+  },
+  "IWM": {
+    "date": "2026-11-25",
+    "shares": 279350000.0,
+    "nav": 267.7816774406302,
+    "source": "selfcalc-blackrock"
+  },
+  "IVV": {
+    "date": "2026-11-25",
+    "shares": 1157650000.0,
+    "nav": 720.3842361136872,
+    "source": "selfcalc-blackrock"
+  },
+  "AGG": {
+    "date": "2026-11-25",
+    "shares": 1444300000.0,
+    "nav": 96.43089083723592,
+    "source": "selfcalc-blackrock"
+  },
+  "LQD": {
+    "date": "2026-11-25",
+    "shares": 319000000.0,
+    "nav": 105.16070098598757,
+    "source": "selfcalc-blackrock"
+  },
+  "HYG": {
+    "date": "2026-11-25",
+    "shares": 222300000.0,
+    "nav": 77.130849923032,
+    "source": "selfcalc-blackrock"
+  },
+  "IEF": {
+    "date": "2026-11-25",
+    "shares": 496800000.0,
+    "nav": 92.033847455314,
+    "source": "selfcalc-blackrock"
+  },
+  "EFA": {
+    "date": "2026-11-25",
+    "shares": 748200000.0,
+    "nav": 97.65122275982375,
+    "source": "selfcalc-blackrock"
+  },
+  "EEM": {
+    "date": "2026-11-25",
+    "shares": 463950000.0,
+    "nav": 55.961798096756134,
+    "source": "selfcalc-blackrock"
   }
 }

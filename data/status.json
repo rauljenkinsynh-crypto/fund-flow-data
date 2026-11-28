@@ -1,29 +1,30 @@
 {
-  "fetched_at": "2026-11-27T10:28:15Z",
+  "fetched_at": "2026-11-28T09:43:55Z",
   "sources": {
     "ici": {
-      "status": "ok",
-      "error": null,
-      "fetched_at": "2026-11-27T10:27:56Z",
-      "last_ok": "2026-11-27T10:27:58Z"
+      "status": "failed",
+      "error": "ICI 4 页失败：flows（https://www.ici.org/research/stats/flows）：HTTP 403 https://www.ici.org/research/stats/flows :: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#47;&#47;www&#46;ici&#46;org&#47;research&#47;stats&#47;flows\" on this server.<P>\nReference&#32;&#35;18&#46;ab2b3417&#46;1795859006&#46;26e8fb9\n<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;ab2b3417&#46;1795859006&#46;26e8fb9</P>\n</BODY>\n</HTML",
+      "fetched_at": "2026-11-28T09:43:26Z",
+      "last_ok": "2026-11-27T10:27:58Z",
+      "stale": true
     },
     "farside-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:27:58Z",
-      "last_ok": "2026-11-27T10:27:59Z"
+      "fetched_at": "2026-11-28T09:43:27Z",
+      "last_ok": "2026-11-28T09:43:28Z"
     },
     "farside-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:27:59Z",
-      "last_ok": "2026-11-27T10:27:59Z"
+      "fetched_at": "2026-11-28T09:43:28Z",
+      "last_ok": "2026-11-28T09:43:28Z"
     },
     "sosovalue-btc": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:27:59Z",
-      "last_ok": "2026-11-27T10:28:00Z",
+      "fetched_at": "2026-11-28T09:43:28Z",
+      "last_ok": "2026-11-28T09:43:29Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -34,8 +35,8 @@
     "sosovalue-eth": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:28:00Z",
-      "last_ok": "2026-11-27T10:28:00Z",
+      "fetched_at": "2026-11-28T09:43:29Z",
+      "last_ok": "2026-11-28T09:43:29Z",
       "route": {
         "host": "openapi.sosovalue.com",
         "version": "v1",
@@ -46,26 +47,26 @@
     "fred-dgs10": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:28:00Z",
-      "last_ok": "2026-11-27T10:28:00Z"
+      "fetched_at": "2026-11-28T09:43:29Z",
+      "last_ok": "2026-11-28T09:43:29Z"
     },
     "fred-credit": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:28:00Z",
-      "last_ok": "2026-11-27T10:28:02Z"
+      "fetched_at": "2026-11-28T09:43:30Z",
+      "last_ok": "2026-11-28T09:43:31Z"
     },
     "ai-chain": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:28:02Z",
-      "last_ok": "2026-11-27T10:28:06Z"
+      "fetched_at": "2026-11-28T09:43:31Z",
+      "last_ok": "2026-11-28T09:43:35Z"
     },
     "etf-flows": {
       "status": "ok",
       "error": null,
-      "fetched_at": "2026-11-27T10:28:06Z",
-      "last_ok": "2026-11-27T10:28:15Z"
+      "fetched_at": "2026-11-28T09:43:35Z",
+      "last_ok": "2026-11-28T09:43:55Z"
     }
   },
   "notes": [

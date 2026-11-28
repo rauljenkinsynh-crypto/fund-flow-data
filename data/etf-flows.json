@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（IBIT）",
+  "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（BTC/ETH ETF）",
   "source_url": "https://tickerinside.com/api/v1/etf-flows/series.json",
-  "fetched_at_utc": "2026-11-27T10:28:15Z",
+  "fetched_at_utc": "2026-11-28T09:43:55Z",
   "status": "live",
   "attribution": {
     "credit": "TickerInside",
@@ -130,26 +130,31 @@
           "source": "selfcalc-blackrock"
         }
       ],
-      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。；新浪交叉核对盘中跳过快照（当前美东 05:28 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。；新浪交叉核对盘中跳过快照（当前美东 04:43 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "SMH",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": null,
-      "aum_usd_100m": 562.7326,
-      "pct_of_aum": null,
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 3.0743,
+      "aum_usd_100m": 587.8291,
+      "pct_of_aum": 0.523,
       "flag_over_5pct": false,
       "source": "selfcalc-vaneck",
-      "as_of_date": "2026-11-25",
-      "status": "unmeasured",
+      "as_of_date": "2026-11-27",
+      "status": "live",
       "daily": [
         {
           "date": "2026-11-25",
           "flow_usd_100m": -1.4793,
           "source": "selfcalc-vaneck"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 3.0743,
+          "source": "selfcalc-vaneck"
         }
       ],
-      "note": "快照日期未前进（今日 2026-11-25 ≤ 上日 2026-11-25），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。"
+      "note": ""
     },
     {
       "ticker": "VOO",
@@ -162,18 +167,18 @@
       "as_of_date": "2026-11-25",
       "status": "unmeasured",
       "daily": [],
-      "note": "新浪盘中跳过快照（当前美东 05:28 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "新浪盘中跳过快照（当前美东 04:43 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "SPY",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": -48.0192,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 42.2937,
       "aum_usd_100m": 7629.9136,
-      "pct_of_aum": -0.6294,
+      "pct_of_aum": 0.5543,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -271,7 +276,7 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "QQQ",
@@ -284,24 +289,19 @@
       "as_of_date": "2026-11-25",
       "status": "unmeasured",
       "daily": [],
-      "note": "新浪盘中跳过快照（当前美东 05:28 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
+      "note": "新浪盘中跳过快照（当前美东 04:43 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。；pct 为 null，flag_over_5pct 记 false。"
     },
     {
       "ticker": "IBIT",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": -3.297,
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -3.272,
       "aum_usd_100m": null,
       "pct_of_aum": null,
       "flag_over_5pct": false,
       "source": "farside",
-      "as_of_date": "2026-11-25",
+      "as_of_date": "2026-11-27",
       "status": "live",
       "daily": [
-        {
-          "date": "2026-09-02",
-          "flow_usd_100m": 1.154,
-          "source": "farside"
-        },
         {
           "date": "2026-09-03",
           "flow_usd_100m": 4.54,
@@ -596,20 +596,25 @@
           "date": "2026-11-25",
           "flow_usd_100m": -3.297,
           "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -3.272,
+          "source": "farside"
         }
       ],
-      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对盘中跳过快照（当前美东 05:28 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对盘中跳过快照（当前美东 04:43 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "XLP",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": 2.584,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 0.1829,
       "aum_usd_100m": 159.5804,
-      "pct_of_aum": 1.6192,
+      "pct_of_aum": 0.1146,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -707,18 +712,18 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLV",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": -6.2428,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 3.9419,
       "aum_usd_100m": 476.3155,
-      "pct_of_aum": -1.3106,
+      "pct_of_aum": 0.8276,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -816,18 +821,18 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLE",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": 0.0609,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": -0.807,
       "aum_usd_100m": 382.1164,
-      "pct_of_aum": 0.0159,
+      "pct_of_aum": -0.2112,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -925,18 +930,18 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLU",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": 0.327,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": -0.0878,
       "aum_usd_100m": 232.9329,
-      "pct_of_aum": 0.1404,
+      "pct_of_aum": -0.0377,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -1034,18 +1039,18 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "XLK",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": 3.0381,
+      "date_et": "2026-11-11",
+      "daily_flow_usd_100m": 7.3439,
       "aum_usd_100m": 1056.3268,
-      "pct_of_aum": 0.2876,
+      "pct_of_aum": 0.6952,
       "flag_over_5pct": false,
-      "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
-      "status": "live",
+      "source": "tickerinside",
+      "as_of_date": "2026-11-11",
+      "status": "stale",
       "daily": [
         {
           "date": "2026-10-14",
@@ -1143,7 +1148,7 @@
           "source": "selfcalc-ssga"
         }
       ],
-      "note": "来源切换：TickerInside 滞后超 3 个交易日，改用自算备用。"
+      "note": "pct 按快照日总资产现算（快照截至 2026-11-25，流量日 2026-11-11）。自算首日无流量，暂显示 TickerInside 旧数。"
     },
     {
       "ticker": "TLT",
@@ -1162,30 +1167,7138 @@
           "source": "selfcalc-blackrock"
         }
       ],
-      "note": "快照日期未前进（今日 2026-11-25 ≤ 上日 2026-11-25），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对盘中跳过快照（当前美东 05:28 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
+      "note": "快照日期未前进（今日 2026-11-25 ≤ 上日 2026-11-25），沿用上一日流量，不重复算。；pct 为 null，flag_over_5pct 记 false。；新浪交叉核对盘中跳过快照（当前美东 04:43 未收盘，字段 1 不是收盘价，流量只能用收盘价算）。"
     },
     {
       "ticker": "GLD",
-      "date_et": "2026-11-25",
-      "daily_flow_usd_100m": 0.6352,
-      "aum_usd_100m": 1145.1835,
-      "pct_of_aum": 0.0555,
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": 1200.7265,
+      "pct_of_aum": 0.0,
       "flag_over_5pct": false,
       "source": "selfcalc-ssga",
-      "as_of_date": "2026-11-25",
+      "as_of_date": "2026-11-27",
       "status": "live",
       "daily": [
         {
           "date": "2026-11-25",
           "flow_usd_100m": 0.6352,
           "source": "selfcalc-ssga"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "selfcalc-ssga"
         }
       ],
       "note": ""
+    },
+    {
+      "ticker": "XLB",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 79.1952,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLC",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 217.4172,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLF",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 533.2063,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLI",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 297.7747,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLRE",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 82.9259,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "XLY",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 225.1518,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "DIA",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 442.1104,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-ssga",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "IWM",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 748.0481,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "IVV",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 8339.5281,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "AGG",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 1392.7514,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "LQD",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 335.4626,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "HYG",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 171.4619,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "IEF",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 457.2242,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "EFA",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 730.6264,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "EEM",
+      "date_et": "2026-11-25",
+      "daily_flow_usd_100m": null,
+      "aum_usd_100m": 259.6348,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "selfcalc-blackrock",
+      "as_of_date": "2026-11-25",
+      "status": "unmeasured",
+      "daily": [],
+      "note": "首日快照：无昨日份额，流量记 null（向前累积，不补历史）。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "FBTC",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.208,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.744,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.572,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": -0.171,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.336,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.533,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -2.148,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.527,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": -0.166,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 3.107,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 2.388,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 2.574,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 1.432,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.129,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.493,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": -0.109,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -1.256,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.607,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.293,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": -0.745,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -1.051,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -1.971,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": -0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 1.031,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -1.527,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -0.106,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -0.836,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 2.127,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -2.175,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": -0.318,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.245,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.105,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -2.01,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.067,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.068,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 2.367,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -1.999,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.428,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -0.368,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.326,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": -0.419,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.113,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.693,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -0.459,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.724,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.133,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.44,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.065,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.208,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ARKB",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.057,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 1.377,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.081,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": -0.78,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -1.643,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": -0.42,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.174,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.844,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.019,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 2.891,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.006,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.05,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.332,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.077,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": -0.852,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -1.017,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.203,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.098,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -1.094,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -1.295,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.199,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.189,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.201,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -0.099,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.185,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.043,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -0.131,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.193,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -0.313,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.158,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.149,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.057,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "BITB",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.123,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.248,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.145,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.126,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.124,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.097,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.216,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.041,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": -0.118,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": -0.181,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -0.136,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.069,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.276,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.177,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.022,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -0.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.192,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.274,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.088,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.257,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.219,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.152,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.205,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.264,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.366,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.07,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": -0.126,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.182,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.123,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "GBTC",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.23,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.082,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": -0.655,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": -0.272,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.364,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.441,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.182,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": -0.232,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.314,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.393,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.082,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -0.549,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.326,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.295,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.533,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.499,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.111,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.391,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.346,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -0.177,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.203,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -0.139,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.328,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.139,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.23,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "HODL",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": -0.196,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.153,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.022,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": -0.076,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.023,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.024,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.035,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.023,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.236,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.061,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.018,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.097,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "BTC",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.488,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.031,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.05,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.146,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": -0.11,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -0.076,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.082,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.153,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.526,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.066,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.011,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.105,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.129,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": -0.611,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.04,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.601,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "BTCO",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": -0.047,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.042,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -0.041,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.04,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.065,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "BTCW",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": -0.052,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": -0.04,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.038,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.003,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "BRRR",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "EZBC",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.046,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.049,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.047,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.073,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.329,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.038,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.017,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.069,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "MSBT",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.077,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.074,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.045,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.04,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.038,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.097,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.035,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.617,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.99,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.324,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.102,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.07,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.024,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.078,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.067,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.023,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.042,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.042,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.221,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.2,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.09,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.015,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.029,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.496,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.023,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.031,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETHA",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.573,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.721,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.578,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.097,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.186,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 1.488,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.805,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.98,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -1.1,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": -0.429,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 1.143,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 1.101,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.881,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.508,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.268,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.504,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.154,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": -0.089,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": -0.201,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": -0.319,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": -2.019,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -1.161,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.711,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": -0.561,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": -0.751,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -1.098,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -0.444,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": -0.697,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -0.954,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": -0.33,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": -0.293,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.755,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": -1.047,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": -0.933,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": -0.448,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.717,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.766,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": -1.383,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.744,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.328,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.752,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.908,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -1.193,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -1.298,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.62,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -0.276,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.174,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -1.242,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.608,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": -0.905,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.378,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": -0.685,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.573,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETHB",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.164,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.229,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.139,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.183,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.144,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.124,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.198,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.128,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.028,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.319,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.172,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.156,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.195,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": -0.046,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": -0.224,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.22,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.011,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -0.208,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.011,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.053,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": -0.028,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.054,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -0.018,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.074,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.258,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "FETH",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.046,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.651,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": -0.483,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.099,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.252,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.114,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.089,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.072,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.556,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.018,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.262,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.73,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.336,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.413,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.215,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.047,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": -0.067,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -0.266,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.235,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": -0.173,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": -0.189,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.055,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.081,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.024,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -0.06,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.13,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.024,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.161,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.286,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.188,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.029,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.192,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.022,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.017,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -0.191,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.041,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.005,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.116,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.05,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.159,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.056,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.046,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETHW",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.291,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.344,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.043,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.059,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.009,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.048,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETHV",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.037,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.14,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.018,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.019,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.029,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.069,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.028,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.009,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.029,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "QETH",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.054,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": -0.054,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.009,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.02,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.004,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "EZET",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.03,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.061,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -0.009,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.009,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": -0.008,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "MSSE",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.005,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.003,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.015,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.014,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.013,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.008,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.01,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.007,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.032,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.016,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETHE",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.027,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": -0.061,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": -0.096,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": -0.077,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": -0.175,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.139,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.049,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.104,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.043,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -0.075,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": -0.204,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.258,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.061,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": -0.183,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": -0.019,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.096,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.155,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.215,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.097,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": -0.005,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": -0.044,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.02,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": -0.052,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.045,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": -0.038,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.027,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "ETH",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": -0.048,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": -0.246,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.077,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.051,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.162,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.593,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.273,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": -0.041,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.178,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.128,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": -0.255,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.015,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.02,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": -0.103,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.167,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": -0.188,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.033,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.281,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": -0.107,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.045,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.036,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": -0.056,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": -0.341,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": -0.109,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.136,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": -0.019,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -0.25,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -0.02,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": -0.067,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": -0.093,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.01,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": -0.15,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": -0.087,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": -0.048,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
+    },
+    {
+      "ticker": "TETH",
+      "date_et": "2026-11-27",
+      "daily_flow_usd_100m": 0.0,
+      "aum_usd_100m": null,
+      "pct_of_aum": null,
+      "flag_over_5pct": false,
+      "source": "farside",
+      "as_of_date": "2026-11-27",
+      "status": "live",
+      "daily": [
+        {
+          "date": "2026-09-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-04",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-08",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-09",
+          "flow_usd_100m": 0.021,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-10",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-14",
+          "flow_usd_100m": 0.065,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-15",
+          "flow_usd_100m": 0.024,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-16",
+          "flow_usd_100m": -0.108,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-21",
+          "flow_usd_100m": 0.041,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-23",
+          "flow_usd_100m": 0.04,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-28",
+          "flow_usd_100m": 0.017,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-09-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-01",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-07",
+          "flow_usd_100m": -0.063,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-08",
+          "flow_usd_100m": -0.012,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-09",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-12",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-14",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-15",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-21",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-22",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-26",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-28",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-29",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-10-30",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-02",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-03",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-04",
+          "flow_usd_100m": 0.001,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-05",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-06",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-09",
+          "flow_usd_100m": -0.02,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-10",
+          "flow_usd_100m": -0.004,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-11",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-12",
+          "flow_usd_100m": 0.012,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-13",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-16",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-17",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-18",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-19",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-20",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-23",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-24",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-25",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        },
+        {
+          "date": "2026-11-27",
+          "flow_usd_100m": 0.0,
+          "source": "farside"
+        }
+      ],
+      "note": "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）；Farside 未给 AUM，pct 未算。；pct 为 null，flag_over_5pct 记 false。"
     }
   ],
   "notes": [
-    "TickerInside 最新收盘日 2026-11-11，滞后约 12 个交易日（截至 2026-11-27）。",
+    "TickerInside 最新收盘日 2026-11-11，滞后约 12 个交易日（截至 2026-11-28）。",
     "滞后超 3 个交易日，7 只主路标的自动切自算备用并标注来源切换。",
     "SOXX 2026-11-10 在 TickerInside 为 null（未测得；该日单日 −$41.3 亿为种子数），面板须用种子数展示该日标红。",
     "monthly_bond_etf_usd_100m 7100.0 为种子值（10 月债券 ETF，暂无 live 路）。",

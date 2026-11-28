@@ -1,17 +1,7 @@
 {
-  "fetched_at": "2026-11-27T10:28:02Z",
+  "fetched_at": "2026-11-28T09:43:31Z",
   "source_url": "https://api.stlouisfed.org/fred/series/observations?file_type=json（6 档 ICE BofA OAS，api_key 已脱敏）",
   "rows": [
-    {
-      "date": "2023-11-28",
-      "hy": 3.9,
-      "ig": 1.14,
-      "bbb": 1.41,
-      "bb": 2.48,
-      "b": 4.09,
-      "ccc": 9.75,
-      "ccc_minus_b": 5.66
-    },
     {
       "date": "2023-11-29",
       "hy": 3.8,
@@ -7921,44 +7911,64 @@
       "b": 4.05,
       "ccc": 14.05,
       "ccc_minus_b": 10.0
+    },
+    {
+      "date": "2026-11-25",
+      "hy": 3.77,
+      "ig": 0.99,
+      "bbb": 1.24,
+      "bb": 2.28,
+      "b": 4.13,
+      "ccc": 14.17,
+      "ccc_minus_b": 10.04
+    },
+    {
+      "date": "2026-11-26",
+      "hy": 3.77,
+      "ig": 0.99,
+      "bbb": 1.24,
+      "bb": 2.28,
+      "b": 4.13,
+      "ccc": 14.17,
+      "ccc_minus_b": 10.04
     }
   ],
   "series": {
     "BAMLH0A0HYM2": {
       "label": "高收益债 OAS",
       "unit": "percent",
-      "latest_value": 3.72,
-      "latest_date": "2026-11-24"
+      "latest_value": 3.77,
+      "latest_date": "2026-11-26"
     },
     "BAMLC0A0CM": {
       "label": "投资级 OAS",
       "unit": "percent",
-      "latest_value": 0.98,
-      "latest_date": "2026-11-24"
+      "latest_value": 0.99,
+      "latest_date": "2026-11-26"
     },
     "BAMLC0A4CBBB": {
       "label": "BBB 级 OAS",
       "unit": "percent",
-      "latest_value": 1.22,
-      "latest_date": "2026-11-24"
+      "latest_value": 1.24,
+      "latest_date": "2026-11-26"
     },
     "BAMLH0A1HYBB": {
       "label": "BB 级 OAS",
       "unit": "percent",
-      "latest_value": 2.25,
-      "latest_date": "2026-11-24"
+      "latest_value": 2.28,
+      "latest_date": "2026-11-26"
     },
     "BAMLH0A2HYB": {
       "label": "单 B 级 OAS",
       "unit": "percent",
-      "latest_value": 4.05,
-      "latest_date": "2026-11-24"
+      "latest_value": 4.13,
+      "latest_date": "2026-11-26"
     },
     "BAMLH0A3HYC": {
       "label": "CCC 及以下 OAS",
       "unit": "percent",
-      "latest_value": 14.05,
-      "latest_date": "2026-11-24"
+      "latest_value": 14.17,
+      "latest_date": "2026-11-26"
     }
   },
   "derived": {
@@ -7966,11 +7976,11 @@
       "label": "CCC−B 缺口",
       "formula": "BAMLH0A3HYC − BAMLH0A2HYB",
       "unit": "percent",
-      "latest_value": 10.0,
-      "latest_date": "2026-11-24"
+      "latest_value": 10.04,
+      "latest_date": "2026-11-26"
     }
   },
-  "as_of": "2026-11-24",
+  "as_of": "2026-11-26",
   "unit": "percent",
   "notes": [
     "FRED 数据 T+1：当日值次日早上才出；最新值截至日为 FRED 返回的日期，不是今天。",

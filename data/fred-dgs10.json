@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-27T10:28:00Z",
+  "fetched_at": "2026-11-28T09:43:29Z",
   "source_url": "https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&api_key=<redacted>&file_type=json",
   "rows": [
     {
@@ -67725,6 +67725,10 @@
     {
       "date": "2026-11-24",
       "value": 4.91
+    },
+    {
+      "date": "2026-11-25",
+      "value": 4.85
     }
   ],
   "series_id": "DGS10",
