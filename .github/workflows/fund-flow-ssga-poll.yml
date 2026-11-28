@@ -1,0 +1,115 @@
+# 资金流仪表盘 — SSGA 轮询：收盘后每小时看一眼，SSGA 一公布就取数
+#
+# 为什么需要这个文件：
+#   主 workflow（fund-flow-fetch.yml）的收盘跑是每天 02:00 UTC 一次
+#   （21:00 EST / 22:00 EDT）。但 SSGA 的基金页经常在收盘跑之后才公布
+#   当日份额与净值——2026-11-25 的六只数据，11-27 02:40 UTC 时页面上
+#   还没有，05:28 UTC 那趟跑才拿到，仪表盘上晚了约一天才看到。
+#   本文件只解决“公布后等下一趟跑”这段等待：收盘后每小时轮询一次，
+#   SSGA 一公布就触发一次取数，不用等第二天收盘跑。
+#
+# 工作方式：
+#   - 每小时先跑哨兵脚本 scripts/ssga_poll_guard.py：只取 SPY 一页，
+#     看页面截至日是否比已存快照新；没新数据就直接跳过，不跑取数、
+#     不提交、不产生新 commit（空转成本只有一次 checkout + 一次取页）。
+#   - 哨兵说有新数据时，才跑 python3 scripts/fetch_all.py --only etf-flows
+#     （只跑 etf-flows 一个源；SoSoValue / Farside / ICI 等仍走主 workflow
+#     的收盘跑，不被每小时轮询打扰）。fetch_all.py 本身幂等：
+#     快照只向前推进、同日流量行去重、无变化时不提交，重复跑不会重复记流量。
+#   - 休市日 / 假期：SSGA 页面截至日不前进，哨兵自然返回跳过，无需假期表。
+#   - 哨兵取页失败时本小时跳过，下一小时重试；当日 02:00 UTC 的收盘
+#     全量跑仍会覆盖其他源，不会因此丢数。
+#
+# 定时（cron 一律 UTC；ET=UTC-5 为 EST、UTC-4 为 EDT）：
+#   - 每周二至周六 03:00–12:00 UTC 每小时一次 = 收盘跑（02:00 UTC）
+#     之后约 22:00–07:00 EST / 23:00–08:00 EDT。SSGA 往常在该窗口内
+#     公布上一交易日数据；12:00 UTC 后还没公布就等次日收盘跑兜底。
+#   本文件不含任何 key 值；etf-flows 的源（SSGA / BlackRock / Vaneck /
+#   Sina / TickerInside / Farside）全部免 key，不需要 Secrets。
+#
+# 部署方法（重要：Muse 的 GitHub App 没有 workflows 权限，API 写
+# .github/workflows/ 下的文件会 403，本文件只能由用户在浏览器网页上新建）：
+#   1. 打开 https://github.com/rauljenkinsynh-crypto/fund-flow-data
+#   2. 进 .github/workflows/ 目录，点 Add file -> Create new file，
+#      文件名填 fund-flow-ssga-poll.yml，把本文件全文粘贴进去，Commit。
+#   3. 同仓库的 scripts/ssga_poll_guard.py 已由 API 推送（非 workflow 文件），
+#      不需要用户再操作；若推送时未成功，见任务交回记录。
+#   4. 下一个交易日收盘后观察 Actions 页：应出现 fund-flow-ssga-poll 的
+#      每小时运行，有新数据时产生一次 data 提交，无新数据时无提交。
+
+name: fund-flow-ssga-poll
+
+on:
+  schedule:
+    - cron: "0 3-12 * * 2-6"  # 每周二至周六 03:00–12:00 UTC，每小时一次
+  workflow_dispatch:  # 手动触发一次，用于验证哨兵与取数链路
+
+permissions:
+  contents: write
+
+# 与主 workflow 共用同一个并发组，串行执行，避免两边同时提交 data/ 冲突；
+# 排队等前一份跑完，不取消。
+concurrency:
+  group: fund-flow-fetch
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: SSGA guard (has SSGA published new data?)
+        id: guard
+        # 只读判断，不写任何文件。run_fetch=false 时后面步骤全部跳过。
+        run: python3 scripts/ssga_poll_guard.py
+
+      - name: Fetch etf-flows only
+        id: fetch
+        if: steps.guard.outputs.run_fetch == 'true'
+        # 退出码：0 全成功；2 部分成功；1 全部失败。
+        # 即使部分失败也要继续提交已成功的源，所以先记下退出码再提交，
+        # 最后按原退出码结束，让本次运行的状态如实反映成功/失败。
+        run: |
+          set +e
+          python3 scripts/fetch_all.py --only etf-flows
+          echo "fetch_exit=$?" >> "$GITHUB_OUTPUT"
+          set -e
+
+      - name: Commit data/ changes
+        if: steps.guard.outputs.run_fetch == 'true'
+        # 只提交 data/ 目录；无变化时不提交（哨兵已拦掉大部分空转，
+        # 这里是第二道防线：即使哨兵误判，无变化也不会产生空 commit）。
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "data/ 无变化，无需提交。"
+          else
+            git commit -m "data: fund-flow ssga-poll fetch $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+            git push
+          fi
+
+      - name: Upload data snapshot (artifact)
+        if: steps.guard.outputs.run_fetch == 'true'
+        # 调试用：跑了取数时留一份 data/ 快照，失败时可直接下载看 status.json。
+        uses: actions/upload-artifact@v4
+        with:
+          name: fund-flow-ssga-poll-${{ github.run_number }}
+          path: data/
+          retention-days: 30
+
+      - name: Report fetch exit code
+        if: steps.guard.outputs.run_fetch == 'true'
+        # 如实收尾：部分/全部失败时让本次运行标红（红不是事故，是待修信号）。
+        run: |
+          echo "fetch exit code: ${{ steps.fetch.outputs.fetch_exit }}"
+          exit ${{ steps.fetch.outputs.fetch_exit }}
