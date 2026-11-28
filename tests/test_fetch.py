@@ -1033,6 +1033,59 @@ class TestSinaXcheck(unittest.TestCase):
                 self.assertEqual(default["source"], "selfcalc-sina")
 
 
+class TestExpansionCoverage20261128(unittest.TestCase):
+    """2026-11-28 扩覆盖：50 只跟踪、27 只可取数；新增配置齐全且区间含实测 NAV。"""
+
+    # 2026-11-25 实测 NAV 锚点（SSGA/BlackRock 逐只实取页面验证）。
+    _NAV_ANCHORS_SSGA = {
+        "XLB": 51.1936, "XLC": 105.3633, "XLF": 56.49, "XLI": 162.9178,
+        "XLRE": 43.8529, "XLY": 117.4767, "DIA": 501.2994,
+    }
+    _NAV_ANCHORS_BLACKROCK = {
+        "IWM": 267.7817, "IVV": 720.3842, "AGG": 96.4309, "LQD": 105.1607,
+        "HYG": 77.1308, "IEF": 92.0338, "EFA": 97.6512, "EEM": 55.9618,
+    }
+
+    def test_tracked_order_50_no_dupes(self):
+        order = fetch_all.ETF_TRACKED_ORDER
+        self.assertEqual(len(order), 50)
+        self.assertEqual(len(set(order)), 50)
+        for ticker in ("XLB", "XLC", "XLF", "XLI", "XLRE", "XLY", "DIA",
+                       "IWM", "IVV", "AGG", "LQD", "HYG", "IEF", "EFA", "EEM",
+                       "FBTC", "ETHA", "MSBT", "TETH"):
+            self.assertIn(ticker, order, msg=ticker)
+
+    def test_live_capable_total_27(self):
+        self.assertEqual(
+            len(fetch_all.SELFCALC_PRIMARY) + len(fetch_all.SELFCALC_BACKUP), 27
+        )
+
+    def test_new_ssga_pages_and_ranges(self):
+        for ticker, nav in self._NAV_ANCHORS_SSGA.items():
+            self.assertIn(ticker, fetch_all.SSGA_FUND_PAGES, msg=ticker)
+            self.assertTrue(
+                fetch_all.SSGA_FUND_PAGES[ticker].startswith("https://www.ssga.com/us/en/"),
+                msg=ticker,
+            )
+            check_nav_range(ticker, nav, fetch_all.SSGA_NAV_RANGES)
+
+    def test_new_blackrock_ids_and_ranges(self):
+        for ticker, nav in self._NAV_ANCHORS_BLACKROCK.items():
+            self.assertIn(ticker, fetch_all.BLACKROCK_PORTFOLIO_IDS, msg=ticker)
+            self.assertIsInstance(
+                fetch_all.BLACKROCK_PORTFOLIO_IDS[ticker], int, msg=ticker
+            )
+            check_nav_range(ticker, nav, fetch_all.BLACKROCK_NAV_RANGES)
+
+    def test_farside_fund_lists(self):
+        self.assertEqual(len(fetch_all.FARSIDE_BTC_FUNDS), 12)
+        self.assertEqual(len(fetch_all.FARSIDE_ETH_FUNDS), 11)
+        self.assertIn("IBIT", fetch_all.FARSIDE_BTC_FUNDS)
+        self.assertIn("ETHA", fetch_all.FARSIDE_ETH_FUNDS)
+        for ticker in fetch_all.FARSIDE_BTC_FUNDS + fetch_all.FARSIDE_ETH_FUNDS:
+            self.assertIn(ticker, fetch_all.ETF_TRACKED_ORDER, msg=ticker)
+
+
 class TestEtfFlowsMerge(unittest.TestCase):
     def test_merge_dedupe_and_cap_60(self):
         import datetime as _datetime

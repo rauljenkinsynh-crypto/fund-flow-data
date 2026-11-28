@@ -125,6 +125,17 @@ FARSIDE_URLS = {
     "btc": "https://farside.co.uk/bitcoin-etf-flow-all-data/",
     "eth": "https://farside.co.uk/ethereum-etf-flow-all-data/",
 }
+# Farside 两表基金清单（2026-11-28 从仓库 data/farside-btc/eth.json 的 funds
+# 键实取；IBIT 之外的新基金与 IBIT 同款逻辑读表，不另设取数路）。
+# BTC 表 12 只（含 IBIT）、ETH 表 11 只。
+FARSIDE_BTC_FUNDS = [
+    "IBIT", "FBTC", "ARKB", "BITB", "GBTC", "HODL", "BTC",
+    "BTCO", "BTCW", "BRRR", "EZBC", "MSBT",
+]
+FARSIDE_ETH_FUNDS = [
+    "ETHA", "ETHB", "FETH", "ETHW", "ETHV", "QETH",
+    "EZET", "MSSE", "ETHE", "ETH", "TETH",
+]
 
 # -- ICI：四页确切 URL（2026-11-25 校正清单第 1 项，核查报告 §1.1）--
 # 长期流量每周三 10:00 ET 发布；综合篇同日同时；ETF 单篇晚约 6 天；
@@ -174,6 +185,16 @@ SEED_AUM_100M = {"SOXX": 350.0}
 ETF_TRACKED_ORDER = [
     "SOXX", "SMH", "VOO", "SPY", "QQQ", "IBIT",
     "XLP", "XLV", "XLE", "XLU", "XLK", "TLT", "GLD",
+    # 2026-11-28 扩覆盖：SSGA 其余板块 + DIA（自算主路，下同）
+    "XLB", "XLC", "XLF", "XLI", "XLRE", "XLY", "DIA",
+    # 2026-11-28 扩覆盖：iShares 宽基/债券/海外（BlackRock 自算主路）
+    "IWM", "IVV", "AGG", "LQD", "HYG", "IEF", "EFA", "EEM",
+    # 2026-11-28 扩覆盖：Farside BTC 表其余基金（IBIT 之外）
+    "FBTC", "ARKB", "BITB", "GBTC", "HODL", "BTC",
+    "BTCO", "BTCW", "BRRR", "EZBC", "MSBT",
+    # 2026-11-28 扩覆盖：Farside ETH 表全部基金
+    "ETHA", "ETHB", "FETH", "ETHW", "ETHV", "QETH",
+    "EZET", "MSSE", "ETHE", "ETH", "TETH",
 ]
 ETF_LAG_SWITCH_TRADING_DAYS = 3  # TickerInside 滞后超 3 个交易日自动切自算备用
 ETF_DAILY_KEEP_DAYS = 60         # daily 序列滚动保留最近 60 个收盘日
@@ -190,11 +211,26 @@ BLACKROCK_HOLDINGS_URL_TEMPLATE = (
     "&portfolioId={portfolio_id}&userType=individual&component=holdings"
 )
 # portfolioId 已验证（2026-11-25 实测）：TLT 239454、SOXX 239705。
+# 2026-11-28 扩覆盖（逐只从 iShares 产品总览页实取链接 + holdings CSV 首行
+# 基金名核对，实测截至日均为 2026-11-25）：IWM 239710、IVV 239726、
+# AGG 239458、LQD 239566、HYG 239565、IEF 239456、EFA 239623、EEM 239637。
 # XLK 是 SPDR（State Street）产品，没有 iShares portfolioId，不走 BlackRock 路；
 # 方案 §九“BlackRock 覆盖 SOXX/XLK”一说有误，XLK 自算只走 SSGA。
-BLACKROCK_PORTFOLIO_IDS = {"TLT": 239454, "SOXX": 239705}
+BLACKROCK_PORTFOLIO_IDS = {
+    "TLT": 239454, "SOXX": 239705,
+    "IWM": 239710, "IVV": 239726, "AGG": 239458, "LQD": 239566,
+    "HYG": 239565, "IEF": 239456, "EFA": 239623, "EEM": 239637,
+}
 # 净值合理性区间（美元，按 2026-11-25 市价定的宽带；超出即该标的 failed，不发布离谱数）
-BLACKROCK_NAV_RANGES = {"TLT": (40.0, 200.0), "SOXX": (100.0, 400.0)}
+# 2026-11-28 新增区间按当日实测 NAV 定：IWM $267.78、IVV $720.38、AGG $96.43、
+# LQD $105.16、HYG $77.13、IEF $92.03、EFA $97.65、EEM $55.96。
+BLACKROCK_NAV_RANGES = {
+    "TLT": (40.0, 200.0), "SOXX": (100.0, 400.0),
+    "IWM": (100.0, 400.0), "IVV": (400.0, 1000.0),
+    "AGG": (50.0, 200.0), "LQD": (50.0, 200.0),
+    "HYG": (30.0, 200.0), "IEF": (50.0, 200.0),
+    "EFA": (50.0, 200.0), "EEM": (30.0, 200.0),
+}
 
 # -- State Street / SPDR 基金页（美国版 URL，2026-11-25 逐只验证）--
 # 页内“Fund Net Asset Value”表含 NAV 与 Shares Outstanding；欧洲版 URL 会出现
@@ -210,6 +246,15 @@ SSGA_FUND_PAGES = {
     "XLE": "https://www.ssga.com/us/en/intermediary/etfs/state-street-energy-select-sector-spdr-etf-xle",
     "XLU": "https://www.ssga.com/us/en/institutional/etfs/state-street-utilities-select-sector-spdr-etf-xlu",
     "XLK": "https://www.ssga.com/us/en/individual/etfs/state-street-technology-select-sector-spdr-etf-xlk",
+    # 2026-11-28 扩覆盖（逐只实取页面 + parse_ssga_fund_page 验证，
+    # 截至日均为 2026-11-25）：XLB/XLC/XLF/XLI/XLRE/XLY/DIA。
+    "XLB": "https://www.ssga.com/us/en/individual/etfs/state-street-materials-select-sector-spdr-etf-xlb",
+    "XLC": "https://www.ssga.com/us/en/individual/etfs/state-street-communication-services-select-sector-spdr-etf-xlc",
+    "XLF": "https://www.ssga.com/us/en/individual/etfs/state-street-financial-select-sector-spdr-etf-xlf",
+    "XLI": "https://www.ssga.com/us/en/individual/etfs/state-street-industrial-select-sector-spdr-etf-xli",
+    "XLRE": "https://www.ssga.com/us/en/individual/etfs/state-street-real-estate-select-sector-spdr-etf-xlre",
+    "XLY": "https://www.ssga.com/us/en/individual/etfs/state-street-consumer-discretionary-select-sector-spdr-etf-xly",
+    "DIA": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-dow-jones-industrial-average-etf-trust-dia",
 }
 # 净值合理性区间（美元）：XLU 下限 30 而非方案写的 50——2026-11-25 实测 XLU NAV
 # 为 $43.40，已低于 50，按方案区间会天天误判 failed；其余按方案。
@@ -217,6 +262,11 @@ SSGA_NAV_RANGES = {
     "GLD": (200.0, 500.0), "SPY": (400.0, 800.0),
     "XLP": (50.0, 300.0), "XLV": (50.0, 300.0), "XLE": (50.0, 300.0),
     "XLU": (30.0, 300.0), "XLK": (100.0, 400.0),
+    # 2026-11-28 新增区间按当日实测 NAV 定：XLB $51.19、XLC $105.36、XLF $56.49、
+    # XLI $162.92、XLRE $43.85、XLY $117.48、DIA $501.30。
+    "XLB": (30.0, 300.0), "XLC": (50.0, 300.0), "XLF": (30.0, 300.0),
+    "XLI": (100.0, 400.0), "XLRE": (30.0, 300.0), "XLY": (50.0, 300.0),
+    "DIA": (300.0, 800.0),
 }
 # -- VanEck / SMH：NAV 历史 XLSX（第二阶段，2026-11-25 实测）--
 # 持仓 XLSX（.../holdings/download/xlsx/，方案 §4.3 的原定文件）只有持仓明细，
@@ -281,6 +331,13 @@ SINA_NAV_RANGES = {
 SELFCALC_PRIMARY = {
     "TLT": "blackrock", "GLD": "ssga", "SMH": "vaneck",
     "QQQ": "sina", "VOO": "sina",
+    # 2026-11-28 扩覆盖（逐只实测验证，截至日均为 2026-11-25）：
+    # SSGA 其余板块 + DIA；iShares 宽基/债券/海外。
+    "XLB": "ssga", "XLC": "ssga", "XLF": "ssga", "XLI": "ssga",
+    "XLRE": "ssga", "XLY": "ssga", "DIA": "ssga",
+    "IWM": "blackrock", "IVV": "blackrock", "AGG": "blackrock",
+    "LQD": "blackrock", "HYG": "blackrock", "IEF": "blackrock",
+    "EFA": "blackrock", "EEM": "blackrock",
 }
 SELFCALC_BACKUP = {
     "SOXX": "blackrock",
@@ -2226,7 +2283,7 @@ def _is_fresh(date_et, today):
 
 def fetch_etf_flows(out_dir=None, today=None):
     """ETF 流量：TickerInside 7 只 + 发行商文件自算 + 新浪 QQQ/VOO 份额
-    + 新浪 SOXX/TLT/IBIT 份额交叉核对 + Farside IBIT。
+    + 新浪 SOXX/TLT/IBIT 份额交叉核对 + Farside BTC/ETH ETF。
 
     合并规则（方案 §五 + 任务书 §3）：
     - 每只标的只有一个主路：7 只以 TickerInside 为准，滞后 >3 个交易日自动切
@@ -2239,7 +2296,7 @@ def fetch_etf_flows(out_dir=None, today=None):
     - 任一标的取不到/字段缺失 -> 该标的当日 failed，保留上一日好快照，绝不拿
       旧份额算假流量；≥1 只标的有新鲜 live 数 -> 整源 ok；全部可取数标的都
       失败 -> 抛 FetchError（run_fetch 会保留旧文件、status 标 failed）。
-    - 自算快照每天都取（12 只全取，保持备用快照温热，切换当日即有昨日数可算）；
+    - 自算快照每天都取（27 只全取，保持备用快照温热，切换当日即有昨日数可算）；
       快照文件 data/etf-selfcalc-snapshots.json 由本函数自己读写。
     - 交叉核对（SOXX/TLT/IBIT 新浪份额）：快照存同一文件、键加 _xcheck 后缀，
       source 记 xcheck-sina；只比对同日份额、偏差 >1% 只写 note，绝不参与
@@ -2286,7 +2343,7 @@ def fetch_etf_flows(out_dir=None, today=None):
                 "为种子数），面板须用种子数展示该日标红。"
             )
 
-    # --- 自算路：12 只全取快照（主路 TLT/GLD/SMH/QQQ/VOO + 7 只备用），失败只影响该标的 ---
+    # --- 自算路：27 只全取快照（主路 TLT/GLD/SMH/QQQ/VOO + 扩覆盖 15 只 + 7 只备用），失败只影响该标的 ---
     selfcalc = {}
     for ticker, kind in {**SELFCALC_PRIMARY, **SELFCALC_BACKUP}.items():
         try:
@@ -2402,7 +2459,8 @@ def fetch_etf_flows(out_dir=None, today=None):
         )
 
     entries = {}
-    failed_live_capable = 0  # 12 只可取数标的（7 只 TI + TLT + GLD + SMH + QQQ + VOO）中当日 failed 的只数
+    failed_live_capable = 0  # 可取数标的中当日 failed 的只数（2026-11-28 起为 27 只：
+    # 7 只 TI/自算备用 + 自算主路 TLT + GLD + SMH + QQQ + VOO + 扩覆盖 15 只）
 
     # --- 7 只 TickerInside 主路标的 ---
     for ticker in TICKERINSIDE_TICKERS:
@@ -2518,8 +2576,13 @@ def fetch_etf_flows(out_dir=None, today=None):
             headline_date, status, daily, note, alternate_flow=alternate_flow,
         )
 
-    # --- TLT、GLD：自算主路 ---
-    for ticker in ("TLT", "GLD"):
+    # --- 发行商自算主路（SSGA / BlackRock）：TLT、GLD + 2026-11-28 扩覆盖的 15 只 ---
+    # 与旧 TLT/GLD 块同一逻辑；SMH（VanEck）、QQQ/VOO（新浪）仍各走自己的块。
+    for ticker in (
+        "TLT", "GLD",
+        "XLB", "XLC", "XLF", "XLI", "XLRE", "XLY", "DIA",
+        "IWM", "IVV", "AGG", "LQD", "HYG", "IEF", "EFA", "EEM",
+    ):
         prev_entry = prev_tracked.get(ticker) or {}
         prev_daily = prev_entry.get("daily") or []
         record = selfcalc.get(ticker) or {}
@@ -2599,40 +2662,52 @@ def fetch_etf_flows(out_dir=None, today=None):
                 snap["date"], status, daily, note,
             )
 
-    # --- IBIT：读同 run 的 data/farside-btc.json ---
-    farside = (
-        _load_json_file(os.path.join(out_dir, "farside-btc.json")) if out_dir else {}
+    # --- Farside：BTC 表 12 只 + ETH 表 11 只，读同 run 的 data/farside-*.json ---
+    # 与旧 IBIT 块同一逻辑（单位假设、seed 回退、daily 合并均不变）；IBIT 的
+    # 备注措辞与回退文案原样保留。任一基金无行时记 seed、不编数。
+    _farside_note = (
+        "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）"
+        "；Farside 未给 AUM，pct 未算。"
     )
-    ibit_rows = []
-    ibit_latest = None
-    for row in farside.get("rows") or []:
-        if not isinstance(row, dict):
-            continue
-        funds = row.get("funds") or {}
-        if funds.get("IBIT") is None:
-            continue
-        flow_100m = round(funds["IBIT"] / 100.0, 4)  # Farside 表格数值为百万美元（假设，未验证）
-        ibit_rows.append(
-            {"date": row["date"], "flow_usd_100m": flow_100m, "source": "farside"}
+    for _kind, _funds in (("btc", FARSIDE_BTC_FUNDS), ("eth", FARSIDE_ETH_FUNDS)):
+        _farside = (
+            _load_json_file(os.path.join(out_dir, f"farside-{_kind}.json"))
+            if out_dir else {}
         )
-    ibit_rows.sort(key=lambda r: r["date"])
-    prev_ibit = prev_tracked.get("IBIT") or {}
-    ibit_daily = merge_daily_series(prev_ibit.get("daily") or [], ibit_rows[-ETF_DAILY_KEEP_DAYS:])
-    if ibit_rows:
-        ibit_latest = ibit_rows[-1]
-        status = "live" if _is_fresh(ibit_latest["date"], today) else "stale"
-        entries["IBIT"] = _etf_entry(
-            "IBIT", ibit_latest["date"], ibit_latest["flow_usd_100m"], None, None,
-            "farside", ibit_latest["date"], status, ibit_daily,
-            "单位假设未验证（Farside 表格数值为百万美元，daily_flow_usd_100m = 该值/100）"
-            "；Farside 未给 AUM，pct 未算。",
-        )
-    else:
-        entries["IBIT"] = _etf_entry(
-            "IBIT", prev_ibit.get("date_et"), None, None, None, "seed",
-            prev_ibit.get("as_of_date"), "seed", prev_ibit.get("daily") or [],
-            "Farside 文件不存在或无 IBIT，未编数。",
-        )
+        for _fund in _funds:
+            _rows = []
+            for _row in _farside.get("rows") or []:
+                if not isinstance(_row, dict):
+                    continue
+                _funds_map = _row.get("funds") or {}
+                if _funds_map.get(_fund) is None:
+                    continue
+                _rows.append(
+                    {
+                        "date": _row["date"],
+                        # Farside 表格数值为百万美元（假设，未验证）
+                        "flow_usd_100m": round(_funds_map[_fund] / 100.0, 4),
+                        "source": "farside",
+                    }
+                )
+            _rows.sort(key=lambda r: r["date"])
+            _prev = prev_tracked.get(_fund) or {}
+            _daily = merge_daily_series(
+                _prev.get("daily") or [], _rows[-ETF_DAILY_KEEP_DAYS:]
+            )
+            if _rows:
+                _latest = _rows[-1]
+                _status = "live" if _is_fresh(_latest["date"], today) else "stale"
+                entries[_fund] = _etf_entry(
+                    _fund, _latest["date"], _latest["flow_usd_100m"], None, None,
+                    "farside", _latest["date"], _status, _daily, _farside_note,
+                )
+            else:
+                entries[_fund] = _etf_entry(
+                    _fund, _prev.get("date_et"), None, None, None, "seed",
+                    _prev.get("as_of_date"), "seed", _prev.get("daily") or [],
+                    f"Farside 文件不存在或无 {_fund}，未编数。",
+                )
 
     # --- QQQ、VOO：自算主路（新浪 gb_ 行情份额；收盘后才写快照）---
     for ticker in ("QQQ", "VOO"):
@@ -2677,9 +2752,11 @@ def fetch_etf_flows(out_dir=None, today=None):
         )
 
     live_count = sum(1 for entry in entries.values() if entry["status"] == "live")
-    if failed_live_capable >= 12 and entries["IBIT"]["status"] == "seed":
+    live_capable_total = len(SELFCALC_PRIMARY) + len(SELFCALC_BACKUP)
+    if failed_live_capable >= live_capable_total and entries["IBIT"]["status"] == "seed":
         raise FetchError(
-            "etf-flows 全部可取数标的都失败（7 只 TickerInside/自算备用 + TLT + GLD + SMH + QQQ + VOO），"
+            f"etf-flows 全部可取数标的都失败（{live_capable_total} 只：7 只 "
+            "TickerInside/自算备用 + 自算主路 TLT + GLD + SMH + QQQ + VOO + 扩覆盖 15 只），"
             "且 IBIT 无 Farside 数据；保留旧文件、status 标 failed。"
         )
     top_status = "live" if live_count >= 1 else "seed"
@@ -2697,7 +2774,7 @@ def fetch_etf_flows(out_dir=None, today=None):
     tracked = [entries[ticker] for ticker in ETF_TRACKED_ORDER]
     return {
         "schema_version": 1,
-        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（IBIT）",
+        "source": "TickerInside / 自算（BlackRock、SSGA、VanEck 发行商文件；新浪 QQQ/VOO 份额、SOXX/TLT/IBIT 交叉核对） / Farside（BTC/ETH ETF）",
         "source_url": TICKERINSIDE_SERIES_URL,
         "fetched_at_utc": utcnow_iso(),
         "status": top_status,
